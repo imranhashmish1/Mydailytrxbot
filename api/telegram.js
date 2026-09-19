@@ -8,12 +8,24 @@ export default async function handler(req, res) {
 
   try {
     const update = req.body;
+    const token = process.env.TELEGRAM_BOT_TOKEN;
 
-    console.log("Telegram update:", update);
+    if (update?.message?.text === "/start") {
+      const chatId = update.message.chat.id;
 
-    return res.status(200).json({
-      ok: true
-    });
+      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: "👋 Welcome to DailyTRX Bot!\n\nRegistration system is coming next."
+        })
+      });
+    }
+
+    return res.status(200).json({ ok: true });
   } catch (error) {
     console.error(error);
 
