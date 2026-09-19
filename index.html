@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Daily TRX Bot</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="splash" class="splash">
+    <div class="logo">₮</div>
+    <h1>Daily TRX Bot</h1>
+    <div class="loader"><span></span></div>
+  </div>
+
+  <main id="app" class="app hidden">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mini-logo">₮</div>
+        <div><b>DAILY TRX</b><small>Investment Wallet</small></div>
+      </div>
+      <div class="actions">
+        <button id="themeBtn" class="icon-btn">☾</button>
+        <button class="icon-btn">🔔<i>0</i></button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-label">TOTAL BALANCE</div>
+      <div class="balance">0 <span>TRX</span></div>
+      <div class="sub">≈ $0.00</div>
+      <div class="quick">
+        <button data-page="deposit">＋ Deposit</button>
+        <button data-page="withdraw">↗ Withdraw</button>
+      </div>
+    </section>
+
+    <section class="grid">
+      <button class="card" data-page="investment"><span class="circle">📈</span><b>Investment</b><small>Plans & history</small></button>
+      <button class="card" data-page="wallet"><span class="circle">▣</span><b>Wallet</b><small>Balance & transactions</small></button>
+      <button class="card" data-page="referral"><span class="circle">👥</span><b>Referral</b><small>Invite & team</small></button>
+      <button class="card" data-page="notifications"><span class="circle">🔔</span><b>Notifications</b><small>System updates</small></button>
+    </section>
+
+    <section id="page" class="panel">
+      <h2>Dashboard</h2>
+      <div class="stats">
+        <div><small>Total Investment</small><strong>0 TRX</strong></div>
+        <div><small>Total Profit</small><strong>0 TRX</strong></div>
+      </div>
+      <div class="notice">Your account is ready. Complete registration before financial features are enabled.</div>
+    </section>
+
+    <nav class="bottom">
+      <button class="active" data-page="home">⌂<span>Home</span></button>
+      <button data-page="wallet">▣<span>Wallet</span></button>
+      <button data-page="support">◉<span>Support</span></button>
+      <button data-page="profile">♙<span>Profile</span></button>
+    </nav>
+  </main>
+
+<script src="app.js"></script>
+</body>
+</html>
