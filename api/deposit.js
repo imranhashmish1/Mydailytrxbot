@@ -1,4 +1,3 @@
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
@@ -30,7 +29,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // TRON TXID must be exactly 64 hexadecimal characters
     const cleanTxHash = String(tx_hash).trim();
 
     if (!/^[a-fA-F0-9]{64}$/.test(cleanTxHash)) {
@@ -53,12 +51,12 @@ export default async function handler(req, res) {
       });
     }
 
-    // Your shared TRX deposit address
-    const depositAddress = "TDhbWgGaC3yEBcqoqz3425TeEZtVAqThxX";
+    const depositAddress =
+      "TDhbWgGaC3yEBcqoqz3425TeEZtVAqThxX";
 
-    // --------------------------------------------------
-    // 1. Check that Telegram user is registered
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 1. Verify registered Telegram user
+    // -----------------------------------------
 
     const userResponse = await fetch(
       `${supabaseUrl}/rest/v1/bot_users?telegram_chat_id=eq.${encodeURIComponent(
@@ -89,9 +87,9 @@ export default async function handler(req, res) {
       });
     }
 
-    // --------------------------------------------------
-    // 2. Check if TXID was already submitted
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 2. Check duplicate TXID
+    // -----------------------------------------
 
     const duplicateResponse = await fetch(
       `${supabaseUrl}/rest/v1/deposits?tx_hash=eq.${encodeURIComponent(
@@ -122,9 +120,9 @@ export default async function handler(req, res) {
       });
     }
 
-    // --------------------------------------------------
-    // 3. Get solidified transaction from TRON
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 3. Get solidified TRON transaction
+    // -----------------------------------------
 
     const trxResponse = await fetch(
       "https://api.trongrid.io/walletsolidity/gettransactionbyid",
@@ -149,13 +147,14 @@ export default async function handler(req, res) {
     ) {
       return res.status(400).json({
         ok: false,
-        message: "Transaction not found or not yet confirmed on TRON"
+        message:
+          "Transaction not found or not yet confirmed on TRON"
       });
     }
 
-    // --------------------------------------------------
-    // 4. Check transaction type
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 4. Check native TRX transfer
+    // -----------------------------------------
 
     const contract = trxData?.raw_data?.contract?.[0];
 
@@ -168,16 +167,16 @@ export default async function handler(req, res) {
 
     const parameter = contract?.parameter?.value;
 
-    if (!parameter) {
+    if (!parameter?.to_address || !parameter?.amount) {
       return res.status(400).json({
         ok: false,
         message: "Invalid TRON transfer data"
       });
     }
 
-    // --------------------------------------------------
-    // 5. Decode TRON hex address to Base58
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 5. Convert TRON hex address to Base58
+    // -----------------------------------------
 
     function hexToBase58(hexAddress) {
       const alphabet =
@@ -192,16 +191,27 @@ export default async function handler(req, res) {
 
       const bytes = Buffer.from(hexAddress, "hex");
 
-      const checksum = sha256(sha256(bytes)).subarray(0, 4);
+      const checksum = sha256(
+        sha256(bytes)
+      ).subarray(0, 4);
 
-      const full = Buffer.concat([bytes, checksum]);
+      const full = Buffer.concat([
+        bytes,
+        checksum
+      ]);
 
-      let num = BigInt("0x" + full.toString("hex"));
+      let num = BigInt(
+        "0x" + full.toString("hex")
+      );
+
       let result = "";
 
       while (num > 0n) {
         const remainder = Number(num % 58n);
-        result = alphabet[remainder] + result;
+
+        result =
+          alphabet[remainder] + result;
+
         num = num / 58n;
       }
 
@@ -219,45 +229,54 @@ export default async function handler(req, res) {
     let toAddress;
 
     try {
-      toAddress = hexToBase58(parameter.to_address);
+      toAddress =
+        hexToBase58(parameter.to_address);
     } catch (error) {
       return res.status(400).json({
         ok: false,
-        message: "Could not read transaction recipient"
+        message:
+          "Could not read transaction recipient"
       });
     }
 
-    // --------------------------------------------------
-    // 6. Verify recipient address
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 6. Verify deposit address
+    // -----------------------------------------
 
     if (toAddress !== depositAddress) {
       return res.status(400).json({
         ok: false,
-        message: "Transaction was not sent to the deposit address"
+        message:
+          "Transaction was not sent to the deposit address"
       });
     }
 
-    // --------------------------------------------------
-    // 7. Get actual TRX amount from blockchain
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 7. Get actual blockchain amount
+    // -----------------------------------------
 
     const actualAmountTrx =
       Number(parameter.amount) / 1000000;
 
-    if (!Number.isFinite(actualAmountTrx) || actualAmountTrx <= 0) {
+    if (
+      !Number.isFinite(actualAmountTrx) ||
+      actualAmountTrx <= 0
+    ) {
       return res.status(400).json({
         ok: false,
-        message: "Invalid TRX amount on blockchain"
+        message:
+          "Invalid TRX amount on blockchain"
       });
     }
 
-    // --------------------------------------------------
-    // 8. Compare user-entered amount with blockchain amount
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 8. Compare entered amount
+    // -----------------------------------------
 
     const difference =
-      Math.abs(actualAmountTrx - userAmount);
+      Math.abs(
+        actualAmountTrx - userAmount
+      );
 
     if (difference > 0.000001) {
       return res.status(400).json({
@@ -267,9 +286,9 @@ export default async function handler(req, res) {
       });
     }
 
-    // --------------------------------------------------
-    // 9. Check solidified execution receipt
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 9. Get solidified receipt
+    // -----------------------------------------
 
     const receiptResponse = await fetch(
       "https://api.trongrid.io/walletsolidity/gettransactioninfobyid",
@@ -284,7 +303,8 @@ export default async function handler(req, res) {
       }
     );
 
-    const receiptData = await receiptResponse.json();
+    const receiptData =
+      await receiptResponse.json();
 
     if (
       !receiptResponse.ok ||
@@ -294,11 +314,11 @@ export default async function handler(req, res) {
     ) {
       return res.status(400).json({
         ok: false,
-        message: "Transaction receipt is not yet available"
+        message:
+          "Transaction receipt is not yet available"
       });
     }
 
-    // Plain TRX transfer should have successful execution.
     if (
       receiptData.receipt &&
       receiptData.receipt.result &&
@@ -306,15 +326,16 @@ export default async function handler(req, res) {
     ) {
       return res.status(400).json({
         ok: false,
-        message: "TRON transaction execution was not successful"
+        message:
+          "TRON transaction execution was not successful"
       });
     }
 
-    // --------------------------------------------------
-    // 10. Save verified deposit
-    // --------------------------------------------------
+    // -----------------------------------------
+    // 10. Save as pending first
+    // -----------------------------------------
 
-    const response = await fetch(
+    const depositResponse = await fetch(
       `${supabaseUrl}/rest/v1/deposits`,
       {
         method: "POST",
@@ -325,33 +346,88 @@ export default async function handler(req, res) {
           Prefer: "return=representation"
         },
         body: JSON.stringify({
-          telegram_chat_id: String(telegram_chat_id),
-          amount_trx: actualAmountTrx,
-          tx_hash: cleanTxHash,
-          deposit_address: depositAddress,
-          status: "approved",
-          verified_at: new Date().toISOString(),
-          verified_amount_trx: actualAmountTrx,
-          verification_note:
-            "Verified against solidified TRON transaction"
+          telegram_chat_id:
+            String(telegram_chat_id),
+
+          amount_trx:
+            actualAmountTrx,
+
+          tx_hash:
+            cleanTxHash,
+
+          deposit_address:
+            depositAddress,
+
+          status:
+            "pending"
         })
       }
     );
 
-    const data = await response.json();
+    const depositData =
+      await depositResponse.json();
 
-    if (!response.ok) {
-      return res.status(response.status).json({
+    if (!depositResponse.ok) {
+      return res.status(depositResponse.status).json({
         ok: false,
-        message: "Verified transaction could not be saved",
-        error: data
+        message:
+          "Verified transaction could not be saved",
+        error: depositData
       });
     }
 
+    const deposit =
+      depositData?.[0] || depositData;
+
+    // -----------------------------------------
+    // 11. Atomically approve + credit wallet
+    // -----------------------------------------
+
+    const rpcResponse = await fetch(
+      `${supabaseUrl}/rest/v1/rpc/approve_deposit_and_credit_wallet`,
+      {
+        method: "POST",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          p_deposit_id: deposit.id,
+          p_telegram_chat_id:
+            String(telegram_chat_id),
+          p_amount_trx:
+            actualAmountTrx
+        })
+      }
+    );
+
+    const rpcData =
+      await rpcResponse.text();
+
+    if (!rpcResponse.ok) {
+      return res.status(500).json({
+        ok: false,
+        message:
+          "Deposit verified but wallet credit failed",
+        error: rpcData
+      });
+    }
+
+    // -----------------------------------------
+    // 12. Success
+    // -----------------------------------------
+
     return res.status(200).json({
       ok: true,
-      message: "Deposit verified successfully",
-      deposit: data?.[0] || data
+      message:
+        "Deposit verified and wallet credited successfully",
+
+      deposit_id:
+        deposit.id,
+
+      verified_amount_trx:
+        actualAmountTrx
     });
 
   } catch (error) {
