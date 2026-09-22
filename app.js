@@ -1,14 +1,9 @@
-const tg = window.Telegram?.WebApp;
+const telegramApp = window.Telegram?.WebApp;
 
-if (tg) {
-  tg.ready();
-  tg.expand();
+if (telegramApp) {
+  telegramApp.ready();
+  telegramApp.expand();
 }
-
-setTimeout(() => {
-  document.getElementById('splash').classList.add('hidden');
-  document.getElementById('app').classList.remove('hidden');
-}, 1100);
 
 const page = document.getElementById('page');
 
@@ -26,9 +21,9 @@ const titles = {
 
 function render(p) {
 
-  document.querySelectorAll('.bottom button').forEach(b =>
-    b.classList.toggle('active', b.dataset.page === p)
-  );
+  document.querySelectorAll('.bottom button').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === p);
+  });
 
   let content = '';
 
@@ -78,10 +73,7 @@ function render(p) {
         Submit Deposit
       </button>
 
-      <div
-        id="depositMessage"
-        style="margin-top:12px;text-align:center;"
-      ></div>
+      <div id="depositMessage" style="margin-top:12px;text-align:center;"></div>
     `;
 
   } else if (p === 'withdraw') {
@@ -149,7 +141,6 @@ function render(p) {
 
     content = `
       <h2>${titles[p] || 'Dashboard'}</h2>
-
       <div class="notice">
         This module is ready for backend integration.
       </div>
@@ -168,8 +159,6 @@ function render(p) {
   }
 }
 
-
-// Deposit
 function setupDeposit() {
 
   const button = document.getElementById('submitDeposit');
@@ -194,7 +183,7 @@ function setupDeposit() {
     }
 
     const telegramUser =
-      tg?.initDataUnsafe?.user;
+      telegramApp?.initDataUnsafe?.user;
 
     if (!telegramUser?.id) {
       message.textContent =
@@ -205,17 +194,13 @@ function setupDeposit() {
     button.disabled = true;
     button.textContent = 'Submitting...';
 
-    message.textContent = '';
-
     try {
 
       const response = await fetch('/api/deposit', {
         method: 'POST',
-
         headers: {
           'Content-Type': 'application/json'
         },
-
         body: JSON.stringify({
           telegram_chat_id: String(telegramUser.id),
           amount_trx: amount,
@@ -247,12 +232,9 @@ function setupDeposit() {
       button.disabled = false;
       button.textContent = 'Submit Deposit';
     }
-
   });
 }
 
-
-// Navigation
 document.addEventListener('click', e => {
 
   const b = e.target.closest('[data-page]');
@@ -260,17 +242,18 @@ document.addEventListener('click', e => {
   if (b) {
     render(b.dataset.page);
   }
-
 });
 
+const themeButton = document.getElementById('themeBtn');
 
-// Theme
-document.getElementById('themeBtn').onclick = () => {
+if (themeButton) {
+  themeButton.onclick = () => {
 
-  document.body.classList.toggle('light');
+    document.body.classList.toggle('light');
 
-  document.getElementById('themeBtn').textContent =
-    document.body.classList.contains('light')
-      ? '☀'
-      : '☾';
-};
+    themeButton.textContent =
+      document.body.classList.contains('light')
+        ? '☀'
+        : '☾';
+  };
+}
