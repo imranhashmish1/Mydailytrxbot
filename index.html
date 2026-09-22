@@ -7,22 +7,94 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+  <!-- Splash -->
   <div id="splash" class="splash">
     <div class="logo">₮</div>
     <h1>Daily TRX Bot</h1>
     <div class="loader"><span></span></div>
   </div>
 
+  <!-- Registration -->
+  <section id="registration" class="registration hidden">
+    <div class="register-box">
+
+      <div class="register-logo">₮</div>
+
+      <h1>Create Account</h1>
+      <p class="register-sub">
+        Register your Daily TRX account to continue.
+      </p>
+
+      <label>Username</label>
+      <input
+        id="regUsername"
+        type="text"
+        placeholder="Enter username"
+        maxlength="30"
+        autocomplete="username"
+      >
+
+      <label>Email</label>
+      <input
+        id="regEmail"
+        type="email"
+        placeholder="Enter your email"
+        autocomplete="email"
+      >
+
+      <label>PIN</label>
+      <input
+        id="regPin"
+        type="password"
+        placeholder="4-6 digit PIN"
+        inputmode="numeric"
+        maxlength="6"
+        autocomplete="new-password"
+      >
+
+      <label>Confirm PIN</label>
+      <input
+        id="regPinConfirm"
+        type="password"
+        placeholder="Confirm your PIN"
+        inputmode="numeric"
+        maxlength="6"
+        autocomplete="new-password"
+      >
+
+      <div id="registerMessage" class="register-message"></div>
+
+      <button id="registerBtn" class="register-btn">
+        Create Account
+      </button>
+
+      <small class="secure-text">
+        🔒 Your account is securely connected to Telegram.
+      </small>
+
+    </div>
+  </section>
+
+  <!-- Main App -->
   <main id="app" class="app hidden">
+
     <header class="topbar">
       <div class="brand">
         <div class="mini-logo">₮</div>
-        <div><b>DAILY TRX</b><small>Investment Wallet</small></div>
+        <div>
+          <b>DAILY TRX</b>
+          <small>Investment Wallet</small>
+        </div>
       </div>
+
       <div class="actions">
         <button id="themeBtn" class="icon-btn">☾</button>
-        <button class="icon-btn">🔔<i>0</i></button>
+        <button class="icon-btn">
+          🔔<i>0</i>
+        </button>
       </div>
     </header>
 
@@ -30,6 +102,7 @@
       <div class="hero-label">TOTAL BALANCE</div>
       <div class="balance">0 <span>TRX</span></div>
       <div class="sub">≈ $0.00</div>
+
       <div class="quick">
         <button data-page="deposit">＋ Deposit</button>
         <button data-page="withdraw">↗ Withdraw</button>
@@ -37,29 +110,209 @@
     </section>
 
     <section class="grid">
-      <button class="card" data-page="investment"><span class="circle">📈</span><b>Investment</b><small>Plans & history</small></button>
-      <button class="card" data-page="wallet"><span class="circle">▣</span><b>Wallet</b><small>Balance & transactions</small></button>
-      <button class="card" data-page="referral"><span class="circle">👥</span><b>Referral</b><small>Invite & team</small></button>
-      <button class="card" data-page="notifications"><span class="circle">🔔</span><b>Notifications</b><small>System updates</small></button>
+
+      <button class="card" data-page="investment">
+        <span class="circle">📈</span>
+        <b>Investment</b>
+        <small>Plans & history</small>
+      </button>
+
+      <button class="card" data-page="wallet">
+        <span class="circle">▣</span>
+        <b>Wallet</b>
+        <small>Balance & transactions</small>
+      </button>
+
+      <button class="card" data-page="referral">
+        <span class="circle">👥</span>
+        <b>Referral</b>
+        <small>Invite & team</small>
+      </button>
+
+      <button class="card" data-page="notifications">
+        <span class="circle">🔔</span>
+        <b>Notifications</b>
+        <small>System updates</small>
+      </button>
+
     </section>
 
     <section id="page" class="panel">
       <h2>Dashboard</h2>
+
       <div class="stats">
-        <div><small>Total Investment</small><strong>0 TRX</strong></div>
-        <div><small>Total Profit</small><strong>0 TRX</strong></div>
+        <div>
+          <small>Total Investment</small>
+          <strong>0 TRX</strong>
+        </div>
+
+        <div>
+          <small>Total Profit</small>
+          <strong>0 TRX</strong>
+        </div>
       </div>
-      <div class="notice">Your account is ready. Complete registration before financial features are enabled.</div>
+
+      <div class="notice">
+        Your account is ready.
+      </div>
     </section>
 
     <nav class="bottom">
-      <button class="active" data-page="home">⌂<span>Home</span></button>
-      <button data-page="wallet">▣<span>Wallet</span></button>
-      <button data-page="support">◉<span>Support</span></button>
-      <button data-page="profile">♙<span>Profile</span></button>
+
+      <button class="active" data-page="home">
+        ⌂<span>Home</span>
+      </button>
+
+      <button data-page="wallet">
+        ▣<span>Wallet</span>
+      </button>
+
+      <button data-page="support">
+        ◉<span>Support</span>
+      </button>
+
+      <button data-page="profile">
+        ♙<span>Profile</span>
+      </button>
+
     </nav>
+
   </main>
 
+<script>
+const tg = window.Telegram?.WebApp;
+
+if (tg) {
+  tg.ready();
+  tg.expand();
+}
+
+const splash = document.getElementById("splash");
+const registration = document.getElementById("registration");
+const app = document.getElementById("app");
+
+setTimeout(() => {
+
+  splash.classList.add("hidden");
+
+  const registered =
+    localStorage.getItem("dailytrx_registered") === "true";
+
+  if (registered) {
+    app.classList.remove("hidden");
+  } else {
+    registration.classList.remove("hidden");
+  }
+
+}, 1100);
+
+
+// Registration
+document.getElementById("registerBtn").addEventListener("click", async () => {
+
+  const username =
+    document.getElementById("regUsername").value.trim();
+
+  const email =
+    document.getElementById("regEmail").value.trim();
+
+  const pin =
+    document.getElementById("regPin").value.trim();
+
+  const confirmPin =
+    document.getElementById("regPinConfirm").value.trim();
+
+  const message =
+    document.getElementById("registerMessage");
+
+  const button =
+    document.getElementById("registerBtn");
+
+  message.textContent = "";
+  message.className = "register-message";
+
+  if (!username || !email || !pin || !confirmPin) {
+    message.textContent = "Please complete all fields.";
+    message.classList.add("error");
+    return;
+  }
+
+  if (pin !== confirmPin) {
+    message.textContent = "PINs do not match.";
+    message.classList.add("error");
+    return;
+  }
+
+  if (!/^\d{4,6}$/.test(pin)) {
+    message.textContent = "PIN must contain 4-6 digits.";
+    message.classList.add("error");
+    return;
+  }
+
+  const telegramUser =
+    tg?.initDataUnsafe?.user;
+
+  if (!telegramUser?.id) {
+    message.textContent =
+      "Please open Daily TRX from Telegram.";
+    message.classList.add("error");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Creating account...";
+
+  try {
+
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        telegram_chat_id: String(telegramUser.id),
+        username: username,
+        email: email,
+        pin: pin
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(
+        data.message || "Registration failed"
+      );
+    }
+
+    localStorage.setItem(
+      "dailytrx_registered",
+      "true"
+    );
+
+    localStorage.setItem(
+      "dailytrx_username",
+      username
+    );
+
+    registration.classList.add("hidden");
+    app.classList.remove("hidden");
+
+  } catch (error) {
+
+    message.textContent =
+      error.message || "Registration failed.";
+
+    message.classList.add("error");
+
+    button.disabled = false;
+    button.textContent = "Create Account";
+  }
+
+});
+</script>
+
 <script src="app.js"></script>
+
 </body>
 </html>
