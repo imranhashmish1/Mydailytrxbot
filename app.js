@@ -98,7 +98,10 @@ function render(p) {
         Submit Deposit
       </button>
 
-      <div id="depositMessage" style="margin-top:12px;text-align:center;"></div>
+      <div
+        id="depositMessage"
+        style="margin-top:12px;text-align:center;"
+      ></div>
     `;
 
   } else if (p === 'withdraw') {
@@ -145,23 +148,37 @@ function render(p) {
       <h2>Wallet</h2>
 
       <div class="stats">
+
         <div>
           <small>Available</small>
-          <strong>0 TRX</strong>
+          <strong id="availableBalance">
+            Loading...
+          </strong>
         </div>
 
         <div>
           <small>Locked</small>
-          <strong>0 TRX</strong>
+          <strong id="lockedBalance">
+            Loading...
+          </strong>
         </div>
+
       </div>
+
+      <div
+        id="walletMessage"
+        style="margin-top:12px;text-align:center;"
+      ></div>
     `;
 
   } else if (p === 'notifications') {
 
     content = `
       <h2>Notifications</h2>
-      <div class="notice">No notifications.</div>
+
+      <div class="notice">
+        No notifications.
+      </div>
     `;
 
   } else {
@@ -185,147 +202,309 @@ function render(p) {
   if (p === 'deposit') {
     setupDeposit();
   }
+
+  if (p === 'wallet') {
+    setupWallet();
+  }
 }
+
 
 function setupDeposit() {
 
-  const button = document.getElementById('submitDeposit');
-  const copyButton = document.getElementById('copyDepositAddress');
+  const button =
+    document.getElementById('submitDeposit');
+
+  const copyButton =
+    document.getElementById('copyDepositAddress');
+
 
   if (copyButton) {
 
-    copyButton.addEventListener('click', async () => {
+    copyButton.addEventListener(
+      'click',
+      async () => {
 
-      try {
+        try {
 
-        await navigator.clipboard.writeText(DEPOSIT_ADDRESS);
+          await navigator.clipboard.writeText(
+            DEPOSIT_ADDRESS
+          );
 
-        copyButton.textContent = '✅ Address Copied';
+          copyButton.textContent =
+            '✅ Address Copied';
 
-        setTimeout(() => {
-          copyButton.textContent = '📋 Copy Address';
-        }, 2000);
+          setTimeout(() => {
 
-      } catch (error) {
+            copyButton.textContent =
+              '📋 Copy Address';
 
-        copyButton.textContent = '❌ Copy failed';
+          }, 2000);
 
-        setTimeout(() => {
-          copyButton.textContent = '📋 Copy Address';
-        }, 2000);
+        } catch (error) {
+
+          copyButton.textContent =
+            '❌ Copy failed';
+
+          setTimeout(() => {
+
+            copyButton.textContent =
+              '📋 Copy Address';
+
+          }, 2000);
+        }
       }
-    });
+    );
   }
+
 
   if (!button) return;
 
-  button.addEventListener('click', async () => {
 
-    const amount =
-      document.getElementById('depositAmount').value.trim();
+  button.addEventListener(
+    'click',
+    async () => {
 
-    const txHash =
-      document.getElementById('depositTx').value.trim();
+      const amount =
+        document
+          .getElementById('depositAmount')
+          .value
+          .trim();
 
-    const message =
-      document.getElementById('depositMessage');
+      const txHash =
+        document
+          .getElementById('depositTx')
+          .value
+          .trim();
 
-    if (!amount || !txHash) {
-
-      message.textContent =
-        'Please enter the amount and transaction hash.';
-
-      return;
-    }
-
-    const telegramUser =
-      telegramApp?.initDataUnsafe?.user;
-
-    if (!telegramUser?.id) {
-
-      message.textContent =
-        'Please open Daily TRX from Telegram.';
-
-      return;
-    }
-
-    button.disabled = true;
-    button.textContent = 'Submitting...';
-
-    try {
-
-      const response = await fetch('/api/deposit', {
-
-        method: 'POST',
-
-        headers: {
-          'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify({
-
-          telegram_chat_id: String(telegramUser.id),
-
-          amount_trx: amount,
-
-          tx_hash: txHash
-
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.ok) {
-
-        throw new Error(
-          data.message || 'Deposit submission failed'
+      const message =
+        document.getElementById(
+          'depositMessage'
         );
+
+
+      if (!amount || !txHash) {
+
+        message.textContent =
+          'Please enter the amount and transaction hash.';
+
+        return;
       }
 
-      message.textContent =
-        '✅ Deposit submitted. Waiting for verification.';
 
-      document.getElementById('depositAmount').value = '';
+      const telegramUser =
+        telegramApp?.initDataUnsafe?.user;
 
-      document.getElementById('depositTx').value = '';
 
-    } catch (error) {
+      if (!telegramUser?.id) {
 
-      message.textContent =
-        '❌ ' + (
-          error.message ||
-          'Deposit submission failed.'
-        );
+        message.textContent =
+          'Please open Daily TRX from Telegram.';
 
-    } finally {
+        return;
+      }
 
-      button.disabled = false;
 
-      button.textContent = 'Submit Deposit';
+      button.disabled = true;
+
+      button.textContent =
+        'Submitting...';
+
+
+      try {
+
+        const response =
+          await fetch('/api/deposit', {
+
+            method: 'POST',
+
+            headers: {
+              'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+
+              telegram_chat_id:
+                String(telegramUser.id),
+
+              amount_trx:
+                amount,
+
+              tx_hash:
+                txHash
+            })
+          });
+
+
+        const data =
+          await response.json();
+
+
+        if (!response.ok || !data.ok) {
+
+          throw new Error(
+            data.message ||
+            'Deposit submission failed'
+          );
+        }
+
+
+        message.textContent =
+          '✅ Deposit submitted. Waiting for verification.';
+
+
+        document.getElementById(
+          'depositAmount'
+        ).value = '';
+
+
+        document.getElementById(
+          'depositTx'
+        ).value = '';
+
+
+      } catch (error) {
+
+        message.textContent =
+          '❌ ' +
+          (
+            error.message ||
+            'Deposit submission failed.'
+          );
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          'Submit Deposit';
+      }
     }
-  });
+  );
 }
 
-document.addEventListener('click', e => {
 
-  const b = e.target.closest('[data-page]');
+async function setupWallet() {
 
-  if (b) {
-    render(b.dataset.page);
+  const available =
+    document.getElementById(
+      'availableBalance'
+    );
+
+  const locked =
+    document.getElementById(
+      'lockedBalance'
+    );
+
+  const message =
+    document.getElementById(
+      'walletMessage'
+    );
+
+
+  const telegramUser =
+    telegramApp?.initDataUnsafe?.user;
+
+
+  if (!telegramUser?.id) {
+
+    available.textContent =
+      '0 TRX';
+
+    locked.textContent =
+      '0 TRX';
+
+    message.textContent =
+      'Please open Daily TRX from Telegram.';
+
+    return;
   }
-});
+
+
+  try {
+
+    const response =
+      await fetch(
+        `/api/wallet?telegram_chat_id=${encodeURIComponent(
+          String(telegramUser.id)
+        )}`
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok || !data.ok) {
+
+      throw new Error(
+        data.message ||
+        'Could not load wallet'
+      );
+    }
+
+
+    available.textContent =
+      `${Number(
+        data.available_trx || 0
+      ).toFixed(6)} TRX`;
+
+
+    locked.textContent =
+      `${Number(
+        data.locked_trx || 0
+      ).toFixed(6)} TRX`;
+
+
+    message.textContent =
+      '';
+
+  } catch (error) {
+
+    available.textContent =
+      '0 TRX';
+
+    locked.textContent =
+      '0 TRX';
+
+    message.textContent =
+      '❌ Could not load wallet balance.';
+  }
+}
+
+
+document.addEventListener(
+  'click',
+  e => {
+
+    const b =
+      e.target.closest('[data-page]');
+
+    if (b) {
+
+      render(
+        b.dataset.page
+      );
+    }
+  }
+);
+
 
 const themeButton =
   document.getElementById('themeBtn');
+
 
 if (themeButton) {
 
   themeButton.onclick = () => {
 
-    document.body.classList.toggle('light');
+    document.body.classList.toggle(
+      'light'
+    );
 
     themeButton.textContent =
-      document.body.classList.contains('light')
+      document.body.classList.contains(
+        'light'
+      )
         ? '☀'
         : '☾';
   };
