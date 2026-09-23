@@ -19,6 +19,9 @@ const titles = {
   profile: 'Profile'
 };
 
+const DEPOSIT_ADDRESS =
+  'TU9R3KZmkasLZbC3jZPyboEfNPFKfuY4kA';
+
 function render(p) {
 
   document.querySelectorAll('.bottom button').forEach(b => {
@@ -37,11 +40,33 @@ function render(p) {
       </div>
 
       <div class="stats">
-        <div>
+        <div style="text-align:center;width:100%;">
+
           <small>Deposit Address</small>
-          <strong style="font-size:12px;word-break:break-all;">
-            TRX ADDRESS WILL BE ADDED
+
+          <div style="margin:15px auto;">
+            <img
+              src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(DEPOSIT_ADDRESS)}"
+              alt="TRX Deposit QR Code"
+              style="width:220px;height:220px;border-radius:12px;background:#fff;padding:8px;box-sizing:border-box;"
+            >
+          </div>
+
+          <strong
+            id="depositAddress"
+            style="font-size:12px;word-break:break-all;display:block;margin:10px 0;"
+          >
+            ${DEPOSIT_ADDRESS}
           </strong>
+
+          <button
+            id="copyDepositAddress"
+            type="button"
+            style="width:100%;padding:12px;margin-top:8px;border:0;border-radius:10px;cursor:pointer;"
+          >
+            📋 Copy Address
+          </button>
+
         </div>
       </div>
 
@@ -80,6 +105,7 @@ function render(p) {
 
     content = `
       <h2>Withdraw</h2>
+
       <div class="notice">
         Withdrawal requests require backend validation and admin approval.
       </div>
@@ -89,6 +115,7 @@ function render(p) {
 
     content = `
       <h2>Investment Plans</h2>
+
       <div class="notice">
         Plans, duration, return methodology and risk disclosures will be loaded from the backend.
       </div>
@@ -141,6 +168,7 @@ function render(p) {
 
     content = `
       <h2>${titles[p] || 'Dashboard'}</h2>
+
       <div class="notice">
         This module is ready for backend integration.
       </div>
@@ -162,6 +190,32 @@ function render(p) {
 function setupDeposit() {
 
   const button = document.getElementById('submitDeposit');
+  const copyButton = document.getElementById('copyDepositAddress');
+
+  if (copyButton) {
+
+    copyButton.addEventListener('click', async () => {
+
+      try {
+
+        await navigator.clipboard.writeText(DEPOSIT_ADDRESS);
+
+        copyButton.textContent = '✅ Address Copied';
+
+        setTimeout(() => {
+          copyButton.textContent = '📋 Copy Address';
+        }, 2000);
+
+      } catch (error) {
+
+        copyButton.textContent = '❌ Copy failed';
+
+        setTimeout(() => {
+          copyButton.textContent = '📋 Copy Address';
+        }, 2000);
+      }
+    });
+  }
 
   if (!button) return;
 
@@ -177,8 +231,10 @@ function setupDeposit() {
       document.getElementById('depositMessage');
 
     if (!amount || !txHash) {
+
       message.textContent =
         'Please enter the amount and transaction hash.';
+
       return;
     }
 
@@ -186,8 +242,10 @@ function setupDeposit() {
       telegramApp?.initDataUnsafe?.user;
 
     if (!telegramUser?.id) {
+
       message.textContent =
         'Please open Daily TRX from Telegram.';
+
       return;
     }
 
@@ -197,20 +255,28 @@ function setupDeposit() {
     try {
 
       const response = await fetch('/api/deposit', {
+
         method: 'POST',
+
         headers: {
           'Content-Type': 'application/json'
         },
+
         body: JSON.stringify({
+
           telegram_chat_id: String(telegramUser.id),
+
           amount_trx: amount,
+
           tx_hash: txHash
+
         })
       });
 
       const data = await response.json();
 
       if (!response.ok || !data.ok) {
+
         throw new Error(
           data.message || 'Deposit submission failed'
         );
@@ -220,16 +286,21 @@ function setupDeposit() {
         '✅ Deposit submitted. Waiting for verification.';
 
       document.getElementById('depositAmount').value = '';
+
       document.getElementById('depositTx').value = '';
 
     } catch (error) {
 
       message.textContent =
-        '❌ ' + (error.message || 'Deposit submission failed.');
+        '❌ ' + (
+          error.message ||
+          'Deposit submission failed.'
+        );
 
     } finally {
 
       button.disabled = false;
+
       button.textContent = 'Submit Deposit';
     }
   });
@@ -244,9 +315,11 @@ document.addEventListener('click', e => {
   }
 });
 
-const themeButton = document.getElementById('themeBtn');
+const themeButton =
+  document.getElementById('themeBtn');
 
 if (themeButton) {
+
   themeButton.onclick = () => {
 
     document.body.classList.toggle('light');
