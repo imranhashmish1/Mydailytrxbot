@@ -64,8 +64,9 @@ export default async function handler(req, res) {
       });
     }
 
+    // Current TRX deposit address
     const depositAddress =
-      "TDhbWgGaC3yEBcqoqz3425TeEZtVAqThxX";
+      "TU9R3KZmkasLZbC3jZPyboEfNPFKfuY4kA";
 
     const tronHeaders = {
       "Content-Type": "application/json",
@@ -448,4 +449,4 @@ export default async function handler(req, res) {
       error: error.message
     });
   }
-}
+        }
