@@ -18,7 +18,8 @@ export default async function handler(req, res) {
     if (!telegram_chat_id || !amount_trx || !tx_hash) {
       return res.status(400).json({
         ok: false,
-        message: "telegram_chat_id, amount_trx and tx_hash are required"
+        message:
+          "telegram_chat_id, amount_trx and tx_hash are required"
       });
     }
 
@@ -88,9 +89,15 @@ export default async function handler(req, res) {
     const users = await userResponse.json();
 
     if (!userResponse.ok) {
+      console.error(
+        "Supabase user check failed:",
+        users
+      );
+
       return res.status(500).json({
         ok: false,
-        message: "Could not verify user"
+        message: "Could not verify user",
+        error: users
       });
     }
 
@@ -118,16 +125,23 @@ export default async function handler(req, res) {
     const duplicates = await duplicateResponse.json();
 
     if (!duplicateResponse.ok) {
+      console.error(
+        "Deposit duplicate check failed:",
+        duplicates
+      );
+
       return res.status(500).json({
         ok: false,
-        message: "Could not check transaction"
+        message: "Could not check transaction",
+        error: duplicates
       });
     }
 
     if (duplicates.length > 0) {
       return res.status(409).json({
         ok: false,
-        message: "This transaction has already been submitted"
+        message:
+          "This transaction has already been submitted"
       });
     }
 
@@ -159,21 +173,31 @@ export default async function handler(req, res) {
     }
 
     // 4. Verify native TRX transfer
-    const contract = trxData?.raw_data?.contract?.[0];
+    const contract =
+      trxData?.raw_data?.contract?.[0];
 
-    if (!contract || contract.type !== "TransferContract") {
+    if (
+      !contract ||
+      contract.type !== "TransferContract"
+    ) {
       return res.status(400).json({
         ok: false,
-        message: "Transaction is not a native TRX transfer"
+        message:
+          "Transaction is not a native TRX transfer"
       });
     }
 
-    const parameter = contract?.parameter?.value;
+    const parameter =
+      contract?.parameter?.value;
 
-    if (!parameter?.to_address || !parameter?.amount) {
+    if (
+      !parameter?.to_address ||
+      !parameter?.amount
+    ) {
       return res.status(400).json({
         ok: false,
-        message: "Invalid TRON transfer data"
+        message:
+          "Invalid TRON transfer data"
       });
     }
 
@@ -183,11 +207,13 @@ export default async function handler(req, res) {
         "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
       const sha256 = buffer =>
-        crypto.createHash("sha256")
+        crypto
+          .createHash("sha256")
           .update(buffer)
           .digest();
 
-      const bytes = Buffer.from(hexAddress, "hex");
+      const bytes =
+        Buffer.from(hexAddress, "hex");
 
       const checksum = sha256(
         sha256(bytes)
@@ -205,8 +231,12 @@ export default async function handler(req, res) {
       let result = "";
 
       while (num > 0n) {
-        const remainder = Number(num % 58n);
-        result = alphabet[remainder] + result;
+        const remainder =
+          Number(num % 58n);
+
+        result =
+          alphabet[remainder] + result;
+
         num = num / 58n;
       }
 
@@ -229,11 +259,12 @@ export default async function handler(req, res) {
     } catch (error) {
       return res.status(400).json({
         ok: false,
-        message: "Could not read transaction recipient"
+        message:
+          "Could not read transaction recipient"
       });
     }
 
-    // 6. Check recipient
+    // 6. Verify recipient
     if (toAddress !== depositAddress) {
       return res.status(400).json({
         ok: false,
@@ -252,13 +283,16 @@ export default async function handler(req, res) {
     ) {
       return res.status(400).json({
         ok: false,
-        message: "Invalid TRX amount on blockchain"
+        message:
+          "Invalid TRX amount on blockchain"
       });
     }
 
     // 8. Compare entered amount
     if (
-      Math.abs(actualAmountTrx - userAmount) > 0.000001
+      Math.abs(
+        actualAmountTrx - userAmount
+      ) > 0.000001
     ) {
       return res.status(400).json({
         ok: false,
@@ -342,7 +376,9 @@ export default async function handler(req, res) {
       await depositResponse.json();
 
     if (!depositResponse.ok) {
-      return res.status(depositResponse.status).json({
+      return res.status(
+        depositResponse.status
+      ).json({
         ok: false,
         message:
           "Verified transaction could not be saved",
@@ -401,6 +437,11 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
+    console.error(
+      "Deposit API error:",
+      error
+    );
+
     return res.status(500).json({
       ok: false,
       message: "Server error",
