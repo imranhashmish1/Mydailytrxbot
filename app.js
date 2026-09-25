@@ -1630,3 +1630,223 @@ if (themeButton) {
 ========================= */
 
 applyLanguage();
+
+/* =========================
+   GLOBAL ANNOUNCEMENT POPUP
+========================= */
+
+async function loadGlobalAnnouncement() {
+
+  try {
+
+    const response =
+      await fetch('/api/global-announcement');
+
+    const data =
+      await response.json();
+
+    if (
+      !response.ok ||
+      !data.ok ||
+      !data.announcement
+    ) {
+      return;
+    }
+
+    const announcement =
+      data.announcement;
+
+    const storageKey =
+      `daily_trx_announcement_${announcement.id}`;
+
+    const closedAt =
+      Number(
+        localStorage.getItem(storageKey) || 0
+      );
+
+    const twentyFourHours =
+      24 * 60 * 60 * 1000;
+
+    if (
+      closedAt &&
+      Date.now() - closedAt <
+        twentyFourHours
+    ) {
+      return;
+    }
+
+    showGlobalAnnouncement(
+      announcement,
+      storageKey
+    );
+
+  } catch (error) {
+
+    console.error(
+      'Announcement error:',
+      error
+    );
+
+  }
+
+}
+
+
+function showGlobalAnnouncement(
+  announcement,
+  storageKey
+) {
+
+  const oldPopup =
+    document.getElementById(
+      'globalAnnouncementPopup'
+    );
+
+  if (oldPopup) {
+    oldPopup.remove();
+  }
+
+  const popup =
+    document.createElement('div');
+
+  popup.id =
+    'globalAnnouncementPopup';
+
+  popup.style.cssText = `
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(8px);
+  `;
+
+  popup.innerHTML = `
+
+    <div
+      style="
+        width:100%;
+        max-width:420px;
+        max-height:85vh;
+        overflow:auto;
+        position:relative;
+        border-radius:22px;
+        padding:18px;
+        background:
+          linear-gradient(
+            145deg,
+            #161616,
+            #252525
+          );
+        color:#fff;
+        box-shadow:
+          0 20px 60px
+          rgba(0,0,0,.45);
+      "
+    >
+
+      <button
+        id="closeAnnouncement"
+        type="button"
+        aria-label="Close"
+        style="
+          position:absolute;
+          right:12px;
+          top:12px;
+          width:36px;
+          height:36px;
+          border:0;
+          border-radius:50%;
+          background:rgba(255,255,255,.14);
+          color:#fff;
+          font-size:20px;
+          cursor:pointer;
+          z-index:2;
+        "
+      >
+        ×
+      </button>
+
+      ${
+        announcement.image_url
+          ? `
+            <img
+              src="${escapeHtml(
+                announcement.image_url
+              )}"
+              alt=""
+              style="
+                width:100%;
+                max-height:260px;
+                object-fit:cover;
+                border-radius:16px;
+                display:block;
+                margin-bottom:16px;
+              "
+            >
+          `
+          : ''
+      }
+
+      <h2
+        style="
+          margin:4px 40px 10px 0;
+          font-size:22px;
+        "
+      >
+        ${escapeHtml(
+          announcement.title
+        )}
+      </h2>
+
+      <div
+        style="
+          line-height:1.6;
+          font-size:15px;
+          white-space:pre-wrap;
+          opacity:.92;
+        "
+      >
+        ${escapeHtml(
+          announcement.message
+        )}
+      </div>
+
+    </div>
+  `;
+
+  document.body.appendChild(
+    popup
+  );
+
+  const closeButton =
+    document.getElementById(
+      'closeAnnouncement'
+    );
+
+  closeButton.addEventListener(
+    'click',
+    () => {
+
+      localStorage.setItem(
+        storageKey,
+        String(Date.now())
+      );
+
+      popup.remove();
+
+    }
+  );
+
+}
+
+
+
+/* =========================
+   LOAD ANNOUNCEMENT
+========================= */
+
+loadGlobalAnnouncement();
