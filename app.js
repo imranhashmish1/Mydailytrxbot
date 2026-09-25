@@ -40,7 +40,7 @@ const translations = {
     quickActions:"Quick Actions",
 
     depositNow:"Deposit Now",
-    withdrawNow:"Withdraw",
+    withdrawNow:"Withdraw Now",
     viewInvestment:"Investment Plans",
     referrals:"My Referrals",
 
@@ -295,13 +295,11 @@ function telegramId() {
 function formatTRX(value) {
   const n = Number(value);
 
-  return `${
-    Number.isFinite(n)
-      ? n.toLocaleString(undefined,{
-          maximumFractionDigits:6
-        })
-      : "0"
-  } TRX`;
+  return Number.isFinite(n)
+    ? `${n.toLocaleString(undefined,{
+        maximumFractionDigits:6
+      })} TRX`
+    : "0 TRX";
 }
 function languageSelector() {
   return `
@@ -329,11 +327,13 @@ function languageSelector() {
 }
 
 function setupLanguage() {
-  const el = document.getElementById("languageSelect");
+  const el =
+    document.getElementById("languageSelect");
 
   if (!el) return;
 
   el.addEventListener("change", () => {
+
     currentLanguage = el.value;
 
     localStorage.setItem(
@@ -341,7 +341,8 @@ function setupLanguage() {
       currentLanguage
     );
 
-    document.documentElement.lang = currentLanguage;
+    document.documentElement.lang =
+      currentLanguage;
 
     render(window.currentPage);
   });
@@ -353,24 +354,30 @@ function applyTheme() {
     currentTheme === "dark"
   );
 
-  const b = document.getElementById("themeButton");
+  const b =
+    document.getElementById("themeButton");
 
   if (b) {
     b.textContent =
-      currentTheme === "dark" ? "☀️" : "🌙";
+      currentTheme === "dark"
+        ? "☀️"
+        : "🌙";
   }
 }
 
 function setupTheme() {
+
   applyTheme();
 
-  const b = document.getElementById("themeButton");
+  const b =
+    document.getElementById("themeButton");
 
   if (!b || b.dataset.ready) return;
 
   b.dataset.ready = "1";
 
   b.onclick = () => {
+
     currentTheme =
       currentTheme === "dark"
         ? "light"
@@ -399,6 +406,7 @@ function apiError(
 function heading(title, icon) {
   return `
     <div class="page-heading">
+
       <button
         type="button"
         class="back-button"
@@ -409,6 +417,7 @@ function heading(title, icon) {
       <h2>
         ${icon || ""} ${title}
       </h2>
+
     </div>
   `;
 }
@@ -420,11 +429,13 @@ function card(content, cls="card") {
     </div>
   `;
 }
+
 function homePage() {
   return `
     ${languageSelector()}
 
     <div class="hero-card">
+
       <div class="hero-small">
         ${t("welcome")}
       </div>
@@ -435,10 +446,12 @@ function homePage() {
         ${t("totalBalance")}
       </div>
 
-      <div id="homeBalance"
-           class="hero-balance">
+      <div
+        id="homeBalance"
+        class="hero-balance">
         0 TRX
       </div>
+
     </div>
 
     <div class="stats-grid">
@@ -466,28 +479,40 @@ function homePage() {
 
     <div class="action-grid">
 
-      <button data-page="deposit"
-              class="action-card">
+      <button
+        data-page="deposit"
+        class="action-card">
+
         <span>📥</span>
         <b>${t("depositNow")}</b>
+
       </button>
 
-      <button data-page="withdraw"
-              class="action-card">
+      <button
+        data-page="withdraw"
+        class="action-card">
+
         <span>📤</span>
         <b>${t("withdrawNow")}</b>
+
       </button>
 
-      <button data-page="investment"
-              class="action-card">
+      <button
+        data-page="investment"
+        class="action-card">
+
         <span>📈</span>
         <b>${t("viewInvestment")}</b>
+
       </button>
 
-      <button data-page="referral"
-              class="action-card">
+      <button
+        data-page="referral"
+        class="action-card">
+
         <span>👥</span>
         <b>${t("referrals")}</b>
+
       </button>
 
     </div>
@@ -511,11 +536,13 @@ function homePage() {
 }
 
 async function loadHomeWallet() {
+
   const id = telegramId();
 
   if (!id) return;
 
   try {
+
     const r = await fetch(
       `/api/wallet?telegram_chat_id=${encodeURIComponent(id)}`
     );
@@ -579,16 +606,21 @@ async function loadHomeWallet() {
 function walletPage() {
   return `
     ${heading(t("wallet"),"💰")}
+
     ${languageSelector()}
 
-    <div id="walletContent"
-         class="loading-box">
+    <div
+      id="walletContent"
+      class="loading-box">
+
       ${t("loading")}
+
     </div>
   `;
 }
 
 async function loadWalletPage() {
+
   const box =
     document.getElementById("walletContent");
 
@@ -597,6 +629,7 @@ async function loadWalletPage() {
   if (!box || !id) return;
 
   try {
+
     const r = await fetch(
       `/api/wallet?telegram_chat_id=${encodeURIComponent(id)}`
     );
@@ -614,8 +647,12 @@ async function loadWalletPage() {
       d;
 
     box.innerHTML = `
+
       <div class="wallet-main">
-        <span>${t("totalBalance")}</span>
+
+        <span>
+          ${t("totalBalance")}
+        </span>
 
         <strong>
           ${formatTRX(
@@ -625,12 +662,16 @@ async function loadWalletPage() {
             0
           )}
         </strong>
+
       </div>
 
       <div class="stats-grid">
 
         <div class="stat-card">
-          <span>${t("availableBalance")}</span>
+          <span>
+            ${t("availableBalance")}
+          </span>
+
           <b>
             ${formatTRX(
               w.available_balance ??
@@ -643,6 +684,7 @@ async function loadWalletPage() {
 
         <div class="stat-card">
           <span>${t("invested")}</span>
+
           <b>
             ${formatTRX(
               w.invested_balance ??
@@ -654,6 +696,7 @@ async function loadWalletPage() {
 
         <div class="stat-card">
           <span>${t("profit")}</span>
+
           <b>
             ${formatTRX(
               w.profit ??
@@ -674,10 +717,10 @@ async function loadWalletPage() {
       </div>
     `;
   }
-}
-function depositPage() {
+  function depositPage() {
   return `
     ${heading(t("depositTitle"),"📥")}
+
     ${languageSelector()}
 
     <div class="notice-box">
@@ -701,16 +744,20 @@ function depositPage() {
         <button
           id="copyDepositAddress"
           type="button">
+
           ${t("copyAddress")}
+
         </button>
 
       </div>
 
       <div class="qr-box">
+
         <img
           src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(DEPOSIT_ADDRESS)}"
           alt="TRON QR"
         >
+
       </div>
 
       <label>${t("amount")}</label>
@@ -736,7 +783,9 @@ function depositPage() {
         id="submitDeposit"
         class="primary-btn"
         type="button">
+
         ${t("submitDeposit")}
+
       </button>
 
       <div
@@ -847,10 +896,12 @@ function setupDeposit() {
           "/api/deposit",
           {
             method:"POST",
+
             headers:{
               "Content-Type":
                 "application/json"
             },
+
             body:JSON.stringify({
               telegram_chat_id:id,
               amount_trx:Number(amount),
@@ -861,10 +912,7 @@ function setupDeposit() {
 
         const d = await r.json();
 
-        if (
-          !r.ok ||
-          !d.ok
-        ) {
+        if (!r.ok || !d.ok) {
           throw new Error(
             apiError(
               d,
@@ -897,6 +945,7 @@ function setupDeposit() {
       } finally {
 
         submit.disabled = false;
+
         submit.textContent =
           t("submitDeposit");
       }
@@ -904,11 +953,7 @@ function setupDeposit() {
   );
 }
 
-function showFormMessage(
-  text,
-  type
-) {
-  
+function showFormMessage(text,type) {
 
   const box =
     document.getElementById(
@@ -922,9 +967,10 @@ function showFormMessage(
   box.className =
     `form-message ${type}`;
 }
-function withdrawPage() {
+  function withdrawPage() {
   return `
     ${heading(t("withdrawTitle"),"📤")}
+
     ${languageSelector()}
 
     <div class="card">
@@ -959,7 +1005,9 @@ function withdrawPage() {
         id="submitWithdraw"
         class="primary-btn"
         type="button">
+
         ${t("submitWithdraw")}
+
       </button>
 
       <div
@@ -1052,10 +1100,12 @@ function setupWithdraw() {
           "/api/withdraw",
           {
             method:"POST",
+
             headers:{
               "Content-Type":
                 "application/json"
             },
+
             body:JSON.stringify({
               telegram_chat_id:id,
               wallet_address:address,
@@ -1066,10 +1116,7 @@ function setupWithdraw() {
 
         const d = await r.json();
 
-        if (
-          !r.ok ||
-          !d.ok
-        ) {
+        if (!r.ok || !d.ok) {
           throw new Error(
             apiError(
               d,
@@ -1105,6 +1152,7 @@ function setupWithdraw() {
 }
 
 function investmentPage() {
+
   return `
     ${heading(
       t("investmentTitle"),
@@ -1113,8 +1161,9 @@ function investmentPage() {
 
     ${languageSelector()}
 
-    <div id="investmentContent"
-         class="plans-grid">
+    <div
+      id="investmentContent"
+      class="plans-grid">
 
       <div class="loading-box">
         ${t("loading")}
@@ -1123,7 +1172,7 @@ function investmentPage() {
     </div>
   `;
 }
-async function loadInvestments() {
+  async function loadInvestments() {
 
   const box =
     document.getElementById(
@@ -1140,19 +1189,19 @@ async function loadInvestments() {
 
     const d = await r.json();
 
-    if (
-      !r.ok ||
-      !d.ok
-    ) {
+    if (!r.ok || !d.ok) {
       throw new Error(
-        apiError(d)
+        apiError(
+          d,
+          "Could not load investment plans."
+        )
       );
     }
 
     const plans =
-      d.plans ||
-      d.data ||
-      [];
+      Array.isArray(d.plans)
+        ? d.plans
+        : [];
 
     if (!plans.length) {
 
@@ -1166,55 +1215,40 @@ async function loadInvestments() {
     }
 
     box.innerHTML =
-      plans.map((p,i) => {
-
-        const minimum = Number(
-          p.min_amount ??
-          p.minimum_amount ??
-          p.amount ??
-          p.min ??
-          0
-        );
-
-        const daily = Number(
-          p.daily_profit ??
-          p.dailyProfit ??
-          p.profit_daily ??
-          0
-        );
-
-        const duration = Number(
-          p.duration_days ??
-          p.days ??
-          360
-        );
+      plans.map((p,index) => {
 
         /*
-          Profit percentage is calculated
-          from Daily Profit ÷ Investment.
-        */
+         * IMPORTANT:
+         * Supabase/API fields are:
+         *
+         * amount_trx
+         * daily_profit_trx
+         * duration_days
+         */
 
-        const profitPercent =
-          minimum > 0
-            ? (daily / minimum) * 100
+        const investment =
+          Number(p.amount_trx ?? 0);
+
+        const dailyProfit =
+          Number(p.daily_profit_trx ?? 0);
+
+        const duration =
+          Number(p.duration_days ?? 360);
+
+        const dailyRate =
+          investment > 0
+            ? (dailyProfit / investment) * 100
             : 0;
 
-        /*
-          Your system uses 30 days
-          as one month and 360 days
-          as one investment year.
-        */
+        const profit30 =
+          dailyProfit * 30;
 
-        const monthly =
-          daily * 30;
+        const profit360 =
+          dailyProfit * 360;
 
-        const yearly =
-          daily * 360;
-
-        const displayedDuration =
-          duration > 0
-            ? duration
-            : 360;
+        const safeName =
+          p.name ||
+          `Plan ${index + 1}`;
 
         return `
           <div class="plan-card">
@@ -1224,86 +1258,95 @@ async function loadInvestments() {
               <span>📦</span>
 
               <b>
-                ${escapeHtml(
-                  p.name ||
-                  `Plan ${i + 1}`
-                )}
+                ${escapeHtml(safeName)}
               </b>
 
             </div>
 
             <div class="profit-badge">
               🔥
-              ${profitPercent.toFixed(2)}%
+              ${dailyRate.toFixed(2)}%
               ${t("dailyProfit")}
             </div>
 
             <div class="plan-row">
+
               <span>
                 ${t("minimum")}
               </span>
 
               <strong>
-                ${formatTRX(minimum)}
+                ${formatTRX(investment)}
               </strong>
+
             </div>
 
             <div class="plan-row">
+
               <span>
                 ${t("dailyProfit")}
               </span>
 
               <strong>
-                ${formatTRX(daily)}
+                ${formatTRX(dailyProfit)}
               </strong>
+
             </div>
 
             <div class="plan-row">
+
               <span>
                 ${t("profitRate")}
               </span>
 
               <strong>
-                ${profitPercent.toFixed(2)}%
+                ${dailyRate.toFixed(2)}%
               </strong>
+
             </div>
 
             <div class="plan-row">
+
               <span>
                 ${t("monthlyProfit")}
               </span>
 
               <strong>
-                ${formatTRX(monthly)}
+                ${formatTRX(profit30)}
               </strong>
+
             </div>
 
             <div class="plan-row">
+
               <span>
                 ${t("yearlyProfit")}
               </span>
 
               <strong>
-                ${formatTRX(yearly)}
+                ${formatTRX(profit360)}
               </strong>
+
             </div>
 
             <div class="plan-row">
+
               <span>
                 ${t("investmentDays")}
               </span>
 
               <strong>
-                ${displayedDuration}
-                ${t("days")}
+                ${duration} ${t("days")}
               </strong>
+
             </div>
 
             <button
               class="primary-btn invest-btn"
               data-plan-id="${escapeHtml(
                 p.id ?? ""
-              )}">
+              )}"
+              type="button">
 
               ${t("createInvestment")}
 
@@ -1321,15 +1364,22 @@ async function loadInvestments() {
         button.addEventListener(
           "click",
           () => {
+
             createInvestment(
               button.dataset.planId
             );
+
           }
         );
 
       });
 
   } catch (e) {
+
+    console.error(
+      "Investment loading error:",
+      e
+    );
 
     box.innerHTML = `
       <div class="error-box">
@@ -1372,10 +1422,12 @@ async function createInvestment(planId) {
       "/api/create-investment",
       {
         method:"POST",
+
         headers:{
           "Content-Type":
             "application/json"
         },
+
         body:JSON.stringify({
           telegram_chat_id:id,
           plan_id:planId,
@@ -1386,10 +1438,7 @@ async function createInvestment(planId) {
 
     const d = await r.json();
 
-    if (
-      !r.ok ||
-      !d.ok
-    ) {
+    if (!r.ok || !d.ok) {
       throw new Error(
         apiError(
           d,
@@ -1410,7 +1459,7 @@ async function createInvestment(planId) {
     alert(e.message);
   }
 }
-function referralPage() {
+  function referralPage() {
 
   const id = telegramId();
 
@@ -1437,6 +1486,7 @@ function referralPage() {
     <div class="referral-levels">
 
       <div class="referral-card">
+
         <span>
           🥇 ${t("referralLevel1")}
         </span>
@@ -1444,9 +1494,11 @@ function referralPage() {
         <strong>
           ${t("referralRate1")}
         </strong>
+
       </div>
 
       <div class="referral-card">
+
         <span>
           🥈 ${t("referralLevel2")}
         </span>
@@ -1454,9 +1506,11 @@ function referralPage() {
         <strong>
           ${t("referralRate2")}
         </strong>
+
       </div>
 
       <div class="referral-card">
+
         <span>
           🥉 ${t("referralLevel3")}
         </span>
@@ -1464,6 +1518,7 @@ function referralPage() {
         <strong>
           ${t("referralRate3")}
         </strong>
+
       </div>
 
     </div>
@@ -1547,6 +1602,7 @@ async function loadNotifications() {
 
     box.innerHTML =
       items.map(n => `
+
         <div class="notification-card">
 
           <b>
@@ -1572,6 +1628,7 @@ async function loadNotifications() {
           </small>
 
         </div>
+
       `).join("");
 
   } catch (e) {
@@ -1583,7 +1640,7 @@ async function loadNotifications() {
     `;
   }
 }
-function supportPage() {
+  function supportPage() {
 
   return `
     ${heading(
@@ -1595,7 +1652,6 @@ function supportPage() {
 
     <div class="support-grid">
 
-      <!-- Telegram Channel -->
       <button
         type="button"
         class="support-card"
@@ -1613,7 +1669,6 @@ function supportPage() {
 
       </button>
 
-      <!-- Telegram Chat / Support -->
       <button
         type="button"
         class="support-card"
@@ -1757,7 +1812,7 @@ function setupProfile() {
       }
     );
 }
-function adminPage() {
+  function adminPage() {
 
   return `
     ${heading(
@@ -1837,10 +1892,12 @@ function setupAdmin() {
           "/api/admin/announcement",
           {
             method:"POST",
+
             headers:{
               "Content-Type":
                 "application/json"
             },
+
             body:JSON.stringify({
               telegram_chat_id:
                 telegramId(),
@@ -1851,10 +1908,7 @@ function setupAdmin() {
 
         const d = await r.json();
 
-        if (
-          !r.ok ||
-          !d.ok
-        ) {
+        if (!r.ok || !d.ok) {
           throw new Error(
             apiError(
               d,
@@ -1943,8 +1997,7 @@ async function loadGlobalAnnouncement() {
 
   } catch (_) {}
 }
-
-function renderBottomNavigation() {
+  function renderBottomNavigation() {
 
   return `
     <div class="mobile-page-nav">
@@ -1987,6 +2040,7 @@ function renderBottomNavigation() {
     </div>
   `;
 }
+
 async function render(target="home") {
 
   window.currentPage = target;
@@ -2132,7 +2186,8 @@ function openTelegram(url) {
     );
   }
 }
-
+  
+}
 function initializeApp() {
 
   currentLanguage =
@@ -2170,27 +2225,34 @@ initializeApp();
 DAILY TRX — APP.JS
 ===========================================================
 
-✓ Home
-✓ Wallet
-✓ Deposit + QR
-✓ Withdraw
-✓ Investment
-✓ Investment Profit %
-✓ 30 Days Profit
-✓ 360 Days Profit
-✓ Referral 6% / 2% / 1%
-✓ Notifications
-✓ Telegram Channel
-✓ Telegram Chat / Support
-✓ Profile
-✓ English
-✓ پښتو
-✓ دری
-✓ Light Mode
-✓ Dark Mode
-✓ Admin
-✓ Existing Vercel APIs
-✓ Existing TRON Deposit Address
+Home
+Wallet
+Deposit + QR
+Withdraw
+Investment Plans
+Daily Profit %
+30 Days Profit
+360 Days Profit
+Referral 6% / 2% / 1%
+Notifications
+Telegram Channel
+Telegram Chat / Support
+Profile
+English
+Pashto
+Dari
+Light Mode
+Dark Mode
+Admin
+Global Announcement
+
+Investment API:
+ /api/investment-plans
+
+Investment fields:
+ amount_trx
+ daily_profit_trx
+ duration_days
 
 Deposit Address:
 TU9R3KZmkasLZbC3jZPyboEfNPFKfuY4kA
