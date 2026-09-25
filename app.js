@@ -5,2724 +5,1916 @@ if (telegramApp) {
   telegramApp.expand();
 }
 
-const page = document.getElementById('page');
+const page = document.getElementById("page");
 
 const DEPOSIT_ADDRESS =
-  'TU9R3KZmkasLZbC3jZPyboEfNPFKfuY4kA';
+  "TU9R3KZmkasLZbC3jZPyboEfNPFKfuY4kA";
 
-
-/* =========================
-   ADMIN
-========================= */
-
-const ADMIN_TELEGRAM_ID = '6504138324';
-
-
-/* =========================
-   LANGUAGES
-========================= */
-
-const translations = {
-
-  en: {
-    dashboard: 'Dashboard',
-    wallet: 'Wallet',
-    deposit: 'Deposit',
-    withdraw: 'Withdraw',
-    investment: 'Investment',
-    referral: 'Referral',
-    notifications: 'Notifications',
-    support: 'Support',
-    profile: 'Profile',
-    admin: 'Admin',
-
-    language: 'Language',
-    english: 'English',
-    pashto: 'پښتو',
-    persian: 'فارسی',
-    urdu: 'اردو',
-
-    depositTRX: 'Deposit TRX',
-    sendTRX:
-      'Send TRX to the deposit address below, then submit your transaction hash.',
-    depositAddress: 'Deposit Address',
-    copyAddress: '📋 Copy Address',
-    addressCopied: '✅ Address Copied',
-    copyFailed: '❌ Copy failed',
-    amountTRX: 'Amount (TRX)',
-    enterAmount: 'Enter TRX amount',
-    transactionHash: 'Transaction Hash',
-    enterTransactionHash: 'Enter transaction hash',
-    submitDeposit: 'Submit Deposit',
-    submitting: 'Submitting...',
-    enterAmountHash:
-      'Please enter the amount and transaction hash.',
-    openFromTelegram:
-      'Please open Daily TRX from Telegram.',
-    depositSubmitted:
-      '✅ Deposit submitted. Waiting for verification.',
-    depositFailed:
-      'Deposit submission failed.',
-
-    withdrawTitle: 'Withdraw',
-    withdrawNotice:
-      'Withdrawal requests require backend validation and admin approval.',
-
-    investmentPlans: 'Investment Plans',
-    loadingPlans: 'Loading investment plans...',
-    noPlans: 'No investment plans available.',
-    investment: 'Investment',
-    dailyProfit: 'Daily Profit',
-    duration: 'Duration',
-    totalProfit: 'Total Profit',
-    days: 'Days',
-    investNow: 'Invest Now',
-    processing: 'Processing...',
-    confirmInvestment:
-      'Are you sure you want to invest in this plan?',
-    investmentCreated:
-      '✅ Investment created successfully.',
-    investmentFailed:
-      'Investment failed.',
-    couldNotLoadPlans:
-      'Could not load investment plans.',
-
-    myReferral: 'My Referral',
-    notAvailable: 'Not available',
-    team: 'Team',
-    users: 'users',
-
-    available: 'Available',
-    locked: 'Locked',
-    loading: 'Loading...',
-    couldNotLoadWallet:
-      '❌ Could not load wallet balance.',
-
-    noNotifications: 'No notifications.',
-    notificationLoading: 'Loading notifications...',
-    notificationError: 'Could not load notifications.',
-    notificationDeposit: 'Deposit',
-    notificationWithdraw: 'Withdrawal',
-    notificationInvestment: 'Investment',
-    notificationReferral: 'Referral',
-    notificationSystem: 'System',
-    verified: 'Verified',
-    pending: 'Pending',
-    rejected: 'Rejected',
-    completed: 'Completed',
-
-    moduleReady:
-      'This module is ready for backend integration.',
-
-    adminPanel: 'Admin Panel',
-    announcementTitle: 'Announcement Title',
-    announcementMessage: 'Announcement Message',
-    imageUrl: 'Image URL',
-    startTime: 'Start Time',
-    endTime: 'End Time',
-    active: 'Active',
-    createAnnouncement: 'Create Announcement',
-    creatingAnnouncement: 'Creating...',
-    announcementCreated:
-      '✅ Announcement created successfully.',
-    announcementFailed:
-      'Failed to create announcement.',
-    adminAccessDenied:
-      'Access denied.'
-  },
-
-
-  ps: {
-    dashboard: 'ډشبورډ',
-    wallet: 'والټ',
-    deposit: 'ډیپازټ',
-    withdraw: 'ویډرا',
-    investment: 'پانګونه',
-    referral: 'ریفerral',
-    notifications: 'خبرتیاوې',
-    support: 'ملاتړ',
-    profile: 'پروفایل',
-    admin: 'اډمین',
-
-    language: 'ژبه',
-    english: 'English',
-    pashto: 'پښتو',
-    persian: 'فارسی',
-    urdu: 'اردو',
-
-    depositTRX: 'TRX ډیپازټ',
-    sendTRX:
-      'TRX لاندې ادرس ته واستوئ، بیا خپل Transaction Hash ثبت کړئ.',
-    depositAddress: 'د ډیپازټ ادرس',
-    copyAddress: '📋 ادرس کاپي کړئ',
-    addressCopied: '✅ ادرس کاپي شو',
-    copyFailed: '❌ کاپي ناکامه شوه',
-    amountTRX: 'مقدار (TRX)',
-    enterAmount: 'د TRX مقدار ولیکئ',
-    transactionHash: 'Transaction Hash',
-    enterTransactionHash: 'Transaction Hash ولیکئ',
-    submitDeposit: 'ډیپازټ ثبت کړئ',
-    submitting: 'ثبتېږي...',
-    enterAmountHash:
-      'مهرباني وکړئ مقدار او Transaction Hash ولیکئ.',
-    openFromTelegram:
-      'مهرباني وکړئ Daily TRX له Telegram څخه خلاص کړئ.',
-    depositSubmitted:
-      '✅ ډیپازټ ثبت شو. د تایید په انتظار کې دی.',
-    depositFailed:
-      'ډیپازټ ثبتول ناکام شول.',
-
-    withdrawTitle: 'ویډرا',
-    withdrawNotice:
-      'د ویډرا غوښتنه د Backend تایید او د اډمین منظورۍ ته اړتیا لري.',
-
-    investmentPlans: 'د پانګونې پلانونه',
-    loadingPlans: 'د پانګونې پلانونه لوډ کېږي...',
-    noPlans: 'اوس مهال د پانګونې پلان نشته.',
-    investment: 'پانګونه',
-    dailyProfit: 'ورځنۍ ګټه',
-    duration: 'موده',
-    totalProfit: 'ټوله ګټه',
-    days: 'ورځې',
-    investNow: 'اوس پانګونه وکړئ',
-    processing: 'پروسس کېږي...',
-    confirmInvestment:
-      'ایا غواړئ په دې پلان کې پانګونه وکړئ؟',
-    investmentCreated:
-      '✅ پانګونه په بریالیتوب سره ثبت شوه.',
-    investmentFailed:
-      'پانګونه ناکامه شوه.',
-    couldNotLoadPlans:
-      'د پانګونې پلانونه نه شي لوډ کېدای.',
-
-    myReferral: 'زما ریفرل',
-    notAvailable: 'موجود نه دی',
-    team: 'ټیم',
-    users: 'کاروونکي',
-
-    available: 'موجود بیلانس',
-    locked: 'لاک شوی بیلانس',
-    loading: 'لوډ کېږي...',
-    couldNotLoadWallet:
-      '❌ د والټ بیلانس نه شي لوډ کېدای.',
-
-    noNotifications: 'هیڅ خبرتیا نشته.',
-    notificationLoading: 'خبرتیاوې لوډ کېږي...',
-    notificationError: 'خبرتیاوې نه شي لوډ کېدای.',
-    notificationDeposit: 'ډیپازټ',
-    notificationWithdraw: 'ویډرا',
-    notificationInvestment: 'پانګونه',
-    notificationReferral: 'ریفرل',
-    notificationSystem: 'سیستم',
-    verified: 'تایید شوی',
-    pending: 'د انتظار په حالت کې',
-    rejected: 'رد شوی',
-    completed: 'بشپړ شوی',
-
-    moduleReady:
-      'دا برخه د Backend اتصال لپاره چمتو ده.',
-
-    adminPanel: 'د اډمین پینل',
-    announcementTitle: 'د اعلان سرلیک',
-    announcementMessage: 'د اعلان پیغام',
-    imageUrl: 'د عکس URL',
-    startTime: 'د پیل وخت',
-    endTime: 'د پای وخت',
-    active: 'فعال',
-    createAnnouncement: 'اعلان جوړ کړئ',
-    creatingAnnouncement: 'جوړېږي...',
-    announcementCreated:
-      '✅ اعلان په بریالیتوب سره جوړ شو.',
-    announcementFailed:
-      'د اعلان جوړول ناکام شول.',
-    adminAccessDenied:
-      'د لاسرسي اجازه نشته.'
-  },
-
-
-  fa: {
-    dashboard: 'داشبورد',
-    wallet: 'کیف پول',
-    deposit: 'واریز',
-    withdraw: 'برداشت',
-    investment: 'سرمایه‌گذاری',
-    referral: 'معرفی',
-    notifications: 'اعلان‌ها',
-    support: 'پشتیبانی',
-    profile: 'پروفایل',
-    admin: 'مدیریت',
-
-    language: 'زبان',
-    english: 'English',
-    pashto: 'پښتو',
-    persian: 'فارسی',
-    urdu: 'اردو',
-
-    depositTRX: 'واریز TRX',
-    sendTRX:
-      'TRX را به آدرس زیر ارسال کنید، سپس Transaction Hash را ثبت کنید.',
-    depositAddress: 'آدرس واریز',
-    copyAddress: '📋 کپی آدرس',
-    addressCopied: '✅ آدرس کپی شد',
-    copyFailed: '❌ کپی ناموفق بود',
-    amountTRX: 'مقدار (TRX)',
-    enterAmount: 'مقدار TRX را وارد کنید',
-    transactionHash: 'Transaction Hash',
-    enterTransactionHash: 'Transaction Hash را وارد کنید',
-    submitDeposit: 'ثبت واریز',
-    submitting: 'در حال ثبت...',
-    enterAmountHash:
-      'لطفاً مقدار و Transaction Hash را وارد کنید.',
-    openFromTelegram:
-      'لطفاً Daily TRX را از Telegram باز کنید.',
-    depositSubmitted:
-      '✅ واریز ثبت شد. منتظر تأیید است.',
-    depositFailed:
-      'ثبت واریز ناموفق بود.',
-
-    withdrawTitle: 'برداشت',
-    withdrawNotice:
-      'درخواست برداشت نیاز به تأیید Backend و تأیید مدیر دارد.',
-
-    investmentPlans: 'طرح‌های سرمایه‌گذاری',
-    loadingPlans: 'طرح‌های سرمایه‌گذاری در حال بارگذاری...',
-    noPlans: 'هیچ طرح سرمایه‌گذاری موجود نیست.',
-    investment: 'سرمایه‌گذاری',
-    dailyProfit: 'سود روزانه',
-    duration: 'مدت',
-    totalProfit: 'سود کل',
-    days: 'روز',
-    investNow: 'سرمایه‌گذاری',
-    processing: 'در حال پردازش...',
-    confirmInvestment:
-      'آیا می‌خواهید در این طرح سرمایه‌گذاری کنید؟',
-    investmentCreated:
-      '✅ سرمایه‌گذاری با موفقیت ثبت شد.',
-    investmentFailed:
-      'سرمایه‌گذاری ناموفق بود.',
-    couldNotLoadPlans:
-      'طرح‌های سرمایه‌گذاری بارگذاری نشد.',
-
-    myReferral: 'معرفی من',
-    notAvailable: 'در دسترس نیست',
-    team: 'تیم',
-    users: 'کاربر',
-
-    available: 'موجودی قابل استفاده',
-    locked: 'موجودی قفل‌شده',
-    loading: 'در حال بارگذاری...',
-    couldNotLoadWallet:
-      '❌ موجودی کیف پول بارگذاری نشد.',
-
-    noNotifications: 'اعلانی وجود ندارد.',
-    notificationLoading: 'اعلان‌ها در حال بارگذاری...',
-    notificationError: 'اعلان‌ها بارگذاری نشد.',
-    notificationDeposit: 'واریز',
-    notificationWithdraw: 'برداشت',
-    notificationInvestment: 'سرمایه‌گذاری',
-    notificationReferral: 'معرفی',
-    notificationSystem: 'سیستم',
-    verified: 'تأیید شده',
-    pending: 'در انتظار',
-    rejected: 'رد شده',
-    completed: 'تکمیل شده',
-
-    moduleReady:
-      'این بخش برای اتصال Backend آماده است.',
-
-    adminPanel: 'پنل مدیریت',
-    announcementTitle: 'عنوان اعلان',
-    announcementMessage: 'متن اعلان',
-    imageUrl: 'آدرس تصویر',
-    startTime: 'زمان شروع',
-    endTime: 'زمان پایان',
-    active: 'فعال',
-    createAnnouncement: 'ایجاد اعلان',
-    creatingAnnouncement: 'در حال ایجاد...',
-    announcementCreated:
-      '✅ اعلان با موفقیت ایجاد شد.',
-    announcementFailed:
-      'ایجاد اعلان ناموفق بود.',
-    adminAccessDenied:
-      'دسترسی مجاز نیست.'
-  },
-
-
-  ur: {
-    dashboard: 'ڈیش بورڈ',
-    wallet: 'والیٹ',
-    deposit: 'جمع کروائیں',
-    withdraw: 'رقم نکلوائیں',
-    investment: 'سرمایہ کاری',
-    referral: 'ریفرل',
-    notifications: 'اطلاعات',
-    support: 'مدد',
-    profile: 'پروفائل',
-    admin: 'ایڈمن',
-
-    language: 'زبان',
-    english: 'English',
-    pashto: 'پښتو',
-    persian: 'فارسی',
-    urdu: 'اردو',
-
-    depositTRX: 'TRX جمع کروائیں',
-    sendTRX:
-      'TRX نیچے دیے گئے ایڈریس پر بھیجیں، پھر Transaction Hash جمع کریں۔',
-    depositAddress: 'جمع کرنے کا ایڈریس',
-    copyAddress: '📋 ایڈریس کاپی کریں',
-    addressCopied: '✅ ایڈریس کاپی ہوگیا',
-    copyFailed: '❌ کاپی ناکام ہوگئی',
-    amountTRX: 'رقم (TRX)',
-    enterAmount: 'TRX رقم درج کریں',
-    transactionHash: 'Transaction Hash',
-    enterTransactionHash: 'Transaction Hash درج کریں',
-    submitDeposit: 'جمع کروائیں',
-    submitting: 'جمع ہو رہا ہے...',
-    enterAmountHash:
-      'براہ کرم رقم اور Transaction Hash درج کریں۔',
-    openFromTelegram:
-      'براہ کرم Daily TRX کو Telegram سے کھولیں۔',
-    depositSubmitted:
-      '✅ ڈپازٹ جمع ہوگیا۔ تصدیق کا انتظار ہے۔',
-    depositFailed:
-      'ڈپازٹ جمع نہیں ہوسکا۔',
-
-    withdrawTitle: 'رقم نکلوائیں',
-    withdrawNotice:
-      'رقم نکلوانے کی درخواست Backend کی تصدیق اور Admin کی منظوری کی ضرورت ہے۔',
-
-    investmentPlans: 'سرمایہ کاری کے منصوبے',
-    loadingPlans: 'سرمایہ کاری کے منصوبے لوڈ ہو رہے ہیں...',
-    noPlans: 'کوئی سرمایہ کاری منصوبہ دستیاب نہیں۔',
-    investment: 'سرمایہ کاری',
-    dailyProfit: 'روزانہ منافع',
-    duration: 'مدت',
-    totalProfit: 'کل منافع',
-    days: 'دن',
-    investNow: 'ابھی سرمایہ کاری کریں',
-    processing: 'پروسیسنگ...',
-    confirmInvestment:
-      'کیا آپ اس منصوبے میں سرمایہ کاری کرنا چاہتے ہیں؟',
-    investmentCreated:
-      '✅ سرمایہ کاری کامیابی سے درج ہوگئی۔',
-    investmentFailed:
-      'سرمایہ کاری ناکام ہوگئی۔',
-    couldNotLoadPlans:
-      'سرمایہ کاری کے منصوبے لوڈ نہیں ہوسکے۔',
-
-    myReferral: 'میرا ریفرل',
-    notAvailable: 'دستیاب نہیں',
-    team: 'ٹیم',
-    users: 'صارفین',
-
-    available: 'دستیاب بیلنس',
-    locked: 'لاک شدہ بیلنس',
-    loading: 'لوڈ ہو رہا ہے...',
-    couldNotLoadWallet:
-      '❌ والیٹ بیلنس لوڈ نہیں ہوسکا۔',
-
-    noNotifications: 'کوئی اطلاعات نہیں۔',
-    notificationLoading: 'اطلاعات لوڈ ہو رہی ہیں...',
-    notificationError: 'اطلاعات لوڈ نہیں ہوسکیں۔',
-    notificationDeposit: 'جمع کروانا',
-    notificationWithdraw: 'رقم نکالنا',
-    notificationInvestment: 'سرمایہ کاری',
-    notificationReferral: 'ریفرل',
-    notificationSystem: 'سسٹم',
-    verified: 'تصدیق شدہ',
-    pending: 'زیر التوا',
-    rejected: 'مسترد',
-    completed: 'مکمل',
-
-    moduleReady:
-      'یہ حصہ Backend کنکشن کے لیے تیار ہے۔',
-
-    adminPanel: 'ایڈمن پینل',
-    announcementTitle: 'اعلان کا عنوان',
-    announcementMessage: 'اعلان کا پیغام',
-    imageUrl: 'تصویر کا URL',
-    startTime: 'شروع ہونے کا وقت',
-    endTime: 'ختم ہونے کا وقت',
-    active: 'فعال',
-    createAnnouncement: 'اعلان بنائیں',
-    creatingAnnouncement: 'بنایا جا رہا ہے...',
-    announcementCreated:
-      '✅ اعلان کامیابی سے بن گیا۔',
-    announcementFailed:
-      'اعلان نہیں بن سکا۔',
-    adminAccessDenied:
-      'رسائی کی اجازت نہیں ہے۔'
-  }
-
-};
-
-
-/* =========================
-   LANGUAGE SYSTEM
-========================= */
+const ADMIN_TELEGRAM_ID = "6504138324";
 
 let currentLanguage =
-  localStorage.getItem('daily_trx_language') || 'en';
+  localStorage.getItem("dailytrx_language") || "en";
 
+const translations = {
+  en: {
+    home: "Dashboard",
+    wallet: "Wallet",
+    deposit: "Deposit",
+    withdraw: "Withdraw",
+    investment: "Investment",
+    referral: "Referral",
+    notifications: "Notifications",
+    support: "Support",
+    profile: "Profile",
+
+    welcome: "Welcome to Daily TRX",
+    totalBalance: "Total Balance",
+    availableBalance: "Available Balance",
+    lockedBalance: "Locked Balance",
+
+    depositTitle: "Deposit TRX",
+    depositNotice:
+      "Send TRX only to the address below. After payment, enter the exact amount and transaction hash.",
+    depositAddress: "Deposit Address",
+    amount: "Amount (TRX)",
+    transactionHash: "Transaction Hash",
+    copyAddress: "Copy Address",
+    submitDeposit: "Submit Deposit",
+    verifying: "Verifying...",
+    depositSubmitted:
+      "Deposit verified successfully and added to your wallet.",
+    depositFailed: "Deposit failed",
+
+    withdrawTitle: "Withdraw TRX",
+    withdrawNotice:
+      "Minimum withdrawal is 20 TRX. Withdrawal requests are reviewed by admin before payment.",
+    withdrawAmount: "Withdrawal Amount (TRX)",
+    withdrawAddress: "TRON Destination Address",
+    enterWithdrawAmount: "Enter amount",
+    enterWithdrawAddress: "Enter TRON address",
+    minimumWithdrawal: "Minimum withdrawal: 20 TRX",
+    submitWithdraw: "Submit Withdrawal",
+    withdrawing: "Submitting...",
+    withdrawSubmitted:
+      "Withdrawal request submitted successfully. It is pending admin approval.",
+    withdrawFailed: "Withdrawal failed",
+
+    investmentTitle: "Investment Plans",
+    invest: "Invest",
+    investing: "Processing...",
+    investmentCreated:
+      "Investment created successfully.",
+    investmentFailed: "Investment failed",
+
+    referralTitle: "Referral",
+    referralText:
+      "Invite users and earn from three referral levels.",
+    level1: "Level 1",
+    level2: "Level 2",
+    level3: "Level 3",
+
+    notificationsTitle: "Notifications",
+    noNotifications: "No notifications yet.",
+    markRead: "Mark as read",
+
+    supportTitle: "Support",
+    supportText:
+      "Need help? Contact Daily TRX support.",
+    contactSupport: "Contact Support",
+    telegramChannel: "Telegram Channel",
+
+    profileTitle: "Profile",
+    username: "Username",
+    email: "Email",
+    telegramId: "Telegram ID",
+
+    adminTitle: "Admin Announcement",
+    announcementTitle: "Title",
+    announcementMessage: "Message",
+    imageUrl: "Image URL",
+    startTime: "Start Time",
+    endTime: "End Time",
+    active: "Active",
+    publishAnnouncement: "Publish Announcement",
+    publishing: "Publishing...",
+
+    language: "Language",
+    theme: "Theme",
+    light: "Light",
+    dark: "Dark",
+
+    openFromTelegram:
+      "Please open this app from Telegram.",
+    invalidAmount: "Please enter a valid amount.",
+    invalidAddress: "Please enter a valid TRON address.",
+    minimumAmount:
+      "Minimum withdrawal is 20 TRX."
+  },
+
+  ps: {
+    home: "ډشبورډ",
+    wallet: "والټ",
+    deposit: "ډیپازټ",
+    withdraw: "ویډرا",
+    investment: "انویسټمنټ",
+    referral: "ریفریل",
+    notifications: "خبرتیاوې",
+    support: "مرسته",
+    profile: "پروفایل",
+
+    welcome: "Daily TRX ته ښه راغلاست",
+    totalBalance: "ټول بیلانس",
+    availableBalance: "موجود بیلانس",
+    lockedBalance: "لاک شوی بیلانس",
+
+    depositTitle: "TRX ډیپازټ",
+    depositNotice:
+      "یوازې TRX لاندې ادرس ته واستوئ. له تادیې وروسته دقیق مقدار او Transaction Hash ولیکئ.",
+    depositAddress: "ډیپازټ ادرس",
+    amount: "مقدار (TRX)",
+    transactionHash: "Transaction Hash",
+    copyAddress: "ادرس کاپي",
+    submitDeposit: "ډیپازټ ثبت کړه",
+    verifying: "تایید کېږي...",
+    depositSubmitted:
+      "ډیپازټ تایید او ستاسو والټ ته اضافه شو.",
+    depositFailed: "ډیپازټ ناکام شو",
+
+    withdrawTitle: "TRX ویډرا",
+    withdrawNotice:
+      "د ویډرا لږ تر لږه اندازه 20 TRX ده. د ویډرا غوښتنه د اډمین له تایید وروسته اجرا کېږي.",
+    withdrawAmount: "د ویډرا مقدار (TRX)",
+    withdrawAddress: "د TRON ترلاسه کولو ادرس",
+    enterWithdrawAmount: "مقدار ولیکئ",
+    enterWithdrawAddress: "TRON ادرس ولیکئ",
+    minimumWithdrawal: "لږ تر لږه ویډرا: 20 TRX",
+    submitWithdraw: "ویډرا ثبت کړه",
+    withdrawing: "ثبتېږي...",
+    withdrawSubmitted:
+      "د ویډرا غوښتنه په بریالیتوب ثبت شوه او د اډمین تایید ته منتظره ده.",
+    withdrawFailed: "ویډرا ناکام شو",
+
+    investmentTitle: "انویسټمنټ پلانونه",
+    invest: "انویسټ کړه",
+    investing: "پروسس کېږي...",
+    investmentCreated:
+      "انویسټمنټ په بریالیتوب جوړ شو.",
+    investmentFailed: "انویسټمنټ ناکام شو",
+
+    referralTitle: "ریفریل",
+    referralText:
+      "کاروونکي دعوت کړئ او له درې کچو څخه ریفریل ګټه ترلاسه کړئ.",
+    level1: "لومړۍ کچه",
+    level2: "دوهمه کچه",
+    level3: "درېیمه کچه",
+
+    notificationsTitle: "خبرتیاوې",
+    noNotifications: "تر اوسه خبرتیا نشته.",
+    markRead: "د لوستل شوې په توګه",
+
+    supportTitle: "مرسته",
+    supportText:
+      "مرستې ته اړتیا لرئ؟ د Daily TRX له ملاتړ سره اړیکه ونیسئ.",
+    contactSupport: "له ملاتړ سره اړیکه",
+    telegramChannel: "Telegram چینل",
+
+    profileTitle: "پروفایل",
+    username: "یوزرنیم",
+    email: "ایمیل",
+    telegramId: "Telegram ID",
+
+    adminTitle: "اډمین اعلان",
+    announcementTitle: "عنوان",
+    announcementMessage: "پیغام",
+    imageUrl: "د عکس URL",
+    startTime: "د پیل وخت",
+    endTime: "د پای وخت",
+    active: "فعال",
+    publishAnnouncement: "اعلان خپور کړه",
+    publishing: "خپرېږي...",
+
+    language: "ژبه",
+    theme: "موضوع",
+    light: "روښانه",
+    dark: "تیاره",
+
+    openFromTelegram:
+      "مهرباني وکړئ اپ له Telegram څخه خلاص کړئ.",
+    invalidAmount: "سم مقدار ولیکئ.",
+    invalidAddress: "سم TRON ادرس ولیکئ.",
+    minimumAmount:
+      "د ویډرا لږ تر لږه اندازه 20 TRX ده."
+  },
+
+  fa: {
+    home: "داشبورد",
+    wallet: "کیف پول",
+    deposit: "واریز",
+    withdraw: "برداشت",
+    investment: "سرمایه‌گذاری",
+    referral: "معرفی",
+    notifications: "اعلان‌ها",
+    support: "پشتیبانی",
+    profile: "پروفایل",
+
+    welcome: "به Daily TRX خوش آمدید",
+    totalBalance: "موجودی کل",
+    availableBalance: "موجودی قابل استفاده",
+    lockedBalance: "موجودی قفل‌شده",
+
+    depositTitle: "واریز TRX",
+    depositNotice:
+      "فقط TRX به آدرس زیر ارسال کنید. بعد از پرداخت مقدار دقیق و Transaction Hash را وارد کنید.",
+    depositAddress: "آدرس واریز",
+    amount: "مقدار (TRX)",
+    transactionHash: "Transaction Hash",
+    copyAddress: "کپی آدرس",
+    submitDeposit: "ثبت واریز",
+    verifying: "در حال بررسی...",
+    depositSubmitted:
+      "واریز با موفقیت تایید و به کیف پول شما اضافه شد.",
+    depositFailed: "واریز ناموفق بود",
+
+    withdrawTitle: "برداشت TRX",
+    withdrawNotice:
+      "حداقل برداشت 20 TRX است. درخواست برداشت بعد از تایید ادمین اجرا می‌شود.",
+    withdrawAmount: "مقدار برداشت (TRX)",
+    withdrawAddress: "آدرس TRON مقصد",
+    enterWithdrawAmount: "مقدار را وارد کنید",
+    enterWithdrawAddress: "آدرس TRON را وارد کنید",
+    minimumWithdrawal: "حداقل برداشت: 20 TRX",
+    submitWithdraw: "ثبت برداشت",
+    withdrawing: "در حال ثبت...",
+    withdrawSubmitted:
+      "درخواست برداشت با موفقیت ثبت شد و منتظر تایید ادمین است.",
+    withdrawFailed: "برداشت ناموفق بود",
+
+    investmentTitle: "پلان‌های سرمایه‌گذاری",
+    invest: "سرمایه‌گذاری",
+    investing: "در حال پردازش...",
+    investmentCreated:
+      "سرمایه‌گذاری با موفقیت ایجاد شد.",
+    investmentFailed: "سرمایه‌گذاری ناموفق بود",
+
+    referralTitle: "معرفی",
+    referralText:
+      "کاربران را دعوت کنید و از سه سطح درآمد دریافت کنید.",
+    level1: "سطح اول",
+    level2: "سطح دوم",
+    level3: "سطح سوم",
+
+    notificationsTitle: "اعلان‌ها",
+    noNotifications: "هنوز اعلانی وجود ندارد.",
+    markRead: "علامت‌گذاری به عنوان خوانده‌شده",
+
+    supportTitle: "پشتیبانی",
+    supportText:
+      "به کمک نیاز دارید؟ با پشتیبانی Daily TRX تماس بگیرید.",
+    contactSupport: "تماس با پشتیبانی",
+    telegramChannel: "کانال Telegram",
+
+    profileTitle: "پروفایل",
+    username: "نام کاربری",
+    email: "ایمیل",
+    telegramId: "Telegram ID",
+
+    adminTitle: "اعلان ادمین",
+    announcementTitle: "عنوان",
+    announcementMessage: "پیام",
+    imageUrl: "آدرس عکس",
+    startTime: "زمان شروع",
+    endTime: "زمان پایان",
+    active: "فعال",
+    publishAnnouncement: "انتشار اعلان",
+    publishing: "در حال انتشار...",
+
+    language: "زبان",
+    theme: "ظاهر",
+    light: "روشن",
+    dark: "تیره",
+
+    openFromTelegram:
+      "لطفاً این اپ را از Telegram باز کنید.",
+    invalidAmount: "مقدار معتبر وارد کنید.",
+    invalidAddress: "آدرس معتبر TRON وارد کنید.",
+    minimumAmount:
+      "حداقل برداشت 20 TRX است."
+  },
+
+  ur: {
+    home: "ڈیش بورڈ",
+    wallet: "والٹ",
+    deposit: "ڈپازٹ",
+    withdraw: "رقم نکالیں",
+    investment: "انویسٹمنٹ",
+    referral: "ریفرل",
+    notifications: "اطلاعات",
+    support: "مدد",
+    profile: "پروفائل",
+
+    welcome: "Daily TRX میں خوش آمدید",
+    totalBalance: "کل بیلنس",
+    availableBalance: "دستیاب بیلنس",
+    lockedBalance: "لاک بیلنس",
+
+    depositTitle: "TRX ڈپازٹ",
+    depositNotice:
+      "صرف TRX نیچے دیے گئے ایڈریس پر بھیجیں۔ ادائیگی کے بعد درست رقم اور Transaction Hash درج کریں۔",
+    depositAddress: "ڈپازٹ ایڈریس",
+    amount: "رقم (TRX)",
+    transactionHash: "Transaction Hash",
+    copyAddress: "ایڈریس کاپی کریں",
+    submitDeposit: "ڈپازٹ جمع کریں",
+    verifying: "تصدیق ہو رہی ہے...",
+    depositSubmitted:
+      "ڈپازٹ کامیابی سے تصدیق اور والٹ میں شامل ہوگیا۔",
+    depositFailed: "ڈپازٹ ناکام ہوگیا",
+
+    withdrawTitle: "TRX نکالیں",
+    withdrawNotice:
+      "کم از کم رقم 20 TRX ہے۔ درخواست ایڈمن کی منظوری کے بعد مکمل ہوگی۔",
+    withdrawAmount: "رقم (TRX)",
+    withdrawAddress: "TRON وصول کرنے والا ایڈریس",
+    enterWithdrawAmount: "رقم درج کریں",
+    enterWithdrawAddress: "TRON ایڈریس درج کریں",
+    minimumWithdrawal: "کم از کم رقم: 20 TRX",
+    submitWithdraw: "رقم نکالنے کی درخواست",
+    withdrawing: "جمع ہو رہی ہے...",
+    withdrawSubmitted:
+      "رقم نکالنے کی درخواست کامیابی سے جمع ہوگئی اور ایڈمن کی منظوری کے منتظر ہے۔",
+    withdrawFailed: "رقم نکالنا ناکام ہوگیا",
+
+    investmentTitle: "انویسٹمنٹ پلانز",
+    invest: "انویسٹ کریں",
+    investing: "پروسیسنگ...",
+    investmentCreated:
+      "انویسٹمنٹ کامیابی سے بن گئی۔",
+    investmentFailed: "انویسٹمنٹ ناکام ہوگئی",
+
+    referralTitle: "ریفرل",
+    referralText:
+      "صارفین کو مدعو کریں اور تین لیول سے ریفرل آمدنی حاصل کریں۔",
+    level1: "لیول 1",
+    level2: "لیول 2",
+    level3: "لیول 3",
+
+    notificationsTitle: "اطلاعات",
+    noNotifications: "ابھی کوئی اطلاع نہیں۔",
+    markRead: "پڑھی ہوئی نشان زد کریں",
+
+    supportTitle: "مدد",
+    supportText:
+      "مدد چاہیے؟ Daily TRX سپورٹ سے رابطہ کریں۔",
+    contactSupport: "سپورٹ سے رابطہ",
+    telegramChannel: "Telegram چینل",
+
+    profileTitle: "پروفائل",
+    username: "یوزرنیم",
+    email: "ای میل",
+    telegramId: "Telegram ID",
+
+    adminTitle: "ایڈمن اعلان",
+    announcementTitle: "عنوان",
+    announcementMessage: "پیغام",
+    imageUrl: "تصویر URL",
+    startTime: "شروع کا وقت",
+    endTime: "اختتام کا وقت",
+    active: "فعال",
+    publishAnnouncement: "اعلان شائع کریں",
+    publishing: "شائع ہو رہا ہے...",
+
+    language: "زبان",
+    theme: "تھیم",
+    light: "روشن",
+    dark: "ڈارک",
+
+    openFromTelegram:
+      "براہ کرم ایپ Telegram سے کھولیں۔",
+    invalidAmount: "درست رقم درج کریں۔",
+    invalidAddress: "درست TRON ایڈریس درج کریں۔",
+    minimumAmount:
+      "کم از کم رقم 20 TRX ہے۔"
+  }
+};
 
 function t(key) {
-
   return (
     translations[currentLanguage]?.[key] ||
     translations.en[key] ||
     key
   );
-
 }
 
-
-function setLanguage(language) {
-
-  if (!translations[language]) {
-    return;
-  }
-
-  currentLanguage = language;
-
-  localStorage.setItem(
-    'daily_trx_language',
-    language
-  );
-
-  applyLanguage();
-
-  const activePage =
-    document.querySelector(
-      '.bottom button.active'
-    )?.dataset.page;
-
-  if (activePage) {
-    render(activePage);
-  }
-
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
+function formatTRX(value) {
+  const number = Number(value || 0);
 
-function applyLanguage() {
+  if (!Number.isFinite(number)) {
+    return "0";
+  }
 
-  document.documentElement.lang =
-    currentLanguage === 'ps'
-      ? 'ps'
-      : currentLanguage === 'fa'
-        ? 'fa'
-        : currentLanguage === 'ur'
-          ? 'ur'
-          : 'en';
-
-  document.querySelectorAll(
-    '.bottom button[data-page]'
-  ).forEach(button => {
-
-    const key =
-      button.dataset.page;
-
-    if (translations[currentLanguage]?.[key]) {
-
-      button.textContent =
-        translations[currentLanguage][key];
-
-    }
-
+  return number.toLocaleString(undefined, {
+    maximumFractionDigits: 6
   });
-
 }
 
+function getTelegramId() {
+  return String(
+    telegramApp?.initDataUnsafe?.user?.id || ""
+  );
+}
 
 function languageSelector() {
-
   return `
-    <div
-      style="
-        margin-bottom:14px;
-        display:flex;
-        align-items:center;
-        justify-content:flex-end;
-        gap:8px;
-      "
-    >
+    <div class="language-box">
+      <label>${t("language")}</label>
 
-      <span style="font-size:13px;">
-        🌐 ${t('language')}
-      </span>
-
-      <select
-        id="languageSelect"
-        style="
-          padding:8px 10px;
-          border-radius:9px;
-          border:1px solid #ccc;
-          background:inherit;
-          color:inherit;
-        "
-      >
-
-        <option value="en" ${currentLanguage === 'en' ? 'selected' : ''}>
-          ${t('english')}
+      <select id="languageSelect">
+        <option value="en" ${currentLanguage === "en" ? "selected" : ""}>
+          English
         </option>
 
-        <option value="ps" ${currentLanguage === 'ps' ? 'selected' : ''}>
-          ${t('pashto')}
+        <option value="ps" ${currentLanguage === "ps" ? "selected" : ""}>
+          پښتو
         </option>
 
-        <option value="fa" ${currentLanguage === 'fa' ? 'selected' : ''}>
-          ${t('persian')}
+        <option value="fa" ${currentLanguage === "fa" ? "selected" : ""}>
+          فارسی
         </option>
 
-        <option value="ur" ${currentLanguage === 'ur' ? 'selected' : ''}>
-          ${t('urdu')}
+        <option value="ur" ${currentLanguage === "ur" ? "selected" : ""}>
+          اردو
         </option>
-
       </select>
-
     </div>
   `;
-
 }
-
 
 function setupLanguageSelector() {
+  const select =
+    document.getElementById("languageSelect");
 
-  const selector =
-    document.getElementById(
-      'languageSelect'
+  if (!select) return;
+
+  select.addEventListener("change", () => {
+    currentLanguage = select.value;
+
+    localStorage.setItem(
+      "dailytrx_language",
+      currentLanguage
     );
 
-  if (!selector) {
-    return;
-  }
-
-  selector.addEventListener(
-    'change',
-    event => {
-
-      setLanguage(
-        event.target.value
-      );
-
-    }
-  );
-
+    render(window.currentPage || "home");
+  });
 }
 
-
-/* =========================
-   ADMIN BUTTON
-========================= */
-
-function setupAdminButton() {
-
-  const telegramUser =
-    telegramApp?.initDataUnsafe?.user;
-
-  if (
-    String(telegramUser?.id || '') !==
-    ADMIN_TELEGRAM_ID
-  ) {
-    return;
-  }
-
-  const bottom =
-    document.querySelector('.bottom');
-
-  if (!bottom) {
-    return;
-  }
-
-  if (
-    bottom.querySelector(
-      '[data-page="admin"]'
-    )
-  ) {
-    return;
-  }
-
-  const adminButton =
-    document.createElement('button');
-
-  adminButton.type = 'button';
-  adminButton.dataset.page = 'admin';
-  adminButton.textContent = t('admin');
-
-  bottom.appendChild(adminButton);
-
+function navButtons() {
+  return `
+    <button data-page="home">${t("home")}</button>
+    <button data-page="wallet">${t("wallet")}</button>
+    <button data-page="deposit">${t("deposit")}</button>
+    <button data-page="withdraw">${t("withdraw")}</button>
+    <button data-page="investment">${t("investment")}</button>
+    <button data-page="referral">${t("referral")}</button>
+    <button data-page="notifications">${t("notifications")}</button>
+    <button data-page="support">${t("support")}</button>
+    <button data-page="profile">${t("profile")}</button>
+  `;
 }
-
-
-/* =========================
-   TITLES
-========================= */
 
 const titles = {
-  home: 'dashboard',
-  wallet: 'wallet',
-  deposit: 'deposit',
-  withdraw: 'withdraw',
-  investment: 'investment',
-  referral: 'referral',
-  notifications: 'notifications',
-  support: 'support',
-  profile: 'profile',
-  admin: 'admin'
+  home: "Dashboard",
+  wallet: "Wallet",
+  deposit: "Deposit",
+  withdraw: "Withdraw",
+  investment: "Investment",
+  referral: "Referral",
+  notifications: "Notifications",
+  support: "Support",
+  profile: "Profile",
+  admin: "Admin"
 };
 
+window.currentPage = "home";
 
-/* =========================
-   RENDER
-========================= */
+async function render(p = "home") {
+  window.currentPage = p;
 
-function render(p) {
+  if (!page) return;
 
-  document.querySelectorAll(
-    '.bottom button'
-  ).forEach(b => {
+  let content = "";
 
-    b.classList.toggle(
-      'active',
-      b.dataset.page === p
-    );
-
-  });
-
-
-  let content = '';
-
-
-  if (p === 'deposit') {
+  if (p === "home") {
 
     content = `
-
       ${languageSelector()}
 
-      <h2>${t('depositTRX')}</h2>
-
-      <div class="notice">
-        ${t('sendTRX')}
+      <div class="hero-card">
+        <h2>${t("welcome")}</h2>
+        <p>Daily TRX</p>
       </div>
 
-      <div class="stats">
+      <div class="menu-grid">
+        ${navButtons()}
+      </div>
+    `;
 
-        <div style="text-align:center;width:100%;">
+  } else if (p === "wallet") {
 
-          <small>${t('depositAddress')}</small>
+    content = `
+      ${languageSelector()}
 
-          <div style="margin:15px auto;">
+      <h2>${t("wallet")}</h2>
 
-            <img
-              src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(DEPOSIT_ADDRESS)}"
-              alt="TRX Deposit QR Code"
-              style="
-                width:220px;
-                height:220px;
-                border-radius:12px;
-                background:#fff;
-                padding:8px;
-                box-sizing:border-box;
-              "
-            >
+      <div id="walletContent">
+        Loading...
+      </div>
+    `;
 
-          </div>
+  } else if (p === "deposit") {
 
-          <strong
+    content = `
+      ${languageSelector()}
+
+      <h2>${t("depositTitle")}</h2>
+
+      <div class="notice">
+        ${t("depositNotice")}
+      </div>
+
+      <div class="deposit-card">
+
+        <label>${t("depositAddress")}</label>
+
+        <div class="address-row">
+          <input
             id="depositAddress"
-            style="
-              font-size:12px;
-              word-break:break-all;
-              display:block;
-              margin:10px 0;
-            "
-          >
-            ${DEPOSIT_ADDRESS}
-          </strong>
+            value="${DEPOSIT_ADDRESS}"
+            readonly
+          />
 
-          <button
-            id="copyDepositAddress"
-            type="button"
-            style="
-              width:100%;
-              padding:12px;
-              margin-top:8px;
-              border:0;
-              border-radius:10px;
-              cursor:pointer;
-            "
-          >
-            ${t('copyAddress')}
+          <button id="copyDepositAddress">
+            ${t("copyAddress")}
           </button>
-
         </div>
 
+        <div class="qr-box">
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(DEPOSIT_ADDRESS)}"
+            alt="TRON Deposit QR"
+          />
+        </div>
+
+        <label>${t("amount")}</label>
+
+        <input
+          id="depositAmount"
+          type="number"
+          min="0"
+          step="0.000001"
+          placeholder="0"
+        />
+
+        <label>${t("transactionHash")}</label>
+
+        <input
+          id="depositTxHash"
+          type="text"
+          maxlength="64"
+          placeholder="64-character TRON transaction hash"
+        />
+
+        <button id="submitDeposit">
+          ${t("submitDeposit")}
+        </button>
+
+        <div
+          id="depositMessage"
+          class="form-message"
+        ></div>
+
       </div>
-
-
-      <label>${t('amountTRX')}</label>
-
-      <input
-        id="depositAmount"
-        type="number"
-        min="1"
-        step="0.000001"
-        placeholder="${t('enterAmount')}"
-        style="
-          width:100%;
-          box-sizing:border-box;
-          margin:8px 0;
-          padding:12px;
-          border-radius:10px;
-          border:1px solid #ccc;
-        "
-      >
-
-
-      <label>${t('transactionHash')}</label>
-
-      <input
-        id="depositTx"
-        type="text"
-        placeholder="${t('enterTransactionHash')}"
-        autocomplete="off"
-        style="
-          width:100%;
-          box-sizing:border-box;
-          margin:8px 0;
-          padding:12px;
-          border-radius:10px;
-          border:1px solid #ccc;
-        "
-      >
-
-
-      <button
-        id="submitDeposit"
-        style="
-          width:100%;
-          padding:13px;
-          margin-top:10px;
-          border:0;
-          border-radius:10px;
-          cursor:pointer;
-        "
-      >
-        ${t('submitDeposit')}
-      </button>
-
-
-      <div
-        id="depositMessage"
-        style="
-          margin-top:12px;
-          text-align:center;
-        "
-      ></div>
-
     `;
 
-
-  } else if (p === 'withdraw') {
+  } else if (p === "withdraw") {
 
     content = `
-
       ${languageSelector()}
 
-      <h2>${t('withdrawTitle')}</h2>
+      <h2>${t("withdrawTitle")}</h2>
 
       <div class="notice">
-        ${t('withdrawNotice')}
+        ${t("withdrawNotice")}
       </div>
 
+      <div class="withdraw-card">
+
+        <div class="minimum-box">
+          ${t("minimumWithdrawal")}
+        </div>
+
+        <label>
+          ${t("withdrawAmount")}
+        </label>
+
+        <input
+          id="withdrawAmount"
+          type="number"
+          min="20"
+          step="0.000001"
+          placeholder="${t("enterWithdrawAmount")}"
+        />
+
+        <label>
+          ${t("withdrawAddress")}
+        </label>
+
+        <input
+          id="withdrawAddress"
+          type="text"
+          maxlength="34"
+          placeholder="${t("enterWithdrawAddress")}"
+          autocomplete="off"
+        />
+
+        <button id="submitWithdraw">
+          ${t("submitWithdraw")}
+        </button>
+
+        <div
+          id="withdrawMessage"
+          class="form-message"
+        ></div>
+
+      </div>
     `;
 
-
-  } else if (p === 'investment') {
+  } else if (p === "investment") {
 
     content = `
-
       ${languageSelector()}
 
-      <h2>${t('investmentPlans')}</h2>
+      <h2>${t("investmentTitle")}</h2>
+
+      <div id="investmentPlans">
+        Loading...
+      </div>
 
       <div
         id="investmentMessage"
-        style="
-          margin:12px 0;
-          text-align:center;
-        "
-      >
-        ${t('loadingPlans')}
-      </div>
-
-      <div
-        id="investmentPlans"
-        style="
-          display:grid;
-          gap:14px;
-        "
+        class="form-message"
       ></div>
-
     `;
 
-
-  } else if (p === 'referral') {
-
-    content = `
-
-      ${languageSelector()}
-
-      <h2>${t('referral')}</h2>
-
-      <div class="stats">
-
-        <div>
-          <small>${t('myReferral')}</small>
-          <strong>${t('notAvailable')}</strong>
-        </div>
-
-        <div>
-          <small>${t('team')}</small>
-          <strong>0 ${t('users')}</strong>
-        </div>
-
-      </div>
-
-    `;
-
-
-  } else if (p === 'wallet') {
+  } else if (p === "referral") {
 
     content = `
-
       ${languageSelector()}
 
-      <h2>${t('wallet')}</h2>
-
-      <div class="stats">
-
-        <div>
-
-          <small>${t('available')}</small>
-
-          <strong id="availableBalance">
-            ${t('loading')}
-          </strong>
-
-        </div>
-
-
-        <div>
-
-          <small>${t('locked')}</small>
-
-          <strong id="lockedBalance">
-            ${t('loading')}
-          </strong>
-
-        </div>
-
-      </div>
-
-
-      <div
-        id="walletMessage"
-        style="
-          margin-top:12px;
-          text-align:center;
-        "
-      ></div>
-
-    `;
-
-
-  } else if (p === 'notifications') {
-
-    content = `
-
-      ${languageSelector()}
-
-      <div
-        style="
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          gap:10px;
-          margin-bottom:14px;
-        "
-      >
-
-        <div>
-
-          <h2 style="margin:0;">
-            🔔 ${t('notifications')}
-          </h2>
-
-          <small style="opacity:.65;">
-            Your personal activity
-          </small>
-
-        </div>
-
-      </div>
-
-
-      <div
-        id="notificationsList"
-        style="
-          display:grid;
-          gap:12px;
-        "
-      >
-
-        <div class="notice">
-          ${t('notificationLoading')}
-        </div>
-
-      </div>
-
-    `;
-
-
-  } else if (p === 'admin') {
-
-    const telegramUser =
-      telegramApp?.initDataUnsafe?.user;
-
-    if (
-      String(telegramUser?.id || '') !==
-      ADMIN_TELEGRAM_ID
-    ) {
-
-      content = `
-
-        ${languageSelector()}
-
-        <h2>${t('admin')}</h2>
-
-        <div class="notice">
-          ${t('adminAccessDenied')}
-        </div>
-
-      `;
-
-    } else {
-
-      content = `
-
-        ${languageSelector()}
-
-        <h2>${t('adminPanel')}</h2>
-
-        <div
-          class="stats"
-          style="
-            display:block;
-            padding:18px;
-          "
-        >
-
-          <label
-            for="announcementTitle"
-            style="
-              display:block;
-              margin-bottom:6px;
-            "
-          >
-            ${t('announcementTitle')}
-          </label>
-
-          <input
-            id="announcementTitle"
-            type="text"
-            placeholder="${t('announcementTitle')}"
-            style="
-              width:100%;
-              box-sizing:border-box;
-              padding:12px;
-              margin-bottom:14px;
-              border-radius:10px;
-              border:1px solid #ccc;
-            "
-          >
-
-
-          <label
-            for="announcementMessage"
-            style="
-              display:block;
-              margin-bottom:6px;
-            "
-          >
-            ${t('announcementMessage')}
-          </label>
-
-          <textarea
-            id="announcementMessage"
-            rows="5"
-            placeholder="${t('announcementMessage')}"
-            style="
-              width:100%;
-              box-sizing:border-box;
-              padding:12px;
-              margin-bottom:14px;
-              border-radius:10px;
-              border:1px solid #ccc;
-              resize:vertical;
-            "
-          ></textarea>
-
-
-          <label
-            for="announcementImage"
-            style="
-              display:block;
-              margin-bottom:6px;
-            "
-          >
-            ${t('imageUrl')}
-          </label>
-
-          <input
-            id="announcementImage"
-            type="url"
-            placeholder="https://example.com/image.jpg"
-            style="
-              width:100%;
-              box-sizing:border-box;
-              padding:12px;
-              margin-bottom:14px;
-              border-radius:10px;
-              border:1px solid #ccc;
-            "
-          >
-
-
-          <label
-            for="announcementStart"
-            style="
-              display:block;
-              margin-bottom:6px;
-            "
-          >
-            ${t('startTime')}
-          </label>
-
-          <input
-            id="announcementStart"
-            type="datetime-local"
-            style="
-              width:100%;
-              box-sizing:border-box;
-              padding:12px;
-              margin-bottom:14px;
-              border-radius:10px;
-              border:1px solid #ccc;
-            "
-          >
-
-
-          <label
-            for="announcementEnd"
-            style="
-              display:block;
-              margin-bottom:6px;
-            "
-          >
-            ${t('endTime')}
-          </label>
-
-          <input
-            id="announcementEnd"
-            type="datetime-local"
-            style="
-              width:100%;
-              box-sizing:border-box;
-              padding:12px;
-              margin-bottom:14px;
-              border-radius:10px;
-              border:1px solid #ccc;
-            "
-          >
-
-
-          <label
-            style="
-              display:flex;
-              align-items:center;
-              gap:8px;
-              margin-bottom:14px;
-              cursor:pointer;
-            "
-          >
-
-            <input
-              id="announcementActive"
-              type="checkbox"
-              checked
-              style="
-                width:18px;
-                height:18px;
-              "
-            >
-
-            <span>
-              ${t('active')}
-            </span>
-
-          </label>
-
-
-          <button
-            id="createAnnouncement"
-            type="button"
-            style="
-              width:100%;
-              padding:14px;
-              border:0;
-              border-radius:12px;
-              cursor:pointer;
-              font-weight:600;
-            "
-          >
-            ${t('createAnnouncement')}
-          </button>
-
-
-          <div
-            id="announcementAdminMessage"
-            style="
-              margin-top:14px;
-              text-align:center;
-              line-height:1.5;
-            "
-          ></div>
-
-        </div>
-
-      `;
-
-    }
-
-
-  } else {
-
-    content = `
-
-      ${languageSelector()}
-
-      <h2>
-        ${t(titles[p] || 'dashboard')}
-      </h2>
+      <h2>${t("referralTitle")}</h2>
 
       <div class="notice">
-        ${t('moduleReady')}
+        ${t("referralText")}
       </div>
 
+      <div class="referral-card">
+        <div>
+          <strong>${t("level1")}</strong>
+          <span>6%</span>
+        </div>
+
+        <div>
+          <strong>${t("level2")}</strong>
+          <span>2%</span>
+        </div>
+
+        <div>
+          <strong>${t("level3")}</strong>
+          <span>1%</span>
+        </div>
+      </div>
+
+      <div id="referralContent">
+        Loading...
+      </div>
     `;
 
+  } else if (p === "notifications") {
+
+    content = `
+      ${languageSelector()}
+
+      <h2>${t("notificationsTitle")}</h2>
+
+      <div id="notificationsContent">
+        Loading...
+      </div>
+    `;
+
+  } else if (p === "support") {
+
+    content = `
+      ${languageSelector()}
+
+      <h2>${t("supportTitle")}</h2>
+
+      <div class="notice">
+        ${t("supportText")}
+      </div>
+
+      <div class="support-card">
+
+        <a
+          href="https://t.me/my_Dailytrxbot"
+          target="_blank"
+          rel="noopener"
+        >
+          ${t("contactSupport")}
+        </a>
+
+        <a
+          href="https://t.me/mydailytrx_bot"
+          target="_blank"
+          rel="noopener"
+        >
+          ${t("telegramChannel")}
+        </a>
+
+      </div>
+    `;
+
+  } else if (p === "profile") {
+
+    const user =
+      telegramApp?.initDataUnsafe?.user || {};
+
+    content = `
+      ${languageSelector()}
+
+      <h2>${t("profileTitle")}</h2>
+
+      <div class="profile-card">
+
+        <p>
+          <strong>${t("username")}:</strong>
+          @${escapeHtml(user.username || "-")}
+        </p>
+
+        <p>
+          <strong>${t("telegramId")}:</strong>
+          ${escapeHtml(user.id || "-")}
+        </p>
+
+      </div>
+    `;
+
+  } else if (p === "admin") {
+
+    content = `
+      ${languageSelector()}
+
+      <h2>${t("adminTitle")}</h2>
+
+      <div class="admin-card">
+
+        <label>${t("announcementTitle")}</label>
+
+        <input
+          id="announcementTitle"
+          type="text"
+        />
+
+        <label>${t("announcementMessage")}</label>
+
+        <textarea
+          id="announcementMessage"
+          rows="5"
+        ></textarea>
+
+        <label>${t("imageUrl")}</label>
+
+        <input
+          id="announcementImage"
+          type="url"
+        />
+
+        <label>${t("startTime")}</label>
+
+        <input
+          id="announcementStart"
+          type="datetime-local"
+        />
+
+        <label>${t("endTime")}</label>
+
+        <input
+          id="announcementEnd"
+          type="datetime-local"
+        />
+
+        <label>
+          <input
+            id="announcementActive"
+            type="checkbox"
+            checked
+          />
+          ${t("active")}
+        </label>
+
+        <button id="publishAnnouncement">
+          ${t("publishAnnouncement")}
+        </button>
+
+        <div
+          id="announcementMessageBox"
+          class="form-message"
+        ></div>
+
+      </div>
+    `;
   }
 
-
-  page.innerHTML =
-    content;
-
-
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-
+  page.innerHTML = content;
 
   setupLanguageSelector();
 
-
-  if (p === 'deposit') {
+  if (p === "deposit") {
     setupDeposit();
   }
 
+  if (p === "withdraw") {
+    setupWithdraw();
+  }
 
-  if (p === 'wallet') {
+  if (p === "wallet") {
     setupWallet();
   }
 
-
-  if (p === 'investment') {
+  if (p === "investment") {
     setupInvestment();
   }
 
-
-  if (p === 'notifications') {
+  if (p === "notifications") {
     setupNotifications();
   }
 
-
-  if (p === 'admin') {
+  if (p === "admin") {
     setupAdminAnnouncement();
   }
 
-
-  applyLanguage();
-
+  setupNavigation();
 }
 
+function setupNavigation() {
+  document
+    .querySelectorAll("[data-page]")
+    .forEach(button => {
 
-/* =========================
-   DEPOSIT
-========================= */
+      button.addEventListener("click", () => {
+        render(button.dataset.page);
+      });
 
-function setupDeposit() {
+    });
+}
 
-  const button =
-    document.getElementById(
-      'submitDeposit'
-    );
+async function setupDeposit() {
 
   const copyButton =
-    document.getElementById(
-      'copyDepositAddress'
-    );
+    document.getElementById("copyDepositAddress");
 
+  const submitButton =
+    document.getElementById("submitDeposit");
+
+  const amountInput =
+    document.getElementById("depositAmount");
+
+  const txInput =
+    document.getElementById("depositTxHash");
+
+  const message =
+    document.getElementById("depositMessage");
 
   if (copyButton) {
 
-    copyButton.addEventListener(
-      'click',
-      async () => {
-
-        try {
-
-          await navigator.clipboard.writeText(
-            DEPOSIT_ADDRESS
-          );
-
-          copyButton.textContent =
-            t('addressCopied');
-
-
-          setTimeout(() => {
-
-            copyButton.textContent =
-              t('copyAddress');
-
-          }, 2000);
-
-        } catch (error) {
-
-          copyButton.textContent =
-            t('copyFailed');
-
-
-          setTimeout(() => {
-
-            copyButton.textContent =
-              t('copyAddress');
-
-          }, 2000);
-
-        }
-
-      }
-    );
-
-  }
-
-
-  if (!button) {
-    return;
-  }
-
-
-  button.addEventListener(
-    'click',
-    async () => {
-
-      const amount =
-        document
-          .getElementById(
-            'depositAmount'
-          )
-          .value
-          .trim();
-
-
-      const txHash =
-        document
-          .getElementById(
-            'depositTx'
-          )
-          .value
-          .trim();
-
-
-      const message =
-        document.getElementById(
-          'depositMessage'
-        );
-
-
-      if (!amount || !txHash) {
-
-        message.textContent =
-          t('enterAmountHash');
-
-        return;
-      }
-
-
-      const telegramUser =
-        telegramApp?.initDataUnsafe?.user;
-
-
-      if (!telegramUser?.id) {
-
-        message.textContent =
-          t('openFromTelegram');
-
-        return;
-      }
-
-
-      button.disabled =
-        true;
-
-      button.textContent =
-        t('submitting');
-
+    copyButton.addEventListener("click", async () => {
 
       try {
 
-        const response =
-          await fetch(
-            '/api/deposit',
-            {
+        await navigator.clipboard.writeText(
+          DEPOSIT_ADDRESS
+        );
 
-              method: 'POST',
+        copyButton.textContent = "Copied ✓";
 
-              headers: {
-                'Content-Type':
-                  'application/json'
-              },
-
-              body: JSON.stringify({
-
-                telegram_chat_id:
-                  String(
-                    telegramUser.id
-                  ),
-
-                amount_trx:
-                  amount,
-
-                tx_hash:
-                  txHash
-
-              })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (
-          !response.ok ||
-          !data.ok
-        ) {
-
-          throw new Error(
-            data.message ||
-            t('depositFailed')
-          );
-
-        }
-
-
-        message.textContent =
-          t('depositSubmitted');
-
-
-        document.getElementById(
-          'depositAmount'
-        ).value = '';
-
-
-        document.getElementById(
-          'depositTx'
-        ).value = '';
-
+        setTimeout(() => {
+          copyButton.textContent =
+            t("copyAddress");
+        }, 1500);
 
       } catch (error) {
 
         message.textContent =
-          '❌ ' +
+          DEPOSIT_ADDRESS;
+      }
+
+    });
+  }
+
+  if (!submitButton) return;
+
+  submitButton.addEventListener(
+    "click",
+    async () => {
+
+      const telegramId =
+        getTelegramId();
+
+      if (!telegramId) {
+        message.textContent =
+          t("openFromTelegram");
+        return;
+      }
+
+      const amount =
+        Number(amountInput?.value || 0);
+
+      const txHash =
+        String(txInput?.value || "")
+          .trim();
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+        message.textContent =
+          t("invalidAmount");
+        return;
+      }
+
+      if (!/^[a-fA-F0-9]{64}$/.test(txHash)) {
+        message.textContent =
+          "Invalid TRON transaction hash";
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent =
+        t("verifying");
+
+      message.textContent = "";
+
+      try {
+
+        const response =
+          await fetch("/api/deposit", {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              telegram_chat_id:
+                telegramId,
+              amount_trx:
+                amount,
+              tx_hash:
+                txHash
+            })
+          });
+
+        const data =
+          await response.json();
+
+        if (!response.ok || !data.ok) {
+          throw new Error(
+            data?.message ||
+            "Deposit submission failed."
+          );
+        }
+
+        message.textContent =
+          data.message ||
+          t("depositSubmitted");
+
+        amountInput.value = "";
+        txInput.value = "";
+
+      } catch (error) {
+
+        message.textContent =
+          "❌ " +
           (
             error.message ||
-            t('depositFailed')
+            t("depositFailed")
           );
 
       } finally {
 
-        button.disabled =
-          false;
-
-        button.textContent =
-          t('submitDeposit');
-
+        submitButton.disabled = false;
+        submitButton.textContent =
+          t("submitDeposit");
       }
 
     }
   );
-
 }
 
+async function setupWithdraw() {
 
-/* =========================
-   WALLET
-========================= */
+  const amountInput =
+    document.getElementById("withdrawAmount");
+
+  const addressInput =
+    document.getElementById("withdrawAddress");
+
+  const submitButton =
+    document.getElementById("submitWithdraw");
+
+  const message =
+    document.getElementById("withdrawMessage");
+
+  if (!submitButton) return;
+
+  submitButton.addEventListener(
+    "click",
+    async () => {
+
+      const telegramId =
+        getTelegramId();
+
+      if (!telegramId) {
+        message.textContent =
+          t("openFromTelegram");
+        return;
+      }
+
+      const amount =
+        Number(amountInput?.value || 0);
+
+      const address =
+        String(addressInput?.value || "")
+          .trim();
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+        message.textContent =
+          t("invalidAmount");
+        return;
+      }
+
+      if (amount < 20) {
+        message.textContent =
+          t("minimumAmount");
+        return;
+      }
+
+      if (
+        !address ||
+        !address.startsWith("T") ||
+        address.length !== 34
+      ) {
+        message.textContent =
+          t("invalidAddress");
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent =
+        t("withdrawing");
+
+      message.textContent = "";
+
+      try {
+
+        const response =
+          await fetch("/api/withdraw", {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              telegram_chat_id:
+                telegramId,
+              amount_trx:
+                amount,
+              destination_address:
+                address
+            })
+          });
+
+        const data =
+          await response.json();
+
+        if (!response.ok || !data.ok) {
+          throw new Error(
+            data?.message ||
+            t("withdrawFailed")
+          );
+        }
+
+        message.textContent =
+          "✅ " +
+          (
+            data.message ||
+            t("withdrawSubmitted")
+          );
+
+        amountInput.value = "";
+        addressInput.value = "";
+
+      } catch (error) {
+
+        message.textContent =
+          "❌ " +
+          (
+            error.message ||
+            t("withdrawFailed")
+          );
+
+      } finally {
+
+        submitButton.disabled = false;
+
+        submitButton.textContent =
+          t("submitWithdraw");
+      }
+
+    }
+  );
+}
+// ===============================
+// PART 2 / 2
+// ===============================
 
 async function setupWallet() {
 
-  const available =
-    document.getElementById(
-      'availableBalance'
-    );
+  const walletContent =
+    document.getElementById("walletContent");
 
+  if (!walletContent) return;
 
-  const locked =
-    document.getElementById(
-      'lockedBalance'
-    );
+  const telegramId =
+    getTelegramId();
 
-
-  const message =
-    document.getElementById(
-      'walletMessage'
-    );
-
-
-  const telegramUser =
-    telegramApp?.initDataUnsafe?.user;
-
-
-  if (!telegramUser?.id) {
-
-    available.textContent =
-      '0 TRX';
-
-    locked.textContent =
-      '0 TRX';
-
-    message.textContent =
-      t('openFromTelegram');
-
+  if (!telegramId) {
+    walletContent.innerHTML = `
+      <div class="notice">
+        ${t("openFromTelegram")}
+      </div>
+    `;
     return;
   }
-
 
   try {
 
     const response =
       await fetch(
         `/api/wallet?telegram_chat_id=${encodeURIComponent(
-          String(
-            telegramUser.id
-          )
+          telegramId
         )}`
       );
-
 
     const data =
       await response.json();
 
-
-    if (
-      !response.ok ||
-      !data.ok
-    ) {
-
+    if (!response.ok || !data.ok) {
       throw new Error(
-        data.message ||
-        'Could not load wallet'
+        data?.message ||
+        "Could not load wallet"
       );
-
     }
 
+    const wallet =
+      data.wallet || data;
 
-    available.textContent =
-      `${Number(
-        data.available_trx || 0
-      ).toFixed(6)} TRX`;
+    const available =
+      Number(
+        wallet.available_trx ||
+        wallet.available ||
+        0
+      );
 
+    const locked =
+      Number(
+        wallet.locked_trx ||
+        wallet.locked ||
+        0
+      );
 
-    locked.textContent =
-      `${Number(
-        data.locked_trx || 0
-      ).toFixed(6)} TRX`;
+    const total =
+      available + locked;
 
+    walletContent.innerHTML = `
 
-    message.textContent =
-      '';
+      <div class="wallet-grid">
 
+        <div class="balance-card">
+          <span>${t("totalBalance")}</span>
+          <strong>
+            ${formatTRX(total)} TRX
+          </strong>
+        </div>
+
+        <div class="balance-card">
+          <span>${t("availableBalance")}</span>
+          <strong>
+            ${formatTRX(available)} TRX
+          </strong>
+        </div>
+
+        <div class="balance-card">
+          <span>${t("lockedBalance")}</span>
+          <strong>
+            ${formatTRX(locked)} TRX
+          </strong>
+        </div>
+
+      </div>
+
+    `;
 
   } catch (error) {
 
-    available.textContent =
-      '0 TRX';
-
-    locked.textContent =
-      '0 TRX';
-
-    message.textContent =
-      t('couldNotLoadWallet');
-
+    walletContent.innerHTML = `
+      <div class="notice">
+        ❌ ${
+          escapeHtml(
+            error.message ||
+            "Could not load wallet"
+          )
+        }
+      </div>
+    `;
   }
-
 }
 
 
-/* =========================
-   INVESTMENT
-========================= */
+// ===============================
+// INVESTMENT
+// ===============================
 
 async function setupInvestment() {
 
-  const plansContainer =
+  const container =
     document.getElementById(
-      'investmentPlans'
+      "investmentPlans"
     );
 
-
-  const message =
-    document.getElementById(
-      'investmentMessage'
-    );
-
-
-  const telegramUser =
-    telegramApp?.initDataUnsafe?.user;
-
-
-  if (!telegramUser?.id) {
-
-    message.textContent =
-      t('openFromTelegram');
-
-    return;
-  }
-
+  if (!container) return;
 
   try {
 
     const response =
       await fetch(
-        '/api/investment-plans'
+        "/api/investment-plans"
       );
-
 
     const data =
       await response.json();
 
-
-    if (
-      !response.ok ||
-      !data.ok
-    ) {
-
+    if (!response.ok || !data.ok) {
       throw new Error(
-        data.message ||
-        t('couldNotLoadPlans')
+        data?.message ||
+        "Could not load investment plans"
       );
-
     }
 
-
     const plans =
-      Array.isArray(data.plans)
-        ? data.plans
-        : [];
-
+      data.plans ||
+      data.investment_plans ||
+      [];
 
     if (!plans.length) {
 
-      message.textContent =
-        t('noPlans');
-
-      return;
-    }
-
-
-    message.textContent =
-      '';
-
-
-    plansContainer.innerHTML =
-      plans.map(
-        plan => {
-
-          const amount =
-            Number(
-              plan.amount_trx || 0
-            );
-
-
-          const daily =
-            Number(
-              plan.daily_profit_trx || 0
-            );
-
-
-          const duration =
-            Number(
-              plan.duration_days || 0
-            );
-
-
-          const totalProfit =
-            daily * duration;
-
-
-          return `
-
-            <div
-              class="stats"
-              style="display:block;"
-            >
-
-              <div
-                style="margin-bottom:10px;"
-              >
-
-                <strong
-                  style="
-                    font-size:18px;
-                    display:block;
-                  "
-                >
-                  ${escapeHtml(
-                    plan.name
-                  )}
-                </strong>
-
-              </div>
-
-
-              <div
-                style="
-                  display:grid;
-                  grid-template-columns:
-                    1fr 1fr;
-                  gap:10px;
-                "
-              >
-
-                <div>
-
-                  <small>
-                    ${t('investment')}
-                  </small>
-
-                  <strong>
-                    ${formatTRX(amount)}
-                  </strong>
-
-                </div>
-
-
-                <div>
-
-                  <small>
-                    ${t('dailyProfit')}
-                  </small>
-
-                  <strong>
-                    ${formatTRX(daily)}
-                  </strong>
-
-                </div>
-
-
-                <div>
-
-                  <small>
-                    ${t('duration')}
-                  </small>
-
-                  <strong>
-                    ${duration}
-                    ${t('days')}
-                  </strong>
-
-                </div>
-
-
-                <div>
-
-                  <small>
-                    ${t('totalProfit')}
-                  </small>
-
-                  <strong>
-                    ${formatTRX(totalProfit)}
-                  </strong>
-
-                </div>
-
-              </div>
-
-
-              <button
-                class="investButton"
-                data-plan-id="${plan.id}"
-                style="
-                  width:100%;
-                  padding:13px;
-                  margin-top:14px;
-                  border:0;
-                  border-radius:10px;
-                  cursor:pointer;
-                "
-              >
-                ${t('investNow')}
-              </button>
-
-            </div>
-
-          `;
-
-        }
-      ).join('');
-
-
-    document
-      .querySelectorAll(
-        '.investButton'
-      )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            'click',
-            () => {
-
-              investInPlan(
-                button,
-                button.dataset.planId
-              );
-
-            }
-          );
-
-        }
-      );
-
-
-  } catch (error) {
-
-    message.textContent =
-      '❌ ' +
-      (
-        error.message ||
-        t('couldNotLoadPlans')
-      );
-
-  }
-
-}
-
-
-/* =========================
-   CREATE INVESTMENT
-========================= */
-
-async function investInPlan(
-  button,
-  planId
-) {
-
-  const telegramUser =
-    telegramApp?.initDataUnsafe?.user;
-
-
-  if (!telegramUser?.id) {
-
-    alert(
-      t('openFromTelegram')
-    );
-
-    return;
-  }
-
-
-  const confirmed =
-    window.confirm(
-      t('confirmInvestment')
-    );
-
-
-  if (!confirmed) {
-    return;
-  }
-
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    t('processing');
-
-
-  try {
-
-    const response =
-      await fetch(
-        '/api/create-investment',
-        {
-
-          method: 'POST',
-
-          headers: {
-            'Content-Type':
-              'application/json'
-          },
-
-          body: JSON.stringify({
-
-            telegram_chat_id:
-              String(
-                telegramUser.id
-              ),
-
-            plan_id:
-              Number(planId)
-
-          })
-
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !response.ok ||
-      !data.ok
-    ) {
-
-      throw new Error(
-        data.message ||
-        t('investmentFailed')
-      );
-
-    }
-
-
-    alert(
-      t('investmentCreated')
-    );
-
-
-    await setupInvestment();
-
-
-  } catch (error) {
-
-    alert(
-      '❌ ' +
-      (
-        error.message ||
-        t('investmentFailed')
-      )
-    );
-
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      t('investNow');
-
-  }
-
-}
-
-
-/* =========================
-   NOTIFICATIONS
-========================= */
-
-async function setupNotifications() {
-
-  const container =
-    document.getElementById(
-      'notificationsList'
-    );
-
-
-  if (!container) {
-    return;
-  }
-
-
-  const telegramUser =
-    telegramApp?.initDataUnsafe?.user;
-
-
-  if (!telegramUser?.id) {
-
-    container.innerHTML = `
-      <div class="notice">
-        ${t('openFromTelegram')}
-      </div>
-    `;
-
-    return;
-  }
-
-
-  container.innerHTML = `
-    <div class="notice">
-      ${t('notificationLoading')}
-    </div>
-  `;
-
-
-  try {
-
-    const response =
-      await fetch(
-        `/api/notifications?telegram_chat_id=${encodeURIComponent(
-          String(
-            telegramUser.id
-          )
-        )}`
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !response.ok ||
-      !data.ok
-    ) {
-
-      throw new Error(
-        data.message ||
-        t('notificationError')
-      );
-
-    }
-
-
-    const notifications =
-      Array.isArray(
-        data.notifications
-      )
-        ? data.notifications
-        : [];
-
-
-    if (!notifications.length) {
-
       container.innerHTML = `
         <div class="notice">
-          🔔 ${t('noNotifications')}
+          No investment plans available.
         </div>
       `;
 
       return;
     }
 
+    container.innerHTML =
+      plans.map((plan, index) => {
+
+        const id =
+          plan.id ??
+          plan.plan_id ??
+          index + 1;
+
+        const name =
+          plan.name ||
+          plan.title ||
+          `Investment Plan #${index + 1}`;
+
+        const minimum =
+          Number(
+            plan.minimum_amount ||
+            plan.min_amount ||
+            plan.amount ||
+            0
+          );
+
+        const daily =
+          Number(
+            plan.daily_profit ||
+            plan.daily_return ||
+            0
+          );
+
+        const days =
+          Number(
+            plan.duration_days ||
+            plan.days ||
+            30
+          );
+
+        const totalProfit =
+          daily * days;
+
+        return `
+
+          <div class="investment-card">
+
+            <h3>
+              ${escapeHtml(name)}
+            </h3>
+
+            <p>
+              Minimum:
+              <strong>
+                ${formatTRX(minimum)} TRX
+              </strong>
+            </p>
+
+            <p>
+              Daily Profit:
+              <strong>
+                ${formatTRX(daily)} TRX
+              </strong>
+            </p>
+
+            <p>
+              Duration:
+              <strong>
+                ${days} Days
+              </strong>
+            </p>
+
+            <p>
+              Total Profit:
+              <strong>
+                ${formatTRX(totalProfit)} TRX
+              </strong>
+            </p>
+
+            <button
+              class="invest-button"
+              data-plan-id="${escapeHtml(id)}"
+              data-plan-name="${escapeHtml(name)}"
+              data-minimum="${minimum}"
+            >
+              ${t("invest")}
+            </button>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+    document
+      .querySelectorAll(".invest-button")
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          async () => {
+
+            await investInPlan({
+              planId:
+                button.dataset.planId,
+
+              planName:
+                button.dataset.planName,
+
+              minimum:
+                Number(
+                  button.dataset.minimum || 0
+                ),
+
+              button
+            });
+
+          }
+        );
+
+      });
+
+  } catch (error) {
+
+    container.innerHTML = `
+      <div class="notice">
+        ❌ ${
+          escapeHtml(
+            error.message ||
+            "Could not load investment plans"
+          )
+        }
+      </div>
+    `;
+  }
+}
+
+
+async function investInPlan({
+  planId,
+  planName,
+  minimum,
+  button
+}) {
+
+  const telegramId =
+    getTelegramId();
+
+  const message =
+    document.getElementById(
+      "investmentMessage"
+    );
+
+  if (!telegramId) {
+
+    if (message) {
+      message.textContent =
+        t("openFromTelegram");
+    }
+
+    return;
+  }
+
+  const amountText =
+    prompt(
+      `Enter investment amount in TRX.\nMinimum: ${minimum} TRX`
+    );
+
+  if (
+    amountText === null
+  ) {
+    return;
+  }
+
+  const amount =
+    Number(
+      String(amountText).trim()
+    );
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ) {
+
+    if (message) {
+      message.textContent =
+        t("invalidAmount");
+    }
+
+    return;
+  }
+
+  if (amount < minimum) {
+
+    if (message) {
+      message.textContent =
+        `Minimum investment is ${formatTRX(
+          minimum
+        )} TRX.`;
+    }
+
+    return;
+  }
+
+  if (button) {
+    button.disabled = true;
+    button.textContent =
+      t("investing");
+  }
+
+  if (message) {
+    message.textContent = "";
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        "/api/create-investment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+          body: JSON.stringify({
+            telegram_chat_id:
+              telegramId,
+
+            plan_id:
+              planId,
+
+            amount_trx:
+              amount
+          })
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(
+        data?.message ||
+        t("investmentFailed")
+      );
+    }
+
+    if (message) {
+
+      message.textContent =
+        "✅ " +
+        (
+          data.message ||
+          t("investmentCreated")
+        );
+    }
+
+    await setupWallet();
+
+  } catch (error) {
+
+    if (message) {
+
+      message.textContent =
+        "❌ " +
+        (
+          error.message ||
+          t("investmentFailed")
+        );
+    }
+
+  } finally {
+
+    if (button) {
+
+      button.disabled = false;
+
+      button.textContent =
+        t("invest");
+    }
+  }
+}
+
+
+// ===============================
+// NOTIFICATIONS
+// ===============================
+
+async function setupNotifications() {
+
+  const container =
+    document.getElementById(
+      "notificationsContent"
+    );
+
+  if (!container) return;
+
+  const telegramId =
+    getTelegramId();
+
+  if (!telegramId) {
+
+    container.innerHTML = `
+      <div class="notice">
+        ${t("openFromTelegram")}
+      </div>
+    `;
+
+    return;
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        `/api/notifications?telegram_chat_id=${encodeURIComponent(
+          telegramId
+        )}`
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(
+        data?.message ||
+        "Could not load notifications"
+      );
+    }
+
+    const notifications =
+      data.notifications || [];
+
+    if (!notifications.length) {
+
+      container.innerHTML = `
+        <div class="notice">
+          ${t("noNotifications")}
+        </div>
+      `;
+
+      return;
+    }
 
     container.innerHTML =
-      notifications.map(
-        notification => {
+      notifications
+        .map(notification => {
 
-          const type =
-            String(
-              notification.type ||
-              'system'
-            ).toLowerCase();
+          const title =
+            notification.title ||
+            "Notification";
 
+          const message =
+            notification.message ||
+            "";
 
           const status =
-            String(
-              notification.status ||
-              ''
-            ).toLowerCase();
-
-
-          let icon =
-            '🔔';
-
-
-          let typeName =
-            t('notificationSystem');
-
-
-          if (type === 'deposit') {
-
-            icon =
-              '💰';
-
-            typeName =
-              t('notificationDeposit');
-
-          }
-
-
-          if (type === 'withdraw') {
-
-            icon =
-              '💸';
-
-            typeName =
-              t('notificationWithdraw');
-
-          }
-
-
-          if (type === 'investment') {
-
-            icon =
-              '📈';
-
-            typeName =
-              t('notificationInvestment');
-
-          }
-
-
-          if (type === 'referral') {
-
-            icon =
-              '👥';
-
-            typeName =
-              t('notificationReferral');
-
-          }
-
-
-          let statusText =
             notification.status ||
-            '';
-
-
-          if (status === 'verified') {
-
-            statusText =
-              t('verified');
-
-          } else if (
-            status === 'pending'
-          ) {
-
-            statusText =
-              t('pending');
-
-          } else if (
-            status === 'rejected'
-          ) {
-
-            statusText =
-              t('rejected');
-
-          } else if (
-            status === 'completed'
-          ) {
-
-            statusText =
-              t('completed');
-
-          }
-
-
-          let dateText =
-            '';
-
-
-          if (
-            notification.created_at
-          ) {
-
-            try {
-
-              dateText =
-                new Date(
-                  notification.created_at
-                ).toLocaleString();
-
-            } catch (error) {
-
-              dateText =
-                notification.created_at;
-
-            }
-
-          }
-
+            "";
 
           const amount =
-            Number(
-              notification.amount_trx ||
-              0
-            );
+            notification.amount_trx;
 
-
-          const amountHtml =
-            amount > 0
-              ? `
-
-                <div
-                  style="
-                    margin-top:10px;
-                    font-size:18px;
-                    font-weight:700;
-                  "
-                >
-                  ${formatTRX(
-                    amount
-                  )}
-                </div>
-
-              `
-              : '';
-
-
-          const statusHtml =
-            statusText
-              ? `
-
-                <span
-                  style="
-                    display:inline-block;
-                    margin-top:8px;
-                    padding:5px 9px;
-                    border-radius:999px;
-                    background:rgba(34,197,94,.12);
-                    font-size:12px;
-                    font-weight:600;
-                  "
-                >
-                  ${escapeHtml(
-                    statusText
-                  )}
-                </span>
-
-              `
-              : '';
-
+          const date =
+            notification.created_at
+              ? new Date(
+                  notification.created_at
+                ).toLocaleString()
+              : "";
 
           return `
 
-            <div
-              class="stats"
-              style="
-                display:block;
-                padding:16px;
-                border-radius:16px;
-                position:relative;
-                overflow:hidden;
-              "
-            >
+            <div class="notification-card">
 
-              <div
-                style="
-                  display:flex;
-                  align-items:flex-start;
-                  gap:12px;
-                "
-              >
+              <div class="notification-header">
 
-                <div
-                  style="
-                    width:44px;
-                    height:44px;
-                    min-width:44px;
-                    border-radius:14px;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    background:rgba(255,255,255,.08);
-                    font-size:22px;
-                  "
-                >
-                  ${icon}
-                </div>
+                <strong>
+                  ${escapeHtml(title)}
+                </strong>
 
-
-                <div
-                  style="
-                    flex:1;
-                    min-width:0;
-                  "
-                >
-
-                  <div
-                    style="
-                      display:flex;
-                      justify-content:space-between;
-                      gap:8px;
-                      flex-wrap:wrap;
-                    "
-                  >
-
-                    <strong
-                      style="
-                        font-size:16px;
-                      "
-                    >
-                      ${escapeHtml(
-                        notification.title ||
-                        typeName
-                      )}
-                    </strong>
-
-
-                    <small
-                      style="
-                        opacity:.55;
-                        white-space:nowrap;
-                      "
-                    >
-                      ${escapeHtml(
-                        dateText
-                      )}
-                    </small>
-
-                  </div>
-
-
-                  <div
-                    style="
-                      margin-top:7px;
-                      line-height:1.55;
-                      opacity:.82;
-                      font-size:14px;
-                      white-space:pre-wrap;
-                    "
-                  >
-                    ${escapeHtml(
-                      notification.message ||
-                      ''
-                    )}
-                  </div>
-
-
-                  ${amountHtml}
-
-
-                  ${statusHtml}
-
-                </div>
+                ${
+                  status
+                    ? `
+                      <span class="notification-status">
+                        ${escapeHtml(status)}
+                      </span>
+                    `
+                    : ""
+                }
 
               </div>
+
+              <p>
+                ${escapeHtml(message)}
+              </p>
+
+              ${
+                amount !== null &&
+                amount !== undefined
+                  ? `
+                    <div>
+                      ${formatTRX(
+                        amount
+                      )} TRX
+                    </div>
+                  `
+                  : ""
+              }
+
+              ${
+                date
+                  ? `
+                    <small>
+                      ${escapeHtml(date)}
+                    </small>
+                  `
+                  : ""
+              }
 
             </div>
 
           `;
 
-        }
-      ).join('');
-
+        })
+        .join("");
 
   } catch (error) {
 
-    console.error(
-      'Notifications error:',
-      error
-    );
-
-
     container.innerHTML = `
       <div class="notice">
-        ❌ ${escapeHtml(
-          error.message ||
-          t('notificationError')
-        )}
+        ❌ ${
+          escapeHtml(
+            error.message ||
+            "Could not load notifications"
+          )
+        }
       </div>
     `;
-
   }
-
 }
 
 
-/* =========================
-   ADMIN ANNOUNCEMENT
-========================= */
+// ===============================
+// ADMIN ANNOUNCEMENT
+// ===============================
 
-function setupAdminAnnouncement() {
+async function setupAdminAnnouncement() {
 
-  const telegramUser =
-    telegramApp?.initDataUnsafe?.user;
-
-
-  if (
-    String(telegramUser?.id || '') !==
-    ADMIN_TELEGRAM_ID
-  ) {
-    return;
-  }
-
-
-  const button =
+  const publishButton =
     document.getElementById(
-      'createAnnouncement'
+      "publishAnnouncement"
     );
 
+  const messageBox =
+    document.getElementById(
+      "announcementMessageBox"
+    );
 
-  if (!button) {
-    return;
-  }
+  if (!publishButton) return;
 
+  const telegramId =
+    getTelegramId();
 
-  button.addEventListener(
-    'click',
+  publishButton.addEventListener(
+    "click",
     async () => {
 
-      const title =
-        document
-          .getElementById(
-            'announcementTitle'
-          )
-          .value
-          .trim();
-
-
-      const message =
-        document
-          .getElementById(
-            'announcementMessage'
-          )
-          .value
-          .trim();
-
-
-      const imageUrl =
-        document
-          .getElementById(
-            'announcementImage'
-          )
-          .value
-          .trim();
-
-
-      const startsAt =
-        document
-          .getElementById(
-            'announcementStart'
-          )
-          .value;
-
-
-      const endsAt =
-        document
-          .getElementById(
-            'announcementEnd'
-          )
-          .value;
-
-
-      const active =
-        document
-          .getElementById(
-            'announcementActive'
-          )
-          .checked;
-
-
-      const result =
-        document.getElementById(
-          'announcementAdminMessage'
-        );
-
-
       if (
-        !title ||
-        !message ||
-        !startsAt
+        telegramId !==
+        ADMIN_TELEGRAM_ID
       ) {
 
-        result.textContent =
-          '❌ Title, message and start time are required.';
+        messageBox.textContent =
+          "Admin access required.";
 
         return;
       }
 
+      const title =
+        document.getElementById(
+          "announcementTitle"
+        )?.value.trim();
 
-      button.disabled =
-        true;
+      const message =
+        document.getElementById(
+          "announcementMessage"
+        )?.value.trim();
 
-      button.textContent =
-        t('creatingAnnouncement');
+      const imageUrl =
+        document.getElementById(
+          "announcementImage"
+        )?.value.trim();
 
-      result.textContent =
-        '';
+      const start =
+        document.getElementById(
+          "announcementStart"
+        )?.value;
 
+      const end =
+        document.getElementById(
+          "announcementEnd"
+        )?.value;
+
+      const active =
+        document.getElementById(
+          "announcementActive"
+        )?.checked === true;
+
+      if (!title || !message || !start) {
+
+        messageBox.textContent =
+          "Title, message and start time are required.";
+
+        return;
+      }
+
+      publishButton.disabled = true;
+
+      publishButton.textContent =
+        t("publishing");
+
+      messageBox.textContent = "";
 
       try {
 
+        const startsAt =
+          new Date(start)
+            .toISOString();
+
+        const endsAt =
+          end
+            ? new Date(end)
+                .toISOString()
+            : null;
+
         const response =
           await fetch(
-            '/api/admin/announcement',
+            "/api/admin/announcement",
             {
-
-              method: 'POST',
-
+              method: "POST",
               headers: {
-                'Content-Type':
-                  'application/json'
+                "Content-Type":
+                  "application/json"
               },
-
               body: JSON.stringify({
-
                 telegram_chat_id:
-                  String(
-                    telegramUser.id
-                  ),
+                  telegramId,
 
-                title:
-                  title,
-
-                message:
-                  message,
+                title,
+                message,
 
                 image_url:
                   imageUrl || null,
 
                 starts_at:
-                  new Date(
-                    startsAt
-                  ).toISOString(),
+                  startsAt,
 
                 ends_at:
-                  endsAt
-                    ? new Date(
-                        endsAt
-                      ).toISOString()
-                    : null,
+                  endsAt,
 
-                active:
-                  active
-
+                active
               })
-
             }
           );
-
 
         const data =
           await response.json();
 
-
-        if (
-          !response.ok ||
-          !data.ok
-        ) {
-
+        if (!response.ok || !data.ok) {
           throw new Error(
-            data.message ||
-            t('announcementFailed')
+            data?.message ||
+            "Could not create announcement"
           );
-
         }
 
-
-        result.textContent =
-          t('announcementCreated');
-
-
-        document.getElementById(
-          'announcementTitle'
-        ).value = '';
-
+        messageBox.textContent =
+          "✅ " +
+          (
+            data.message ||
+            "Announcement created successfully."
+          );
 
         document.getElementById(
-          'announcementMessage'
-        ).value = '';
-
-
-        document.getElementById(
-          'announcementImage'
-        ).value = '';
-
+          "announcementTitle"
+        ).value = "";
 
         document.getElementById(
-          'announcementStart'
-        ).value = '';
-
-
-        document.getElementById(
-          'announcementEnd'
-        ).value = '';
-
+          "announcementMessage"
+        ).value = "";
 
         document.getElementById(
-          'announcementActive'
-        ).checked = true;
-
+          "announcementImage"
+        ).value = "";
 
       } catch (error) {
 
-        result.textContent =
-          '❌ ' +
+        messageBox.textContent =
+          "❌ " +
           (
             error.message ||
-            t('announcementFailed')
+            "Announcement failed"
           );
 
       } finally {
 
-        button.disabled =
-          false;
+        publishButton.disabled = false;
 
-        button.textContent =
-          t('createAnnouncement');
-
+        publishButton.textContent =
+          t("publishAnnouncement");
       }
 
     }
   );
-
 }
 
 
-/* =========================
-   HELPERS
-========================= */
-
-function formatTRX(value) {
-
-  const number =
-    Number(value || 0);
-
-
-  return (
-    number.toLocaleString(
-      undefined,
-      {
-        maximumFractionDigits: 6
-      }
-    ) +
-    ' TRX'
-  );
-
-}
-
-
-function escapeHtml(value) {
-
-  return String(
-    value ?? ''
-  )
-    .replaceAll(
-      '&',
-      '&amp;'
-    )
-    .replaceAll(
-      '<',
-      '&lt;'
-    )
-    .replaceAll(
-      '>',
-      '&gt;'
-    )
-    .replaceAll(
-      '"',
-      '&quot;'
-    )
-    .replaceAll(
-      "'",
-      '&#039;'
-    );
-
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-document.addEventListener(
-  'click',
-  e => {
-
-    const b =
-      e.target.closest(
-        '[data-page]'
-      );
-
-
-    if (b) {
-
-      render(
-        b.dataset.page
-      );
-
-    }
-
-  }
-);
-
-
-/* =========================
-   THEME
-========================= */
-
-const themeButton =
-  document.getElementById(
-    'themeBtn'
-  );
-
-
-if (themeButton) {
-
-  themeButton.onclick =
-    () => {
-
-      document.body.classList.toggle(
-        'light'
-      );
-
-
-      themeButton.textContent =
-        document.body.classList.contains(
-          'light'
-        )
-          ? '☀'
-          : '☾';
-
-    };
-
-}
-
-
-/* =========================
-   INITIAL LANGUAGE
-========================= */
-
-applyLanguage();
-
-
-/* =========================
-   ADMIN BUTTON INIT
-========================= */
-
-setupAdminButton();
-
-
-/* =========================
-   GLOBAL ANNOUNCEMENT POPUP
-========================= */
+// ===============================
+// GLOBAL ANNOUNCEMENT
+// ===============================
 
 async function loadGlobalAnnouncement() {
 
@@ -2730,13 +1922,11 @@ async function loadGlobalAnnouncement() {
 
     const response =
       await fetch(
-        '/api/global-announcement'
+        "/api/global-announcement"
       );
-
 
     const data =
       await response.json();
-
 
     if (
       !response.ok ||
@@ -2746,225 +1936,217 @@ async function loadGlobalAnnouncement() {
       return;
     }
 
-
     const announcement =
       data.announcement;
 
-
-    const storageKey =
-      `daily_trx_announcement_${announcement.id}`;
-
-
-    const closedAt =
-      Number(
-        localStorage.getItem(
-          storageKey
-        ) || 0
-      );
-
-
-    const twentyFourHours =
-      24 * 60 * 60 * 1000;
-
-
-    if (
-      closedAt &&
-      Date.now() - closedAt <
-        twentyFourHours
-    ) {
-      return;
-    }
-
-
-    showGlobalAnnouncement(
-      announcement,
-      storageKey
+    showAnnouncement(
+      announcement
     );
-
 
   } catch (error) {
 
     console.error(
-      'Announcement error:',
+      "Announcement load error:",
       error
     );
-
   }
-
 }
 
 
-function showGlobalAnnouncement(
-  announcement,
-  storageKey
-) {
+function showAnnouncement(announcement) {
 
-  const oldPopup =
+  const existing =
     document.getElementById(
-      'globalAnnouncementPopup'
+      "globalAnnouncementPopup"
     );
 
-
-  if (oldPopup) {
-    oldPopup.remove();
+  if (existing) {
+    existing.remove();
   }
 
-
-  const popup =
-    document.createElement(
-      'div'
+  const title =
+    escapeHtml(
+      announcement.title || ""
     );
 
+  const message =
+    escapeHtml(
+      announcement.message || ""
+    );
+
+  const image =
+    announcement.image_url
+      ? `
+        <img
+          src="${escapeHtml(
+            announcement.image_url
+          )}"
+          alt="Announcement"
+          style="
+            width:100%;
+            border-radius:16px;
+            margin-bottom:12px;
+          "
+        />
+      `
+      : "";
+
+  const popup =
+    document.createElement("div");
 
   popup.id =
-    'globalAnnouncementPopup';
-
-
-  popup.style.cssText = `
-    position:fixed;
-    inset:0;
-    z-index:99999;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:rgba(0,0,0,.72);
-    backdrop-filter:blur(8px);
-  `;
-
+    "globalAnnouncementPopup";
 
   popup.innerHTML = `
 
-    <div
-      style="
-        width:100%;
-        max-width:420px;
-        max-height:85vh;
-        overflow:auto;
-        position:relative;
-        border-radius:22px;
-        padding:18px;
-        background:
-          linear-gradient(
-            145deg,
-            #161616,
-            #252525
-          );
-        color:#fff;
-        box-shadow:
-          0 20px 60px
-          rgba(0,0,0,.45);
-      "
-    >
+    <div class="announcement-overlay">
 
-      <button
-        id="closeAnnouncement"
-        type="button"
-        aria-label="Close"
-        style="
-          position:absolute;
-          right:12px;
-          top:12px;
-          width:36px;
-          height:36px;
-          border:0;
-          border-radius:50%;
-          background:rgba(255,255,255,.14);
-          color:#fff;
-          font-size:20px;
-          cursor:pointer;
-          z-index:2;
-        "
-      >
-        ×
-      </button>
+      <div class="announcement-modal">
 
+        <button
+          type="button"
+          id="closeAnnouncement"
+          class="announcement-close"
+        >
+          ×
+        </button>
 
-      ${
-        announcement.image_url
-          ? `
-            <img
-              src="${escapeHtml(
-                announcement.image_url
-              )}"
-              alt=""
-              style="
-                width:100%;
-                max-height:260px;
-                object-fit:cover;
-                border-radius:16px;
-                display:block;
-                margin-bottom:16px;
-              "
-            >
-          `
-          : ''
-      }
+        ${image}
 
+        <h3>
+          ${title}
+        </h3>
 
-      <h2
-        style="
-          margin:4px 40px 10px 0;
-          font-size:22px;
-        "
-      >
-        ${escapeHtml(
-          announcement.title
-        )}
-      </h2>
+        <p>
+          ${message}
+        </p>
 
-
-      <div
-        style="
-          line-height:1.6;
-          font-size:15px;
-          white-space:pre-wrap;
-          opacity:.92;
-        "
-      >
-        ${escapeHtml(
-          announcement.message
-        )}
       </div>
 
     </div>
 
   `;
 
-
   document.body.appendChild(
     popup
   );
 
-
-  const closeButton =
-    document.getElementById(
-      'closeAnnouncement'
+  document
+    .getElementById(
+      "closeAnnouncement"
+    )
+    ?.addEventListener(
+      "click",
+      () => {
+        popup.remove();
+      }
     );
-
-
-  closeButton.addEventListener(
-    'click',
-    () => {
-
-      localStorage.setItem(
-        storageKey,
-        String(
-          Date.now()
-        )
-      );
-
-
-      popup.remove();
-
-    }
-  );
-
 }
 
 
-/* =========================
-   LOAD ANNOUNCEMENT
-========================= */
+// ===============================
+// THEME
+// ===============================
+
+function setupTheme() {
+
+  const themeButton =
+    document.getElementById(
+      "themeButton"
+    );
+
+  if (!themeButton) return;
+
+  const savedTheme =
+    localStorage.getItem(
+      "dailytrx_theme"
+    ) || "light";
+
+  document.body.classList.toggle(
+    "dark",
+    savedTheme === "dark"
+  );
+
+  themeButton.addEventListener(
+    "click",
+    () => {
+
+      const isDark =
+        document.body.classList.toggle(
+          "dark"
+        );
+
+      localStorage.setItem(
+        "dailytrx_theme",
+        isDark
+          ? "dark"
+          : "light"
+      );
+
+    }
+  );
+}
+
+
+// ===============================
+// GLOBAL NAVIGATION
+// ===============================
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(
+        "[data-page]"
+      );
+
+    if (!button) return;
+
+    const target =
+      button.dataset.page;
+
+    if (!target) return;
+
+    render(target);
+  }
+);
+
+
+// ===============================
+// INITIAL LOAD
+// ===============================
+
+setupTheme();
+
+render("home");
 
 loadGlobalAnnouncement();
+
+
+// ===============================
+// TELEGRAM MAIN BUTTON
+// ===============================
+
+if (telegramApp) {
+
+  try {
+
+    telegramApp.MainButton.hide();
+
+  } catch (error) {
+
+    console.log(
+      "Telegram MainButton unavailable"
+    );
+  }
+}
+
+
+// ===============================
+// READY
+// ===============================
+
+console.log(
+  "Daily TRX app loaded successfully."
+);
