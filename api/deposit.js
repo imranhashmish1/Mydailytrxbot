@@ -73,10 +73,13 @@ export default async function handler(req, res) {
       "TRON-PRO-API-KEY": tronGridApiKey
     };
 
+    const chatId =
+      String(telegram_chat_id);
+
     // 1. Check registered user
     const userResponse = await fetch(
       `${supabaseUrl}/rest/v1/bot_users?telegram_chat_id=eq.${encodeURIComponent(
-        String(telegram_chat_id)
+        chatId
       )}&select=telegram_chat_id&limit=1`,
       {
         method: "GET",
@@ -356,7 +359,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           telegram_chat_id:
-            String(telegram_chat_id),
+            chatId,
 
           amount_trx:
             actualAmountTrx,
@@ -405,7 +408,7 @@ export default async function handler(req, res) {
             deposit.id,
 
           p_telegram_chat_id:
-            String(telegram_chat_id),
+            chatId,
 
           p_amount_trx:
             actualAmountTrx
@@ -417,12 +420,78 @@ export default async function handler(req, res) {
       await rpcResponse.text();
 
     if (!rpcResponse.ok) {
+      console.error(
+        "Wallet credit failed:",
+        rpcData
+      );
+
       return res.status(500).json({
         ok: false,
         message:
           "Deposit verified but wallet credit failed",
         error: rpcData
       });
+    }
+
+    // 12. Create personal notification
+    const notificationResponse =
+      await fetch(
+        `${supabaseUrl}/rest/v1/notifications`,
+        {
+          method: "POST",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            "Content-Type": "application/json",
+            Prefer: "return=representation"
+          },
+          body: JSON.stringify({
+            telegram_chat_id:
+              chatId,
+
+            type:
+              "deposit",
+
+            title:
+              "Deposit Verified",
+
+            message:
+              `${actualAmountTrx} TRX has been successfully verified and added to your wallet.`,
+
+            status:
+              "verified",
+
+            amount_trx:
+              actualAmountTrx,
+
+            tx_hash:
+              cleanTxHash,
+
+            metadata: {
+              deposit_id:
+                deposit.id,
+
+              deposit_address:
+                depositAddress
+            },
+
+            is_read:
+              false
+          })
+        }
+      );
+
+    const notificationData =
+      await notificationResponse.json();
+
+    if (!notificationResponse.ok) {
+      console.error(
+        "Notification creation failed:",
+        notificationData
+      );
+
+      // Deposit and wallet credit already succeeded.
+      // Do not fail the deposit because notification failed.
     }
 
     return res.status(200).json({
@@ -434,7 +503,10 @@ export default async function handler(req, res) {
         deposit.id,
 
       verified_amount_trx:
-        actualAmountTrx
+        actualAmountTrx,
+
+      notification_created:
+        notificationResponse.ok
     });
 
   } catch (error) {
@@ -449,4 +521,4 @@ export default async function handler(req, res) {
       error: error.message
     });
   }
-        }
+}
