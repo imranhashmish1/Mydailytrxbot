@@ -12,6 +12,13 @@ const DEPOSIT_ADDRESS =
 
 
 /* =========================
+   ADMIN
+========================= */
+
+const ADMIN_TELEGRAM_ID = '6504138324';
+
+
+/* =========================
    LANGUAGES
 ========================= */
 
@@ -27,6 +34,7 @@ const translations = {
     notifications: 'Notifications',
     support: 'Support',
     profile: 'Profile',
+    admin: 'Admin',
 
     language: 'Language',
     english: 'English',
@@ -92,7 +100,23 @@ const translations = {
 
     noNotifications: 'No notifications.',
     moduleReady:
-      'This module is ready for backend integration.'
+      'This module is ready for backend integration.',
+
+    adminPanel: 'Admin Panel',
+    announcementTitle: 'Announcement Title',
+    announcementMessage: 'Announcement Message',
+    imageUrl: 'Image URL',
+    startTime: 'Start Time',
+    endTime: 'End Time',
+    active: 'Active',
+    createAnnouncement: 'Create Announcement',
+    creatingAnnouncement: 'Creating...',
+    announcementCreated:
+      '✅ Announcement created successfully.',
+    announcementFailed:
+      'Failed to create announcement.',
+    adminAccessDenied:
+      'Access denied.'
   },
 
 
@@ -106,6 +130,7 @@ const translations = {
     notifications: 'خبرتیاوې',
     support: 'ملاتړ',
     profile: 'پروفایل',
+    admin: 'اډمین',
 
     language: 'ژبه',
     english: 'English',
@@ -171,7 +196,23 @@ const translations = {
 
     noNotifications: 'هیڅ خبرتیا نشته.',
     moduleReady:
-      'دا برخه د Backend اتصال لپاره چمتو ده.'
+      'دا برخه د Backend اتصال لپاره چمتو ده.',
+
+    adminPanel: 'د اډمین پینل',
+    announcementTitle: 'د اعلان سرلیک',
+    announcementMessage: 'د اعلان پیغام',
+    imageUrl: 'د عکس URL',
+    startTime: 'د پیل وخت',
+    endTime: 'د پای وخت',
+    active: 'فعال',
+    createAnnouncement: 'اعلان جوړ کړئ',
+    creatingAnnouncement: 'جوړېږي...',
+    announcementCreated:
+      '✅ اعلان په بریالیتوب سره جوړ شو.',
+    announcementFailed:
+      'د اعلان جوړول ناکام شول.',
+    adminAccessDenied:
+      'د لاسرسي اجازه نشته.'
   },
 
 
@@ -185,6 +226,7 @@ const translations = {
     notifications: 'اعلان‌ها',
     support: 'پشتیبانی',
     profile: 'پروفایل',
+    admin: 'مدیریت',
 
     language: 'زبان',
     english: 'English',
@@ -250,7 +292,23 @@ const translations = {
 
     noNotifications: 'اعلانی وجود ندارد.',
     moduleReady:
-      'این بخش برای اتصال Backend آماده است.'
+      'این بخش برای اتصال Backend آماده است.',
+
+    adminPanel: 'پنل مدیریت',
+    announcementTitle: 'عنوان اعلان',
+    announcementMessage: 'متن اعلان',
+    imageUrl: 'آدرس تصویر',
+    startTime: 'زمان شروع',
+    endTime: 'زمان پایان',
+    active: 'فعال',
+    createAnnouncement: 'ایجاد اعلان',
+    creatingAnnouncement: 'در حال ایجاد...',
+    announcementCreated:
+      '✅ اعلان با موفقیت ایجاد شد.',
+    announcementFailed:
+      'ایجاد اعلان ناموفق بود.',
+    adminAccessDenied:
+      'دسترسی مجاز نیست.'
   },
 
 
@@ -264,6 +322,7 @@ const translations = {
     notifications: 'اطلاعات',
     support: 'مدد',
     profile: 'پروفائل',
+    admin: 'ایڈمن',
 
     language: 'زبان',
     english: 'English',
@@ -329,7 +388,23 @@ const translations = {
 
     noNotifications: 'کوئی اطلاعات نہیں۔',
     moduleReady:
-      'یہ حصہ Backend کنکشن کے لیے تیار ہے۔'
+      'یہ حصہ Backend کنکشن کے لیے تیار ہے۔',
+
+    adminPanel: 'ایڈمن پینل',
+    announcementTitle: 'اعلان کا عنوان',
+    announcementMessage: 'اعلان کا پیغام',
+    imageUrl: 'تصویر کا URL',
+    startTime: 'شروع ہونے کا وقت',
+    endTime: 'ختم ہونے کا وقت',
+    active: 'فعال',
+    createAnnouncement: 'اعلان بنائیں',
+    creatingAnnouncement: 'بنایا جا رہا ہے...',
+    announcementCreated:
+      '✅ اعلان کامیابی سے بن گیا۔',
+    announcementFailed:
+      'اعلان نہیں بن سکا۔',
+    adminAccessDenied:
+      'رسائی کی اجازت نہیں ہے۔'
   }
 
 };
@@ -401,8 +476,11 @@ function applyLanguage() {
 
       button.textContent =
         translations[currentLanguage][key];
+
     }
+
   });
+
 }
 
 
@@ -478,8 +556,50 @@ function setupLanguageSelector() {
 
     }
   );
+
 }
 
+
+/* =========================
+   ADMIN BUTTON
+========================= */
+
+function setupAdminButton() {
+
+  const telegramUser =
+    telegramApp?.initDataUnsafe?.user;
+
+  if (
+    String(telegramUser?.id || '') !==
+    ADMIN_TELEGRAM_ID
+  ) {
+    return;
+  }
+
+  const bottom =
+    document.querySelector('.bottom');
+
+  if (!bottom) {
+    return;
+  }
+
+  if (
+    bottom.querySelector(
+      '[data-page="admin"]'
+    )
+  ) {
+    return;
+  }
+
+  const adminButton =
+    document.createElement('button');
+
+  adminButton.type = 'button';
+  adminButton.dataset.page = 'admin';
+  adminButton.textContent = t('admin');
+
+  bottom.appendChild(adminButton);
+}
 
 
 /* =========================
@@ -495,9 +615,9 @@ const titles = {
   referral: 'referral',
   notifications: 'notifications',
   support: 'support',
-  profile: 'profile'
+  profile: 'profile',
+  admin: 'admin'
 };
-
 
 
 /* =========================
@@ -506,7 +626,9 @@ const titles = {
 
 function render(p) {
 
-  document.querySelectorAll('.bottom button').forEach(b => {
+  document.querySelectorAll(
+    '.bottom button'
+  ).forEach(b => {
 
     b.classList.toggle(
       'active',
@@ -777,6 +899,227 @@ function render(p) {
     `;
 
 
+  } else if (p === 'admin') {
+
+    const telegramUser =
+      telegramApp?.initDataUnsafe?.user;
+
+    if (
+      String(telegramUser?.id || '') !==
+      ADMIN_TELEGRAM_ID
+    ) {
+
+      content = `
+
+        ${languageSelector()}
+
+        <h2>${t('admin')}</h2>
+
+        <div class="notice">
+          ${t('adminAccessDenied')}
+        </div>
+
+      `;
+
+    } else {
+
+      content = `
+
+        ${languageSelector()}
+
+        <h2>${t('adminPanel')}</h2>
+
+        <div
+          class="stats"
+          style="
+            display:block;
+            padding:18px;
+          "
+        >
+
+          <label
+            for="announcementTitle"
+            style="
+              display:block;
+              margin-bottom:6px;
+            "
+          >
+            ${t('announcementTitle')}
+          </label>
+
+          <input
+            id="announcementTitle"
+            type="text"
+            placeholder="${t('announcementTitle')}"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:12px;
+              margin-bottom:14px;
+              border-radius:10px;
+              border:1px solid #ccc;
+            "
+          >
+
+
+          <label
+            for="announcementMessage"
+            style="
+              display:block;
+              margin-bottom:6px;
+            "
+          >
+            ${t('announcementMessage')}
+          </label>
+
+          <textarea
+            id="announcementMessage"
+            rows="5"
+            placeholder="${t('announcementMessage')}"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:12px;
+              margin-bottom:14px;
+              border-radius:10px;
+              border:1px solid #ccc;
+              resize:vertical;
+            "
+          ></textarea>
+
+
+          <label
+            for="announcementImage"
+            style="
+              display:block;
+              margin-bottom:6px;
+            "
+          >
+            ${t('imageUrl')}
+          </label>
+
+          <input
+            id="announcementImage"
+            type="url"
+            placeholder="https://example.com/image.jpg"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:12px;
+              margin-bottom:14px;
+              border-radius:10px;
+              border:1px solid #ccc;
+            "
+          >
+
+
+          <label
+            for="announcementStart"
+            style="
+              display:block;
+              margin-bottom:6px;
+            "
+          >
+            ${t('startTime')}
+          </label>
+
+          <input
+            id="announcementStart"
+            type="datetime-local"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:12px;
+              margin-bottom:14px;
+              border-radius:10px;
+              border:1px solid #ccc;
+            "
+          >
+
+
+          <label
+            for="announcementEnd"
+            style="
+              display:block;
+              margin-bottom:6px;
+            "
+          >
+            ${t('endTime')}
+          </label>
+
+          <input
+            id="announcementEnd"
+            type="datetime-local"
+            style="
+              width:100%;
+              box-sizing:border-box;
+              padding:12px;
+              margin-bottom:14px;
+              border-radius:10px;
+              border:1px solid #ccc;
+            "
+          >
+
+
+          <label
+            style="
+              display:flex;
+              align-items:center;
+              gap:8px;
+              margin-bottom:14px;
+              cursor:pointer;
+            "
+          >
+
+            <input
+              id="announcementActive"
+              type="checkbox"
+              checked
+              style="
+                width:18px;
+                height:18px;
+              "
+            >
+
+            <span>
+              ${t('active')}
+            </span>
+
+          </label>
+
+
+          <button
+            id="createAnnouncement"
+            type="button"
+            style="
+              width:100%;
+              padding:14px;
+              border:0;
+              border-radius:12px;
+              cursor:pointer;
+              font-weight:600;
+            "
+          >
+            ${t('createAnnouncement')}
+          </button>
+
+
+          <div
+            id="announcementAdminMessage"
+            style="
+              margin-top:14px;
+              text-align:center;
+              line-height:1.5;
+            "
+          ></div>
+
+        </div>
+
+      `;
+
+    }
+
+
   } else {
 
     content = `
@@ -792,6 +1135,7 @@ function render(p) {
       </div>
 
     `;
+
   }
 
 
@@ -823,9 +1167,14 @@ function render(p) {
   }
 
 
-  applyLanguage();
-}
+  if (p === 'admin') {
+    setupAdminAnnouncement();
+  }
 
+
+  applyLanguage();
+
+}
 
 
 /* =========================
@@ -880,10 +1229,12 @@ function setupDeposit() {
               t('copyAddress');
 
           }, 2000);
+
         }
 
       }
     );
+
   }
 
 
@@ -1034,8 +1385,8 @@ function setupDeposit() {
 
     }
   );
-}
 
+}
 
 
 /* =========================
@@ -1140,7 +1491,6 @@ async function setupWallet() {
   }
 
 }
-
 
 
 /* =========================
@@ -1393,7 +1743,6 @@ async function setupInvestment() {
 }
 
 
-
 /* =========================
    CREATE INVESTMENT
 ========================= */
@@ -1512,6 +1861,245 @@ async function investInPlan(
 }
 
 
+/* =========================
+   ADMIN ANNOUNCEMENT
+========================= */
+
+function setupAdminAnnouncement() {
+
+  const telegramUser =
+    telegramApp?.initDataUnsafe?.user;
+
+
+  if (
+    String(telegramUser?.id || '') !==
+    ADMIN_TELEGRAM_ID
+  ) {
+    return;
+  }
+
+
+  const button =
+    document.getElementById(
+      'createAnnouncement'
+    );
+
+
+  if (!button) {
+    return;
+  }
+
+
+  button.addEventListener(
+    'click',
+    async () => {
+
+      const title =
+        document
+          .getElementById(
+            'announcementTitle'
+          )
+          .value
+          .trim();
+
+
+      const message =
+        document
+          .getElementById(
+            'announcementMessage'
+          )
+          .value
+          .trim();
+
+
+      const imageUrl =
+        document
+          .getElementById(
+            'announcementImage'
+          )
+          .value
+          .trim();
+
+
+      const startsAt =
+        document
+          .getElementById(
+            'announcementStart'
+          )
+          .value;
+
+
+      const endsAt =
+        document
+          .getElementById(
+            'announcementEnd'
+          )
+          .value;
+
+
+      const active =
+        document
+          .getElementById(
+            'announcementActive'
+          )
+          .checked;
+
+
+      const result =
+        document.getElementById(
+          'announcementAdminMessage'
+        );
+
+
+      if (
+        !title ||
+        !message ||
+        !startsAt
+      ) {
+
+        result.textContent =
+          '❌ Title, message and start time are required.';
+
+        return;
+      }
+
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        t('creatingAnnouncement');
+
+      result.textContent =
+        '';
+
+
+      try {
+
+        const response =
+          await fetch(
+            '/api/admin/announcement',
+            {
+
+              method: 'POST',
+
+              headers: {
+                'Content-Type':
+                  'application/json'
+              },
+
+              body: JSON.stringify({
+
+                telegram_chat_id:
+                  String(
+                    telegramUser.id
+                  ),
+
+                title:
+                  title,
+
+                message:
+                  message,
+
+                image_url:
+                  imageUrl || null,
+
+                starts_at:
+                  new Date(
+                    startsAt
+                  ).toISOString(),
+
+                ends_at:
+                  endsAt
+                    ? new Date(
+                        endsAt
+                      ).toISOString()
+                    : null,
+
+                active:
+                  active
+
+              })
+
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.ok
+        ) {
+
+          throw new Error(
+            data.message ||
+            t('announcementFailed')
+          );
+
+        }
+
+
+        result.textContent =
+          t('announcementCreated');
+
+
+        document.getElementById(
+          'announcementTitle'
+        ).value = '';
+
+
+        document.getElementById(
+          'announcementMessage'
+        ).value = '';
+
+
+        document.getElementById(
+          'announcementImage'
+        ).value = '';
+
+
+        document.getElementById(
+          'announcementStart'
+        ).value = '';
+
+
+        document.getElementById(
+          'announcementEnd'
+        ).value = '';
+
+
+        document.getElementById(
+          'announcementActive'
+        ).checked = true;
+
+
+      } catch (error) {
+
+        result.textContent =
+          '❌ ' +
+          (
+            error.message ||
+            t('announcementFailed')
+          );
+
+      } finally {
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          t('createAnnouncement');
+
+      }
+
+    }
+  );
+
+}
+
 
 /* =========================
    HELPERS
@@ -1532,6 +2120,7 @@ function formatTRX(value) {
     ) +
     ' TRX'
   );
+
 }
 
 
@@ -1564,7 +2153,6 @@ function escapeHtml(value) {
 }
 
 
-
 /* =========================
    NAVIGATION
 ========================= */
@@ -1589,7 +2177,6 @@ document.addEventListener(
 
   }
 );
-
 
 
 /* =========================
@@ -1624,12 +2211,19 @@ if (themeButton) {
 }
 
 
-
 /* =========================
    INITIAL LANGUAGE
 ========================= */
 
 applyLanguage();
+
+
+/* =========================
+   ADMIN BUTTON INIT
+========================= */
+
+setupAdminButton();
+
 
 /* =========================
    GLOBAL ANNOUNCEMENT POPUP
@@ -1640,10 +2234,14 @@ async function loadGlobalAnnouncement() {
   try {
 
     const response =
-      await fetch('/api/global-announcement');
+      await fetch(
+        '/api/global-announcement'
+      );
+
 
     const data =
       await response.json();
+
 
     if (
       !response.ok ||
@@ -1653,19 +2251,26 @@ async function loadGlobalAnnouncement() {
       return;
     }
 
+
     const announcement =
       data.announcement;
+
 
     const storageKey =
       `daily_trx_announcement_${announcement.id}`;
 
+
     const closedAt =
       Number(
-        localStorage.getItem(storageKey) || 0
+        localStorage.getItem(
+          storageKey
+        ) || 0
       );
+
 
     const twentyFourHours =
       24 * 60 * 60 * 1000;
+
 
     if (
       closedAt &&
@@ -1675,10 +2280,12 @@ async function loadGlobalAnnouncement() {
       return;
     }
 
+
     showGlobalAnnouncement(
       announcement,
       storageKey
     );
+
 
   } catch (error) {
 
@@ -1702,15 +2309,21 @@ function showGlobalAnnouncement(
       'globalAnnouncementPopup'
     );
 
+
   if (oldPopup) {
     oldPopup.remove();
   }
 
+
   const popup =
-    document.createElement('div');
+    document.createElement(
+      'div'
+    );
+
 
   popup.id =
     'globalAnnouncementPopup';
+
 
   popup.style.cssText = `
     position:fixed;
@@ -1723,6 +2336,7 @@ function showGlobalAnnouncement(
     background:rgba(0,0,0,.72);
     backdrop-filter:blur(8px);
   `;
+
 
   popup.innerHTML = `
 
@@ -1770,6 +2384,7 @@ function showGlobalAnnouncement(
         ×
       </button>
 
+
       ${
         announcement.image_url
           ? `
@@ -1791,6 +2406,7 @@ function showGlobalAnnouncement(
           : ''
       }
 
+
       <h2
         style="
           margin:4px 40px 10px 0;
@@ -1801,6 +2417,7 @@ function showGlobalAnnouncement(
           announcement.title
         )}
       </h2>
+
 
       <div
         style="
@@ -1816,16 +2433,20 @@ function showGlobalAnnouncement(
       </div>
 
     </div>
+
   `;
+
 
   document.body.appendChild(
     popup
   );
 
+
   const closeButton =
     document.getElementById(
       'closeAnnouncement'
     );
+
 
   closeButton.addEventListener(
     'click',
@@ -1833,8 +2454,11 @@ function showGlobalAnnouncement(
 
       localStorage.setItem(
         storageKey,
-        String(Date.now())
+        String(
+          Date.now()
+        )
       );
+
 
       popup.remove();
 
@@ -1842,7 +2466,6 @@ function showGlobalAnnouncement(
   );
 
 }
-
 
 
 /* =========================
