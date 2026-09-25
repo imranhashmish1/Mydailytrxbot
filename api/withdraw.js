@@ -29,10 +29,11 @@ export default async function handler(req, res) {
       });
     }
 
-    if (amount < 50) {
+    // Minimum withdrawal: 20 TRX
+    if (amount < 20) {
       return res.status(400).json({
         ok: false,
-        message: "Minimum withdrawal is 50 TRX"
+        message: "Minimum withdrawal is 20 TRX"
       });
     }
 
@@ -95,13 +96,11 @@ export default async function handler(req, res) {
       });
     }
 
-    /*
-     * Create notification
-     */
+    // Create notification
     try {
       const withdrawal = data;
 
-      await fetch(
+      const notificationResponse = await fetch(
         `${supabaseUrl}/rest/v1/notifications`,
         {
           method: "POST",
@@ -128,6 +127,17 @@ export default async function handler(req, res) {
           })
         }
       );
+
+      if (!notificationResponse.ok) {
+        const notificationError =
+          await notificationResponse.text();
+
+        console.error(
+          "Withdrawal notification failed:",
+          notificationError
+        );
+      }
+
     } catch (notificationError) {
       console.error(
         "Withdrawal notification error:",
