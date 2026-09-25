@@ -307,26 +307,29 @@ function languageSelector() {
       <span>🌐 ${t("language")}</span>
 
       <select id="languageSelect">
+
         <option value="en"
-          ${currentLanguage==="en" ? "selected" : ""}>
+          ${currentLanguage === "en" ? "selected" : ""}>
           English
         </option>
 
         <option value="ps"
-          ${currentLanguage==="ps" ? "selected" : ""}>
+          ${currentLanguage === "ps" ? "selected" : ""}>
           پښتو
         </option>
 
         <option value="fa"
-          ${currentLanguage==="fa" ? "selected" : ""}>
+          ${currentLanguage === "fa" ? "selected" : ""}>
           دری
         </option>
+
       </select>
     </div>
   `;
 }
 
 function setupLanguage() {
+
   const el =
     document.getElementById("languageSelect");
 
@@ -349,16 +352,17 @@ function setupLanguage() {
 }
 
 function applyTheme() {
+
   document.body.classList.toggle(
     "dark",
     currentTheme === "dark"
   );
 
-  const b =
+  const button =
     document.getElementById("themeButton");
 
-  if (b) {
-    b.textContent =
+  if (button) {
+    button.textContent =
       currentTheme === "dark"
         ? "☀️"
         : "🌙";
@@ -369,14 +373,14 @@ function setupTheme() {
 
   applyTheme();
 
-  const b =
+  const button =
     document.getElementById("themeButton");
 
-  if (!b || b.dataset.ready) return;
+  if (!button || button.dataset.ready) return;
 
-  b.dataset.ready = "1";
+  button.dataset.ready = "1";
 
-  b.onclick = () => {
+  button.onclick = () => {
 
     currentTheme =
       currentTheme === "dark"
@@ -394,7 +398,7 @@ function setupTheme() {
 
 function apiError(
   data,
-  fallback="Something went wrong."
+  fallback = "Something went wrong."
 ) {
   return (
     data?.message ||
@@ -404,6 +408,7 @@ function apiError(
 }
 
 function heading(title, icon) {
+
   return `
     <div class="page-heading">
 
@@ -422,15 +427,16 @@ function heading(title, icon) {
   `;
 }
 
-function card(content, cls="card") {
+function card(content, cls = "card") {
+
   return `
     <div class="${cls}">
       ${content}
     </div>
   `;
 }
-
 function homePage() {
+
   return `
     ${languageSelector()}
 
@@ -479,40 +485,24 @@ function homePage() {
 
     <div class="action-grid">
 
-      <button
-        data-page="deposit"
-        class="action-card">
-
+      <button data-page="deposit" class="action-card">
         <span>📥</span>
         <b>${t("depositNow")}</b>
-
       </button>
 
-      <button
-        data-page="withdraw"
-        class="action-card">
-
+      <button data-page="withdraw" class="action-card">
         <span>📤</span>
         <b>${t("withdrawNow")}</b>
-
       </button>
 
-      <button
-        data-page="investment"
-        class="action-card">
-
+      <button data-page="investment" class="action-card">
         <span>📈</span>
         <b>${t("viewInvestment")}</b>
-
       </button>
 
-      <button
-        data-page="referral"
-        class="action-card">
-
+      <button data-page="referral" class="action-card">
         <span>👥</span>
         <b>${t("referrals")}</b>
-
       </button>
 
     </div>
@@ -604,6 +594,7 @@ async function loadHomeWallet() {
 }
 
 function walletPage() {
+
   return `
     ${heading(t("wallet"),"💰")}
 
@@ -650,9 +641,7 @@ async function loadWalletPage() {
 
       <div class="wallet-main">
 
-        <span>
-          ${t("totalBalance")}
-        </span>
+        <span>${t("totalBalance")}</span>
 
         <strong>
           ${formatTRX(
@@ -668,10 +657,7 @@ async function loadWalletPage() {
       <div class="stats-grid">
 
         <div class="stat-card">
-          <span>
-            ${t("availableBalance")}
-          </span>
-
+          <span>${t("availableBalance")}</span>
           <b>
             ${formatTRX(
               w.available_balance ??
@@ -684,7 +670,6 @@ async function loadWalletPage() {
 
         <div class="stat-card">
           <span>${t("invested")}</span>
-
           <b>
             ${formatTRX(
               w.invested_balance ??
@@ -696,7 +681,6 @@ async function loadWalletPage() {
 
         <div class="stat-card">
           <span>${t("profit")}</span>
-
           <b>
             ${formatTRX(
               w.profit ??
@@ -717,7 +701,9 @@ async function loadWalletPage() {
       </div>
     `;
   }
-  function depositPage() {
+}
+function depositPage() {
+
   return `
     ${heading(t("depositTitle"),"📥")}
 
@@ -800,165 +786,145 @@ async function loadWalletPage() {
 function setupDeposit() {
 
   const copy =
-    document.getElementById(
-      "copyDepositAddress"
-    );
+    document.getElementById("copyDepositAddress");
 
   const submit =
-    document.getElementById(
-      "submitDeposit"
-    );
+    document.getElementById("submitDeposit");
 
-  copy?.addEventListener(
-    "click",
-    async () => {
+  copy?.addEventListener("click", async () => {
 
-      try {
+    try {
 
-        await navigator.clipboard.writeText(
-          DEPOSIT_ADDRESS
-        );
+      await navigator.clipboard.writeText(
+        DEPOSIT_ADDRESS
+      );
 
-        showFormMessage(
-          t("copySuccess"),
-          "success"
-        );
+      showFormMessage(
+        t("copySuccess"),
+        "success"
+      );
 
-      } catch (_) {
+    } catch (_) {
 
-        const input =
-          document.getElementById(
-            "depositAddress"
-          );
+      const input =
+        document.getElementById("depositAddress");
 
-        input?.select();
+      input?.select();
 
-        document.execCommand("copy");
+      document.execCommand("copy");
 
-        showFormMessage(
-          t("copySuccess"),
-          "success"
-        );
-      }
+      showFormMessage(
+        t("copySuccess"),
+        "success"
+      );
     }
-  );
+  });
 
-  submit?.addEventListener(
-    "click",
-    async () => {
+  submit?.addEventListener("click", async () => {
 
-      const amount =
-        document.getElementById(
-          "depositAmount"
-        )?.value.trim();
+    const amount =
+      document.getElementById("depositAmount")
+        ?.value.trim();
 
-      const txHash =
-        document.getElementById(
-          "depositTxHash"
-        )?.value.trim();
+    const txHash =
+      document.getElementById("depositTxHash")
+        ?.value.trim();
 
-      const id = telegramId();
+    const id = telegramId();
 
-      if (!id) {
-        return showFormMessage(
-          "Please open the app from Telegram.",
-          "error"
-        );
-      }
+    if (!id) {
 
-      if (
-        !amount ||
-        Number(amount) <= 0
-      ) {
-        return showFormMessage(
-          "Enter a valid TRX amount.",
-          "error"
-        );
-      }
+      return showFormMessage(
+        "Please open the app from Telegram.",
+        "error"
+      );
+    }
 
-      if (
-        !/^[a-fA-F0-9]{64}$/.test(
-          txHash || ""
-        )
-      ) {
-        return showFormMessage(
-          "Invalid TRON transaction hash.",
-          "error"
-        );
-      }
+    if (!amount || Number(amount) <= 0) {
 
-      submit.disabled = true;
-      submit.textContent = t("loading");
+      return showFormMessage(
+        "Enter a valid TRX amount.",
+        "error"
+      );
+    }
 
-      try {
+    if (!/^[a-fA-F0-9]{64}$/.test(txHash || "")) {
 
-        const r = await fetch(
-          "/api/deposit",
-          {
-            method:"POST",
+      return showFormMessage(
+        "Invalid TRON transaction hash.",
+        "error"
+      );
+    }
 
-            headers:{
-              "Content-Type":
-                "application/json"
-            },
+    submit.disabled = true;
+    submit.textContent = t("loading");
 
-            body:JSON.stringify({
-              telegram_chat_id:id,
-              amount_trx:Number(amount),
-              tx_hash:txHash
-            })
-          }
-        );
+    try {
 
-        const d = await r.json();
+      const r = await fetch(
+        "/api/deposit",
+        {
+          method:"POST",
 
-        if (!r.ok || !d.ok) {
-          throw new Error(
-            apiError(
-              d,
-              "Deposit submission failed."
-            )
-          );
+          headers:{
+            "Content-Type":"application/json"
+          },
+
+          body:JSON.stringify({
+            telegram_chat_id:id,
+            amount_trx:Number(amount),
+            tx_hash:txHash
+          })
         }
+      );
 
-        showFormMessage(
-          d.message ||
-          "Deposit submitted successfully.",
-          "success"
+      const d = await r.json();
+
+      if (!r.ok || !d.ok) {
+
+        throw new Error(
+          apiError(
+            d,
+            "Deposit submission failed."
+          )
         );
-
-        document.getElementById(
-          "depositAmount"
-        ).value = "";
-
-        document.getElementById(
-          "depositTxHash"
-        ).value = "";
-
-      } catch (e) {
-
-        showFormMessage(
-          e.message,
-          "error"
-        );
-
-      } finally {
-
-        submit.disabled = false;
-
-        submit.textContent =
-          t("submitDeposit");
       }
+
+      showFormMessage(
+        d.message ||
+        "Deposit submitted successfully.",
+        "success"
+      );
+
+      document.getElementById(
+        "depositAmount"
+      ).value = "";
+
+      document.getElementById(
+        "depositTxHash"
+      ).value = "";
+
+    } catch (e) {
+
+      showFormMessage(
+        e.message,
+        "error"
+      );
+
+    } finally {
+
+      submit.disabled = false;
+
+      submit.textContent =
+        t("submitDeposit");
     }
-  );
+  });
 }
 
-function showFormMessage(text,type) {
+function showFormMessage(text, type) {
 
   const box =
-    document.getElementById(
-      "depositMessage"
-    );
+    document.getElementById("depositMessage");
 
   if (!box) return;
 
@@ -967,7 +933,8 @@ function showFormMessage(text,type) {
   box.className =
     `form-message ${type}`;
 }
-  function withdrawPage() {
+function withdrawPage() {
+
   return `
     ${heading(t("withdrawTitle"),"📤")}
 
@@ -1022,135 +989,124 @@ function showFormMessage(text,type) {
 function setupWithdraw() {
 
   const button =
-    document.getElementById(
-      "submitWithdraw"
-    );
+    document.getElementById("submitWithdraw");
 
-  button?.addEventListener(
-    "click",
-    async () => {
+  button?.addEventListener("click", async () => {
 
-      const address =
-        document.getElementById(
-          "withdrawAddress"
-        )?.value.trim();
+    const address =
+      document.getElementById("withdrawAddress")
+        ?.value.trim();
 
-      const amount =
-        Number(
-          document.getElementById(
-            "withdrawAmount"
-          )?.value
-        );
+    const amount =
+      Number(
+        document.getElementById("withdrawAmount")
+          ?.value
+      );
 
-      const message =
-        document.getElementById(
-          "withdrawMessage"
-        );
+    const message =
+      document.getElementById("withdrawMessage");
 
-      if (!address) {
+    if (!address) {
 
-        message.textContent =
-          "Enter your TRON wallet address.";
+      message.textContent =
+        "Enter your TRON wallet address.";
 
-        message.className =
-          "form-message error";
+      message.className =
+        "form-message error";
 
-        return;
-      }
-
-      if (
-        !address.startsWith("T") ||
-        address.length < 30
-      ) {
-
-        message.textContent =
-          "Invalid TRON wallet address.";
-
-        message.className =
-          "form-message error";
-
-        return;
-      }
-
-      if (
-        !Number.isFinite(amount) ||
-        amount < 20
-      ) {
-
-        message.textContent =
-          "Minimum withdrawal is 20 TRX.";
-
-        message.className =
-          "form-message error";
-
-        return;
-      }
-
-      const id = telegramId();
-
-      if (!id) return;
-
-      button.disabled = true;
-      button.textContent =
-        t("loading");
-
-      try {
-
-        const r = await fetch(
-          "/api/withdraw",
-          {
-            method:"POST",
-
-            headers:{
-              "Content-Type":
-                "application/json"
-            },
-
-            body:JSON.stringify({
-              telegram_chat_id:id,
-              wallet_address:address,
-              amount_trx:amount
-            })
-          }
-        );
-
-        const d = await r.json();
-
-        if (!r.ok || !d.ok) {
-          throw new Error(
-            apiError(
-              d,
-              "Withdrawal failed."
-            )
-          );
-        }
-
-        message.textContent =
-          d.message ||
-          "Withdrawal request submitted.";
-
-        message.className =
-          "form-message success";
-
-      } catch (e) {
-
-        message.textContent =
-          e.message;
-
-        message.className =
-          "form-message error";
-
-      } finally {
-
-        button.disabled = false;
-
-        button.textContent =
-          t("submitWithdraw");
-      }
+      return;
     }
-  );
-}
 
+    if (
+      !address.startsWith("T") ||
+      address.length < 30
+    ) {
+
+      message.textContent =
+        "Invalid TRON wallet address.";
+
+      message.className =
+        "form-message error";
+
+      return;
+    }
+
+    if (
+      !Number.isFinite(amount) ||
+      amount < 20
+    ) {
+
+      message.textContent =
+        "Minimum withdrawal is 20 TRX.";
+
+      message.className =
+        "form-message error";
+
+      return;
+    }
+
+    const id = telegramId();
+
+    if (!id) return;
+
+    button.disabled = true;
+    button.textContent = t("loading");
+
+    try {
+
+      const r = await fetch(
+        "/api/withdraw",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":"application/json"
+          },
+
+          body:JSON.stringify({
+            telegram_chat_id:id,
+            wallet_address:address,
+            amount_trx:amount
+          })
+        }
+      );
+
+      const d = await r.json();
+
+      if (!r.ok || !d.ok) {
+
+        throw new Error(
+          apiError(
+            d,
+            "Withdrawal failed."
+          )
+        );
+      }
+
+      message.textContent =
+        d.message ||
+        "Withdrawal request submitted.";
+
+      message.className =
+        "form-message success";
+
+    } catch (e) {
+
+      message.textContent =
+        e.message;
+
+      message.className =
+        "form-message error";
+
+    } finally {
+
+      button.disabled = false;
+
+      button.textContent =
+        t("submitWithdraw");
+    }
+  });
+}
 function investmentPage() {
 
   return `
@@ -1172,12 +1128,11 @@ function investmentPage() {
     </div>
   `;
 }
-  async function loadInvestments() {
+
+async function loadInvestments() {
 
   const box =
-    document.getElementById(
-      "investmentContent"
-    );
+    document.getElementById("investmentContent");
 
   if (!box) return;
 
@@ -1190,6 +1145,7 @@ function investmentPage() {
     const d = await r.json();
 
     if (!r.ok || !d.ok) {
+
       throw new Error(
         apiError(
           d,
@@ -1215,12 +1171,10 @@ function investmentPage() {
     }
 
     box.innerHTML =
-      plans.map((p,index) => {
+      plans.map((p, index) => {
 
         /*
-         * IMPORTANT:
-         * Supabase/API fields are:
-         *
+         * IMPORTANT API FIELDS:
          * amount_trx
          * daily_profit_trx
          * duration_days
@@ -1233,7 +1187,7 @@ function investmentPage() {
           Number(p.daily_profit_trx ?? 0);
 
         const duration =
-          Number(p.duration_days ?? 360);
+          Number(p.duration_days ?? 360) || 360;
 
         const dailyRate =
           investment > 0
@@ -1343,9 +1297,7 @@ function investmentPage() {
 
             <button
               class="primary-btn invest-btn"
-              data-plan-id="${escapeHtml(
-                p.id ?? ""
-              )}"
+              data-plan-id="${escapeHtml(p.id ?? "")}"
               type="button">
 
               ${t("createInvestment")}
@@ -1424,8 +1376,7 @@ async function createInvestment(planId) {
         method:"POST",
 
         headers:{
-          "Content-Type":
-            "application/json"
+          "Content-Type":"application/json"
         },
 
         body:JSON.stringify({
@@ -1439,6 +1390,7 @@ async function createInvestment(planId) {
     const d = await r.json();
 
     if (!r.ok || !d.ok) {
+
       throw new Error(
         apiError(
           d,
@@ -1459,7 +1411,7 @@ async function createInvestment(planId) {
     alert(e.message);
   }
 }
-  function referralPage() {
+function referralPage() {
 
   const id = telegramId();
 
@@ -1486,39 +1438,30 @@ async function createInvestment(planId) {
     <div class="referral-levels">
 
       <div class="referral-card">
-
         <span>
           🥇 ${t("referralLevel1")}
         </span>
-
         <strong>
           ${t("referralRate1")}
         </strong>
-
       </div>
 
       <div class="referral-card">
-
         <span>
           🥈 ${t("referralLevel2")}
         </span>
-
         <strong>
           ${t("referralRate2")}
         </strong>
-
       </div>
 
       <div class="referral-card">
-
         <span>
           🥉 ${t("referralLevel3")}
         </span>
-
         <strong>
           ${t("referralRate3")}
         </strong>
-
       </div>
 
     </div>
@@ -1579,6 +1522,7 @@ async function loadNotifications() {
     const d = await r.json();
 
     if (!d.ok) {
+
       throw new Error(
         apiError(d)
       );
@@ -1640,7 +1584,7 @@ async function loadNotifications() {
     `;
   }
 }
-  function supportPage() {
+function supportPage() {
 
   return `
     ${heading(
@@ -1704,8 +1648,7 @@ async function loadNotifications() {
 function profilePage() {
 
   const user =
-    telegramApp?.initDataUnsafe?.user ||
-    {};
+    telegramApp?.initDataUnsafe?.user || {};
 
   return `
     ${heading(
@@ -1745,8 +1688,7 @@ function profilePage() {
 
         <b>
           @${escapeHtml(
-            user.username ||
-            "—"
+            user.username || "—"
           )}
         </b>
 
@@ -1760,8 +1702,7 @@ function profilePage() {
 
         <b>
           ${escapeHtml(
-            telegramId() ||
-            "—"
+            telegramId() || "—"
           )}
         </b>
 
@@ -1812,7 +1753,8 @@ function setupProfile() {
       }
     );
 }
-  function adminPage() {
+
+function adminPage() {
 
   return `
     ${heading(
@@ -1909,6 +1851,7 @@ function setupAdmin() {
         const d = await r.json();
 
         if (!r.ok || !d.ok) {
+
           throw new Error(
             apiError(
               d,
@@ -1939,7 +1882,6 @@ function setupAdmin() {
     }
   );
 }
-
 async function loadGlobalAnnouncement() {
 
   try {
@@ -1976,9 +1918,7 @@ async function loadGlobalAnnouncement() {
     if (!home) return;
 
     const box =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     box.className =
       "announcement-card";
@@ -1997,7 +1937,8 @@ async function loadGlobalAnnouncement() {
 
   } catch (_) {}
 }
-  function renderBottomNavigation() {
+
+function renderBottomNavigation() {
 
   return `
     <div class="mobile-page-nav">
@@ -2041,7 +1982,7 @@ async function loadGlobalAnnouncement() {
   `;
 }
 
-async function render(target="home") {
+async function render(target = "home") {
 
   window.currentPage = target;
 
@@ -2126,9 +2067,7 @@ document.addEventListener(
   event => {
 
     const pageButton =
-      event.target.closest(
-        "[data-page]"
-      );
+      event.target.closest("[data-page]");
 
     if (pageButton) {
 
@@ -2169,13 +2108,9 @@ function openTelegram(url) {
 
   if (!url) return;
 
-  if (
-    telegramApp?.openTelegramLink
-  ) {
+  if (telegramApp?.openTelegramLink) {
 
-    telegramApp.openTelegramLink(
-      url
-    );
+    telegramApp.openTelegramLink(url);
 
   } else {
 
@@ -2185,8 +2120,6 @@ function openTelegram(url) {
       "noopener,noreferrer"
     );
   }
-}
-  
 }
 function initializeApp() {
 
