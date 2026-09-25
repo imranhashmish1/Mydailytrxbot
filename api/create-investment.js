@@ -32,6 +32,12 @@ export default async function handler(req, res) {
       });
     }
 
+    const chatId = String(telegram_chat_id);
+    const numericPlanId = Number(plan_id);
+
+    /*
+     * 1. Create investment
+     */
     const response = await fetch(
       `${supabaseUrl}/rest/v1/rpc/create_investment`,
       {
@@ -42,8 +48,8 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          p_telegram_chat_id: String(telegram_chat_id),
-          p_plan_id: Number(plan_id)
+          p_telegram_chat_id: chatId,
+          p_plan_id: numericPlanId
         })
       }
     );
@@ -58,7 +64,108 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json(data);
+    /*
+     * 2. Try to get investment details from RPC response
+     */
+    const investment =
+      Array.isArray(data) ? data[0] : data;
+
+    const investmentId =
+      investment?.id ||
+      investment?.investment_id ||
+      null;
+
+    const planName =
+      investment?.plan_name ||
+      investment?.name ||
+      investment?.title ||
+      `Investment Plan #${numericPlanId}`;
+
+    const amount =
+      investment?.amount_trx ??
+      investment?.amount ??
+      investment?.principal ??
+      null;
+
+    const dailyProfit =
+      investment?.daily_profit ??
+      investment?.daily_profit_trx ??
+      investment?.profit_per_day ??
+      null;
+
+    const duration =
+      investment?.duration_days ??
+      investment?.days ??
+      null;
+
+    /*
+     * 3. Create notification
+     *
+     * Notification failure will NOT cancel the investment.
+     */
+    let notificationCreated = false;
+
+    try {
+      const notificationResponse = await fetch(
+        `${supabaseUrl}/rest/v1/notifications`,
+        {
+          method: "POST",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+            "Content-Type": "application/json",
+            Prefer: "return=representation"
+          },
+          body: JSON.stringify({
+            telegram_chat_id: chatId,
+            type: "investment",
+            title: "Investment Created",
+            message:
+              `Your investment in ${planName} has been successfully created.`,
+            status: "completed",
+            amount_trx: amount,
+            metadata: {
+              investment_id: investmentId,
+              plan_id: numericPlanId,
+              plan_name: planName,
+              daily_profit: dailyProfit,
+              duration_days: duration
+            },
+            is_read: false
+          })
+        }
+      );
+
+      const notificationData =
+        await notificationResponse.json();
+
+      if (notificationResponse.ok) {
+        notificationCreated = true;
+      } else {
+        console.error(
+          "Investment notification failed:",
+          notificationData
+        );
+      }
+
+    } catch (notificationError) {
+      console.error(
+        "Investment notification error:",
+        notificationError
+      );
+    }
+
+    /*
+     * 4. Return successful investment result
+     */
+    return res.status(200).json({
+      ...(
+        typeof data === "object" && data !== null
+          ? data
+          : {}
+      ),
+      notification_created: notificationCreated
+    });
 
   } catch (error) {
     console.error("Create investment error:", error);
