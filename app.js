@@ -99,6 +99,18 @@ const translations = {
       '❌ Could not load wallet balance.',
 
     noNotifications: 'No notifications.',
+    notificationLoading: 'Loading notifications...',
+    notificationError: 'Could not load notifications.',
+    notificationDeposit: 'Deposit',
+    notificationWithdraw: 'Withdrawal',
+    notificationInvestment: 'Investment',
+    notificationReferral: 'Referral',
+    notificationSystem: 'System',
+    verified: 'Verified',
+    pending: 'Pending',
+    rejected: 'Rejected',
+    completed: 'Completed',
+
     moduleReady:
       'This module is ready for backend integration.',
 
@@ -195,6 +207,18 @@ const translations = {
       '❌ د والټ بیلانس نه شي لوډ کېدای.',
 
     noNotifications: 'هیڅ خبرتیا نشته.',
+    notificationLoading: 'خبرتیاوې لوډ کېږي...',
+    notificationError: 'خبرتیاوې نه شي لوډ کېدای.',
+    notificationDeposit: 'ډیپازټ',
+    notificationWithdraw: 'ویډرا',
+    notificationInvestment: 'پانګونه',
+    notificationReferral: 'ریفرل',
+    notificationSystem: 'سیستم',
+    verified: 'تایید شوی',
+    pending: 'د انتظار په حالت کې',
+    rejected: 'رد شوی',
+    completed: 'بشپړ شوی',
+
     moduleReady:
       'دا برخه د Backend اتصال لپاره چمتو ده.',
 
@@ -291,6 +315,18 @@ const translations = {
       '❌ موجودی کیف پول بارگذاری نشد.',
 
     noNotifications: 'اعلانی وجود ندارد.',
+    notificationLoading: 'اعلان‌ها در حال بارگذاری...',
+    notificationError: 'اعلان‌ها بارگذاری نشد.',
+    notificationDeposit: 'واریز',
+    notificationWithdraw: 'برداشت',
+    notificationInvestment: 'سرمایه‌گذاری',
+    notificationReferral: 'معرفی',
+    notificationSystem: 'سیستم',
+    verified: 'تأیید شده',
+    pending: 'در انتظار',
+    rejected: 'رد شده',
+    completed: 'تکمیل شده',
+
     moduleReady:
       'این بخش برای اتصال Backend آماده است.',
 
@@ -387,6 +423,18 @@ const translations = {
       '❌ والیٹ بیلنس لوڈ نہیں ہوسکا۔',
 
     noNotifications: 'کوئی اطلاعات نہیں۔',
+    notificationLoading: 'اطلاعات لوڈ ہو رہی ہیں...',
+    notificationError: 'اطلاعات لوڈ نہیں ہوسکیں۔',
+    notificationDeposit: 'جمع کروانا',
+    notificationWithdraw: 'رقم نکالنا',
+    notificationInvestment: 'سرمایہ کاری',
+    notificationReferral: 'ریفرل',
+    notificationSystem: 'سسٹم',
+    verified: 'تصدیق شدہ',
+    pending: 'زیر التوا',
+    rejected: 'مسترد',
+    completed: 'مکمل',
+
     moduleReady:
       'یہ حصہ Backend کنکشن کے لیے تیار ہے۔',
 
@@ -425,6 +473,7 @@ function t(key) {
     translations.en[key] ||
     key
   );
+
 }
 
 
@@ -451,6 +500,7 @@ function setLanguage(language) {
   if (activePage) {
     render(activePage);
   }
+
 }
 
 
@@ -532,6 +582,7 @@ function languageSelector() {
 
     </div>
   `;
+
 }
 
 
@@ -599,6 +650,7 @@ function setupAdminButton() {
   adminButton.textContent = t('admin');
 
   bottom.appendChild(adminButton);
+
 }
 
 
@@ -767,6 +819,7 @@ function render(p) {
           text-align:center;
         "
       ></div>
+
     `;
 
 
@@ -890,10 +943,43 @@ function render(p) {
 
       ${languageSelector()}
 
-      <h2>${t('notifications')}</h2>
+      <div
+        style="
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:10px;
+          margin-bottom:14px;
+        "
+      >
 
-      <div class="notice">
-        ${t('noNotifications')}
+        <div>
+
+          <h2 style="margin:0;">
+            🔔 ${t('notifications')}
+          </h2>
+
+          <small style="opacity:.65;">
+            Your personal activity
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="notificationsList"
+        style="
+          display:grid;
+          gap:12px;
+        "
+      >
+
+        <div class="notice">
+          ${t('notificationLoading')}
+        </div>
+
       </div>
 
     `;
@@ -1164,6 +1250,11 @@ function render(p) {
 
   if (p === 'investment') {
     setupInvestment();
+  }
+
+
+  if (p === 'notifications') {
+    setupNotifications();
   }
 
 
@@ -1855,6 +1946,410 @@ async function investInPlan(
 
     button.textContent =
       t('investNow');
+
+  }
+
+}
+
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+
+async function setupNotifications() {
+
+  const container =
+    document.getElementById(
+      'notificationsList'
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  const telegramUser =
+    telegramApp?.initDataUnsafe?.user;
+
+
+  if (!telegramUser?.id) {
+
+    container.innerHTML = `
+      <div class="notice">
+        ${t('openFromTelegram')}
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML = `
+    <div class="notice">
+      ${t('notificationLoading')}
+    </div>
+  `;
+
+
+  try {
+
+    const response =
+      await fetch(
+        `/api/notifications?telegram_chat_id=${encodeURIComponent(
+          String(
+            telegramUser.id
+          )
+        )}`
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !data.ok
+    ) {
+
+      throw new Error(
+        data.message ||
+        t('notificationError')
+      );
+
+    }
+
+
+    const notifications =
+      Array.isArray(
+        data.notifications
+      )
+        ? data.notifications
+        : [];
+
+
+    if (!notifications.length) {
+
+      container.innerHTML = `
+        <div class="notice">
+          🔔 ${t('noNotifications')}
+        </div>
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML =
+      notifications.map(
+        notification => {
+
+          const type =
+            String(
+              notification.type ||
+              'system'
+            ).toLowerCase();
+
+
+          const status =
+            String(
+              notification.status ||
+              ''
+            ).toLowerCase();
+
+
+          let icon =
+            '🔔';
+
+
+          let typeName =
+            t('notificationSystem');
+
+
+          if (type === 'deposit') {
+
+            icon =
+              '💰';
+
+            typeName =
+              t('notificationDeposit');
+
+          }
+
+
+          if (type === 'withdraw') {
+
+            icon =
+              '💸';
+
+            typeName =
+              t('notificationWithdraw');
+
+          }
+
+
+          if (type === 'investment') {
+
+            icon =
+              '📈';
+
+            typeName =
+              t('notificationInvestment');
+
+          }
+
+
+          if (type === 'referral') {
+
+            icon =
+              '👥';
+
+            typeName =
+              t('notificationReferral');
+
+          }
+
+
+          let statusText =
+            notification.status ||
+            '';
+
+
+          if (status === 'verified') {
+
+            statusText =
+              t('verified');
+
+          } else if (
+            status === 'pending'
+          ) {
+
+            statusText =
+              t('pending');
+
+          } else if (
+            status === 'rejected'
+          ) {
+
+            statusText =
+              t('rejected');
+
+          } else if (
+            status === 'completed'
+          ) {
+
+            statusText =
+              t('completed');
+
+          }
+
+
+          let dateText =
+            '';
+
+
+          if (
+            notification.created_at
+          ) {
+
+            try {
+
+              dateText =
+                new Date(
+                  notification.created_at
+                ).toLocaleString();
+
+            } catch (error) {
+
+              dateText =
+                notification.created_at;
+
+            }
+
+          }
+
+
+          const amount =
+            Number(
+              notification.amount_trx ||
+              0
+            );
+
+
+          const amountHtml =
+            amount > 0
+              ? `
+
+                <div
+                  style="
+                    margin-top:10px;
+                    font-size:18px;
+                    font-weight:700;
+                  "
+                >
+                  ${formatTRX(
+                    amount
+                  )}
+                </div>
+
+              `
+              : '';
+
+
+          const statusHtml =
+            statusText
+              ? `
+
+                <span
+                  style="
+                    display:inline-block;
+                    margin-top:8px;
+                    padding:5px 9px;
+                    border-radius:999px;
+                    background:rgba(34,197,94,.12);
+                    font-size:12px;
+                    font-weight:600;
+                  "
+                >
+                  ${escapeHtml(
+                    statusText
+                  )}
+                </span>
+
+              `
+              : '';
+
+
+          return `
+
+            <div
+              class="stats"
+              style="
+                display:block;
+                padding:16px;
+                border-radius:16px;
+                position:relative;
+                overflow:hidden;
+              "
+            >
+
+              <div
+                style="
+                  display:flex;
+                  align-items:flex-start;
+                  gap:12px;
+                "
+              >
+
+                <div
+                  style="
+                    width:44px;
+                    height:44px;
+                    min-width:44px;
+                    border-radius:14px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background:rgba(255,255,255,.08);
+                    font-size:22px;
+                  "
+                >
+                  ${icon}
+                </div>
+
+
+                <div
+                  style="
+                    flex:1;
+                    min-width:0;
+                  "
+                >
+
+                  <div
+                    style="
+                      display:flex;
+                      justify-content:space-between;
+                      gap:8px;
+                      flex-wrap:wrap;
+                    "
+                  >
+
+                    <strong
+                      style="
+                        font-size:16px;
+                      "
+                    >
+                      ${escapeHtml(
+                        notification.title ||
+                        typeName
+                      )}
+                    </strong>
+
+
+                    <small
+                      style="
+                        opacity:.55;
+                        white-space:nowrap;
+                      "
+                    >
+                      ${escapeHtml(
+                        dateText
+                      )}
+                    </small>
+
+                  </div>
+
+
+                  <div
+                    style="
+                      margin-top:7px;
+                      line-height:1.55;
+                      opacity:.82;
+                      font-size:14px;
+                      white-space:pre-wrap;
+                    "
+                  >
+                    ${escapeHtml(
+                      notification.message ||
+                      ''
+                    )}
+                  </div>
+
+
+                  ${amountHtml}
+
+
+                  ${statusHtml}
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      ).join('');
+
+
+  } catch (error) {
+
+    console.error(
+      'Notifications error:',
+      error
+    );
+
+
+    container.innerHTML = `
+      <div class="notice">
+        ❌ ${escapeHtml(
+          error.message ||
+          t('notificationError')
+        )}
+      </div>
+    `;
 
   }
 
