@@ -22,25 +22,19 @@ export default async function handler(req, res) {
       referral_code
     } = req.body || {};
 
-    if (!telegram_chat_id) {
+    if (!telegram_chat_id || !referral_code) {
       return res.status(400).json({
         ok: false,
-        message: "telegram_chat_id is required"
+        message: "telegram_chat_id and referral_code are required"
       });
     }
 
-    if (!referral_code) {
-      return res.status(400).json({
-        ok: false,
-        message: "referral_code is required"
-      });
-    }
+    const referredId = String(telegram_chat_id);
+    const cleanCode = String(referral_code).trim();
 
-    const cleanReferralCode = String(referral_code).trim();
-
-    // Find the referrer
+    // Find the owner of the referral code
     const referrerResponse = await fetch(
-      `${SUPABASE_URL}/rest/v1/bot_users?telegram_chat_id=eq.${encodeURIComponent(cleanReferralCode)}&select=telegram_chat_id`,
+      `${SUPABASE_URL}/rest/v1/bot_users?referral_code=eq.${encodeURIComponent(cleanCode)}&select=telegram_chat_id`,
       {
         headers: {
           apikey: SUPABASE_SECRET_KEY,
@@ -50,38 +44,36 @@ export default async function handler(req, res) {
     );
 
     if (!referrerResponse.ok) {
-      const errorText = await referrerResponse.text();
-
       return res.status(500).json({
         ok: false,
-        message: "Could not find referrer",
-        error: errorText
+        message: "Could not find referral owner"
       });
     }
 
     const referrers = await referrerResponse.json();
 
-    if (!referrers || referrers.length === 0) {
+    if (!referrers.length) {
       return res.status(404).json({
         ok: false,
-        message: "Referral user not found"
+        message: "Referral code not found"
       });
     }
 
-    const referrerId = String(referrers[0].telegram_chat_id);
-    const referredId = String(telegram_chat_id);
+    const directReferrerId = String(
+      referrers[0].telegram_chat_id
+    );
 
-    // Prevent self-referral
-    if (referrerId === referredId) {
+    // Prevent self referral
+    if (directReferrerId === referredId) {
       return res.status(400).json({
         ok: false,
-        message: "You cannot refer yourself"
+        message: "Self referral is not allowed"
       });
     }
 
-    // Check whether this user already has a referral
+    // Check whether this user already has a Level 1 referrer
     const existingResponse = await fetch(
-      `${SUPABASE_URL}/rest/v1/referrals?referred_telegram_chat_id=eq.${encodeURIComponent(referredId)}&select=id,referrer_telegram_chat_id,level,commission_rate,total_commission_trx`,
+      `${SUPABASE_URL}/rest/v1/referrals?referred_telegram_chat_id=eq.${encodeURIComponent(referredId)}&level=eq.1&select=id`,
       {
         headers: {
           apikey: SUPABASE_SECRET_KEY,
@@ -91,64 +83,118 @@ export default async function handler(req, res) {
     );
 
     if (!existingResponse.ok) {
-      const errorText = await existingResponse.text();
-
       return res.status(500).json({
         ok: false,
-        message: "Could not check existing referral",
-        error: errorText
+        message: "Could not check existing referral"
       });
     }
 
-    const existingReferrals = await existingResponse.json();
+    const existing = await existingResponse.json();
 
-    if (existingReferrals.length > 0) {
+    if (existing.length > 0) {
       return res.status(409).json({
         ok: false,
-        message: "This user already has a referral",
-        referral: existingReferrals[0]
+        message: "Referral already exists"
       });
     }
 
-    // Level 1 referral
-    const level1 = {
-      referrer_telegram_chat_id: referrerId,
-      referred_telegram_chat_id: referredId,
+    // Create Level 1
+    const level1 = await createReferral({
+      supabaseUrl: SUPABASE_URL,
+      supabaseKey: SUPABASE_SECRET_KEY,
+      referrerId: directReferrerId,
+      referredId,
       level: 1,
-      commission_rate: 0.06,
-      total_commission_trx: 0
-    };
+      rate: 0.06
+    });
 
-    const insertResponse = await fetch(
-      `${SUPABASE_URL}/rest/v1/referrals`,
+    if (!level1.ok) {
+      return res.status(500).json({
+        ok: false,
+        message: "Could not create Level 1 referral",
+        error: level1.error
+      });
+    }
+
+    // Find Level 2 referrer
+    const level1ParentResponse = await fetch(
+      `${SUPABASE_URL}/rest/v1/referrals?referred_telegram_chat_id=eq.${encodeURIComponent(directReferrerId)}&level=eq.1&select=referrer_telegram_chat_id`,
       {
-        method: "POST",
         headers: {
           apikey: SUPABASE_SECRET_KEY,
-          Authorization: `Bearer ${SUPABASE_SECRET_KEY}`,
-          "Content-Type": "application/json",
-          Prefer: "return=representation"
-        },
-        body: JSON.stringify(level1)
+          Authorization: `Bearer ${SUPABASE_SECRET_KEY}`
+        }
       }
     );
 
-    if (!insertResponse.ok) {
-      const errorText = await insertResponse.text();
+    if (level1ParentResponse.ok) {
+      const parents = await level1ParentResponse.json();
 
-      return res.status(500).json({
-        ok: false,
-        message: "Could not create referral",
-        error: errorText
-      });
+      if (parents.length > 0) {
+        const level2ReferrerId =
+          String(parents[0].referrer_telegram_chat_id);
+
+        if (
+          level2ReferrerId &&
+          level2ReferrerId !== referredId &&
+          level2ReferrerId !== directReferrerId
+        ) {
+          await createReferral({
+            supabaseUrl: SUPABASE_URL,
+            supabaseKey: SUPABASE_SECRET_KEY,
+            referrerId: level2ReferrerId,
+            referredId,
+            level: 2,
+            rate: 0.02
+          });
+
+          // Find Level 3 referrer
+          const level2ParentResponse = await fetch(
+            `${SUPABASE_URL}/rest/v1/referrals?referred_telegram_chat_id=eq.${encodeURIComponent(level2ReferrerId)}&level=eq.1&select=referrer_telegram_chat_id`,
+            {
+              headers: {
+                apikey: SUPABASE_SECRET_KEY,
+                Authorization: `Bearer ${SUPABASE_SECRET_KEY}`
+              }
+            }
+          );
+
+          if (level2ParentResponse.ok) {
+            const parents2 = await level2ParentResponse.json();
+
+            if (parents2.length > 0) {
+              const level3ReferrerId =
+                String(parents2[0].referrer_telegram_chat_id);
+
+              if (
+                level3ReferrerId &&
+                level3ReferrerId !== referredId &&
+                level3ReferrerId !== directReferrerId &&
+                level3ReferrerId !== level2ReferrerId
+              ) {
+                await createReferral({
+                  supabaseUrl: SUPABASE_URL,
+                  supabaseKey: SUPABASE_SECRET_KEY,
+                  referrerId: level3ReferrerId,
+                  referredId,
+                  level: 3,
+                  rate: 0.01
+                });
+              }
+            }
+          }
+        }
+      }
     }
-
-    const inserted = await insertResponse.json();
 
     return res.status(200).json({
       ok: true,
-      message: "Referral created successfully",
-      referral: inserted[0] || inserted
+      message: "Referral network created successfully",
+      levels: {
+        level1: "6%",
+        level2: "2%",
+        level3: "1%"
+      }
     });
 
   } catch (error) {
@@ -159,5 +205,57 @@ export default async function handler(req, res) {
       message: "Referral server error",
       error: error.message
     });
+  }
+}
+
+
+async function createReferral({
+  supabaseUrl,
+  supabaseKey,
+  referrerId,
+  referredId,
+  level,
+  rate
+}) {
+  try {
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/referrals`,
+      {
+        method: "POST",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation"
+        },
+        body: JSON.stringify({
+          referrer_telegram_chat_id: referrerId,
+          referred_telegram_chat_id: referredId,
+          level,
+          commission_rate: rate,
+          total_commission_trx: 0
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        ok: false,
+        error: data
+      };
+    }
+
+    return {
+      ok: true,
+      data
+    };
+
+  } catch (error) {
+    return {
+      ok: false,
+      error: error.message
+    };
   }
 }
