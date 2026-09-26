@@ -1,3 +1,9 @@
+/* =========================================================
+   DAILY TRX — APP.JS
+   Modern Home + Splash + Wallet + Deposit + Withdraw
+   Investment + Referral + Notifications + Support + Profile
+   ========================================================= */
+
 const telegramApp = window.Telegram?.WebApp;
 
 if (telegramApp) {
@@ -18,322 +24,605 @@ let currentLanguage =
   localStorage.getItem("dailytrx_language") || "en";
 
 let currentTheme =
-  localStorage.getItem("dailytrx_theme") || "light";
+  localStorage.getItem("dailytrx_theme") || "dark";
+
+
+/* =========================================================
+   TRANSLATIONS
+   ========================================================= */
 
 const translations = {
+
   en: {
-    home:"Home",
-    wallet:"Wallet",
-    deposit:"Deposit",
-    withdraw:"Withdraw",
-    investment:"Investment",
-    referral:"Referral",
-    notifications:"Notifications",
-    support:"Support",
-    profile:"Profile",
 
-    welcome:"Welcome to Daily TRX",
-    totalBalance:"Total Balance",
-    availableBalance:"Available Balance",
-    invested:"Invested",
-    profit:"Profit",
-    quickActions:"Quick Actions",
+    home: "Home",
+    wallet: "Wallet",
+    deposit: "Deposit",
+    withdraw: "Withdraw",
+    investment: "Investment",
+    referral: "Referral",
+    notifications: "Notifications",
+    support: "Support",
+    profile: "Profile",
 
-    depositNow:"Deposit Now",
-    withdrawNow:"Withdraw Now",
-    viewInvestment:"Investment Plans",
-    referrals:"My Referrals",
+    welcome: "Welcome to My Daily TRX",
+    investmentWallet: "Investment Wallet",
 
-    depositTitle:"Deposit TRX",
-    depositNotice:"Send TRX only to the address below. Then submit your transaction hash.",
-    depositAddress:"TRON Deposit Address",
-    copyAddress:"Copy Address",
-    amount:"Amount (TRX)",
-    transactionHash:"Transaction Hash",
-    submitDeposit:"Submit Deposit",
+    totalBalance: "Total Balance",
+    availableBalance: "Available Balance",
+    invested: "Invested",
+    profit: "Profit",
 
-    withdrawTitle:"Withdraw TRX",
-    withdrawAddress:"TRON Wallet Address",
-    withdrawAmount:"Withdrawal Amount",
-    submitWithdraw:"Submit Withdrawal",
+    depositNow: "Deposit",
+    withdrawNow: "Withdraw",
 
-    investmentTitle:"Investment Plan 📦",
-    minimum:"Investment",
-    dailyProfit:"Daily Profit",
-    profitRate:"Daily Profit Rate",
-    monthlyProfit:"30 Days Profit",
-    yearlyProfit:"360 Days Profit",
-    investmentDays:"Investment Period",
-    days:"Days",
+    investmentCard: "Investment",
+    investmentDesc: "Plans & history",
 
-    referralTitle:"Referral Program",
-    notificationTitle:"Notifications",
-    supportTitle:"Support",
-    profileTitle:"My Profile",
+    walletCard: "Wallet",
+    walletDesc: "Balance & transactions",
 
-    language:"Language",
-    username:"Username",
-    email:"Email",
-    telegramId:"Telegram ID",
-    accountStatus:"Account Status",
-    verified:"Verified",
-    pending:"Pending",
-    referralCode:"Referral Code",
+    referralCard: "Referral",
+    referralDesc: "Invite & earn",
 
-    referralLevel1:"Level 1",
-    referralLevel2:"Level 2",
-    referralLevel3:"Level 3",
+    notificationsCard: "Notifications",
+    notificationsDesc: "System updates",
 
-    referralRate1:"6%",
-    referralRate2:"2%",
-    referralRate3:"1%",
+    supportCard: "Support",
+    supportDesc: "Help & assistance",
 
-    telegramChannel:"Telegram Channel",
-    telegramSupport:"Telegram Chat / Support",
+    quickActions: "Quick Actions",
 
-    copySuccess:"Address copied successfully.",
-    loading:"Loading...",
-    noData:"No data available.",
-    error:"Something went wrong.",
-    back:"Back",
+    depositTitle: "Deposit TRX",
+    depositNotice:
+      "Send TRX only to the address below. Then submit your transaction hash.",
 
-    createInvestment:"Invest Now",
-    totalProfit:"Total Profit",
-    balance:"Balance",
-    status:"Status",
-    history:"History"
+    depositAddress: "TRON Deposit Address",
+    copyAddress: "Copy Address",
+    amount: "Amount (TRX)",
+    transactionHash: "Transaction Hash",
+    submitDeposit: "Submit Deposit",
+
+    withdrawTitle: "Withdraw TRX",
+    withdrawAddress: "TRON Wallet Address",
+    withdrawAmount: "Withdrawal Amount",
+    submitWithdraw: "Submit Withdrawal",
+
+    investmentTitle: "Investment Plan 📦",
+    minimum: "Investment",
+    dailyProfit: "Daily Profit",
+    profitRate: "Daily Profit Rate",
+    monthlyProfit: "30 Days Profit",
+    yearlyProfit: "360 Days Profit",
+    investmentDays: "Investment Period",
+    days: "Days",
+
+    referralTitle: "Referral Program",
+    notificationTitle: "Notifications",
+    supportTitle: "Support",
+    profileTitle: "My Profile",
+
+    language: "Language",
+    username: "Username",
+    email: "Email",
+    telegramId: "Telegram ID",
+    accountStatus: "Account Status",
+    verified: "Verified",
+    pending: "Pending",
+    referralCode: "Referral Code",
+
+    referralLevel1: "Level 1",
+    referralLevel2: "Level 2",
+    referralLevel3: "Level 3",
+
+    referralRate1: "6%",
+    referralRate2: "2%",
+    referralRate3: "1%",
+
+    telegramChannel: "Telegram Channel",
+    telegramSupport: "Telegram Chat / Support",
+
+    copySuccess: "Address copied successfully.",
+    loading: "Loading...",
+    noData: "No data available.",
+    error: "Something went wrong.",
+    back: "Back",
+
+    createInvestment: "Invest Now",
+    totalProfit: "Total Profit",
+    balance: "Balance",
+    status: "Status",
+    history: "History",
+
+    referralDescription:
+      "Invite friends and build your referral network.",
+
+    announcement: "Announcement",
+
+    splashWelcome: "Welcome to My Daily TRX",
+    splashMessage:
+      "Build your TRX journey. Track your balance and grow your digital assets.",
+    splashLoading: "Loading Daily TRX..."
   },
+
 
   ps: {
-    home:"کور",
-    wallet:"والټ",
-    deposit:"ډیپازټ",
-    withdraw:"ویډرا",
-    investment:"پانګونه",
-    referral:"ریفریل",
-    notifications:"خبرتیاوې",
-    support:"ملاتړ",
-    profile:"پروفایل",
 
-    welcome:"Daily TRX ته ښه راغلاست",
-    totalBalance:"ټول بیلانس",
-    availableBalance:"موجود بیلانس",
-    invested:"پانګونه",
-    profit:"ګټه",
-    quickActions:"چټک انتخابونه",
+    home: "کور",
+    wallet: "والټ",
+    deposit: "ډیپازټ",
+    withdraw: "ویډرا",
+    investment: "پانګونه",
+    referral: "ریفریل",
+    notifications: "خبرتیاوې",
+    support: "ملاتړ",
+    profile: "پروفایل",
 
-    depositNow:"ډیپازټ",
-    withdrawNow:"ویډرا",
-    viewInvestment:"د پانګونې پلانونه",
-    referrals:"زما ریفریلونه",
+    welcome: "زموږ Daily TRX ته ښه راغلاست",
+    investmentWallet: "د پانګونې والټ",
 
-    depositTitle:"TRX ډیپازټ",
-    depositNotice:"یوازې TRX دې ادرس ته ولېږئ، بیا Transaction Hash ثبت کړئ.",
-    depositAddress:"د TRON ډیپازټ ادرس",
-    copyAddress:"ادرس کاپي",
-    amount:"مقدار (TRX)",
-    transactionHash:"Transaction Hash",
-    submitDeposit:"ډیپازټ ثبت کړه",
+    totalBalance: "ټول بیلانس",
+    availableBalance: "موجود بیلانس",
+    invested: "پانګونه",
+    profit: "ګټه",
 
-    withdrawTitle:"TRX ویډرا",
-    withdrawAddress:"د TRON والټ ادرس",
-    withdrawAmount:"د ویډرا مقدار",
-    submitWithdraw:"ویډرا ثبت کړه",
+    depositNow: "ډیپازټ",
+    withdrawNow: "ویډرا",
 
-    investmentTitle:"د پانګونې پلان 📦",
-    minimum:"د پانګونې مقدار",
-    dailyProfit:"ورځنۍ ګټه",
-    profitRate:"ورځنۍ ګټې فیصدي",
-    monthlyProfit:"د ۳۰ ورځو ګټه",
-    yearlyProfit:"د ۳۶۰ ورځو ګټه",
-    investmentDays:"د پانګونې موده",
-    days:"ورځې",
+    investmentCard: "پانګونه",
+    investmentDesc: "پلانونه او تاریخچه",
 
-    referralTitle:"ریفریل پروګرام",
-    notificationTitle:"خبرتیاوې",
-    supportTitle:"ملاتړ",
-    profileTitle:"زما پروفایل",
+    walletCard: "والټ",
+    walletDesc: "بیلانس او معاملې",
 
-    language:"ژبه",
-    username:"یوزرنیم",
-    email:"ایمیل",
-    telegramId:"Telegram ID",
-    accountStatus:"د حساب حالت",
-    verified:"تایید شوی",
-    pending:"انتظار",
-    referralCode:"ریفریل کوډ",
+    referralCard: "ریفریل",
+    referralDesc: "ملګري راوبله او ګټه",
 
-    referralLevel1:"لومړۍ کچه",
-    referralLevel2:"دوهمه کچه",
-    referralLevel3:"درېیمه کچه",
+    notificationsCard: "خبرتیاوې",
+    notificationsDesc: "د سیستم تازه معلومات",
 
-    referralRate1:"۶٪",
-    referralRate2:"۲٪",
-    referralRate3:"۱٪",
+    supportCard: "ملاتړ",
+    supportDesc: "مرسته او ملاتړ",
 
-    telegramChannel:"Telegram چینل",
-    telegramSupport:"Telegram چټ / ملاتړ",
+    quickActions: "چټک انتخابونه",
 
-    copySuccess:"ادرس کاپي شو.",
-    loading:"Loading...",
-    noData:"معلومات نشته.",
-    error:"یوه ستونزه رامنځته شوه.",
-    back:"بېرته",
+    depositTitle: "TRX ډیپازټ",
+    depositNotice:
+      "یوازې TRX دې ادرس ته ولېږئ، بیا Transaction Hash ثبت کړئ.",
 
-    createInvestment:"پانګونه وکړه",
-    totalProfit:"ټوله ګټه",
-    balance:"بیلانس",
-    status:"حالت",
-    history:"تاریخچه"
+    depositAddress: "د TRON ډیپازټ ادرس",
+    copyAddress: "ادرس کاپي",
+    amount: "مقدار (TRX)",
+    transactionHash: "Transaction Hash",
+    submitDeposit: "ډیپازټ ثبت کړه",
+
+    withdrawTitle: "TRX ویډرا",
+    withdrawAddress: "د TRON والټ ادرس",
+    withdrawAmount: "د ویډرا مقدار",
+    submitWithdraw: "ویډرا ثبت کړه",
+
+    investmentTitle: "د پانګونې پلان 📦",
+    minimum: "د پانګونې مقدار",
+    dailyProfit: "ورځنۍ ګټه",
+    profitRate: "ورځنۍ ګټې فیصدي",
+    monthlyProfit: "د ۳۰ ورځو ګټه",
+    yearlyProfit: "د ۳۶۰ ورځو ګټه",
+    investmentDays: "د پانګونې موده",
+    days: "ورځې",
+
+    referralTitle: "ریفریل پروګرام",
+    notificationTitle: "خبرتیاوې",
+    supportTitle: "ملاتړ",
+    profileTitle: "زما پروفایل",
+
+    language: "ژبه",
+    username: "یوزرنیم",
+    email: "ایمیل",
+    telegramId: "Telegram ID",
+    accountStatus: "د حساب حالت",
+    verified: "تایید شوی",
+    pending: "انتظار",
+    referralCode: "ریفریل کوډ",
+
+    referralLevel1: "لومړۍ کچه",
+    referralLevel2: "دوهمه کچه",
+    referralLevel3: "درېیمه کچه",
+
+    referralRate1: "۶٪",
+    referralRate2: "۲٪",
+    referralRate3: "۱٪",
+
+    telegramChannel: "Telegram چینل",
+    telegramSupport: "Telegram چټ / ملاتړ",
+
+    copySuccess: "ادرس کاپي شو.",
+    loading: "Loading...",
+    noData: "معلومات نشته.",
+    error: "یوه ستونزه رامنځته شوه.",
+    back: "بېرته",
+
+    createInvestment: "پانګونه وکړه",
+    totalProfit: "ټوله ګټه",
+    balance: "بیلانس",
+    status: "حالت",
+    history: "تاریخچه",
+
+    referralDescription:
+      "ملګري راوبله او خپل ریفریل شبکه جوړه کړه.",
+
+    announcement: "اعلان",
+
+    splashWelcome: "زموږ Daily TRX ته ښه راغلاست",
+    splashMessage:
+      "خپل TRX سفر جوړ کړه، بیلانس تعقیب کړه او خپل ډیجیټل Assets منظم وساته.",
+    splashLoading: "Daily TRX چمتو کېږي..."
   },
 
+
   fa: {
-    home:"خانه",
-    wallet:"کیف پول",
-    deposit:"سپرده",
-    withdraw:"برداشت",
-    investment:"سرمایه‌گذاری",
-    referral:"معرفی",
-    notifications:"اعلان‌ها",
-    support:"پشتیبانی",
-    profile:"پروفایل",
 
-    welcome:"به Daily TRX خوش آمدید",
-    totalBalance:"مجموع موجودی",
-    availableBalance:"موجودی قابل استفاده",
-    invested:"سرمایه‌گذاری",
-    profit:"سود",
-    quickActions:"گزینه‌های سریع",
+    home: "خانه",
+    wallet: "کیف پول",
+    deposit: "سپرده",
+    withdraw: "برداشت",
+    investment: "سرمایه‌گذاری",
+    referral: "معرفی",
+    notifications: "اعلان‌ها",
+    support: "پشتیبانی",
+    profile: "پروفایل",
 
-    depositNow:"سپرده",
-    withdrawNow:"برداشت",
-    viewInvestment:"پلان‌های سرمایه‌گذاری",
-    referrals:"معرفی‌های من",
+    welcome: "به Daily TRX خوش آمدید",
+    investmentWallet: "کیف پول سرمایه‌گذاری",
 
-    depositTitle:"سپرده TRX",
-    depositNotice:"فقط TRX به آدرس زیر ارسال کنید، سپس Transaction Hash را ثبت کنید.",
-    depositAddress:"آدرس سپرده TRON",
-    copyAddress:"کپی آدرس",
-    amount:"مقدار (TRX)",
-    transactionHash:"Transaction Hash",
-    submitDeposit:"ثبت سپرده",
+    totalBalance: "مجموع موجودی",
+    availableBalance: "موجودی قابل استفاده",
+    invested: "سرمایه‌گذاری",
+    profit: "سود",
 
-    withdrawTitle:"برداشت TRX",
-    withdrawAddress:"آدرس کیف پول TRON",
-    withdrawAmount:"مقدار برداشت",
-    submitWithdraw:"ثبت برداشت",
+    depositNow: "سپرده",
+    withdrawNow: "برداشت",
 
-    investmentTitle:"پلان سرمایه‌گذاری 📦",
-    minimum:"مقدار سرمایه‌گذاری",
-    dailyProfit:"سود روزانه",
-    profitRate:"درصد سود روزانه",
-    monthlyProfit:"سود ۳۰ روز",
-    yearlyProfit:"سود ۳۶۰ روز",
-    investmentDays:"مدت سرمایه‌گذاری",
-    days:"روز",
+    investmentCard: "سرمایه‌گذاری",
+    investmentDesc: "پلان‌ها و تاریخچه",
 
-    referralTitle:"برنامه معرفی",
-    notificationTitle:"اعلان‌ها",
-    supportTitle:"پشتیبانی",
-    profileTitle:"پروفایل من",
+    walletCard: "کیف پول",
+    walletDesc: "موجودی و تراکنش‌ها",
 
-    language:"زبان",
-    username:"نام کاربری",
-    email:"ایمیل",
-    telegramId:"Telegram ID",
-    accountStatus:"وضعیت حساب",
-    verified:"تأیید شده",
-    pending:"در انتظار",
-    referralCode:"کد معرفی",
+    referralCard: "معرفی",
+    referralDesc: "دعوت و درآمد",
 
-    referralLevel1:"سطح اول",
-    referralLevel2:"سطح دوم",
-    referralLevel3:"سطح سوم",
+    notificationsCard: "اعلان‌ها",
+    notificationsDesc: "به‌روزرسانی سیستم",
 
-    referralRate1:"۶٪",
-    referralRate2:"۲٪",
-    referralRate3:"۱٪",
+    supportCard: "پشتیبانی",
+    supportDesc: "کمک و پشتیبانی",
 
-    telegramChannel:"کانال Telegram",
-    telegramSupport:"چت / پشتیبانی Telegram",
+    quickActions: "گزینه‌های سریع",
 
-    copySuccess:"آدرس کپی شد.",
-    loading:"در حال بارگذاری...",
-    noData:"اطلاعاتی موجود نیست.",
-    error:"مشکلی رخ داد.",
-    back:"برگشت",
+    depositTitle: "سپرده TRX",
+    depositNotice:
+      "فقط TRX به آدرس زیر ارسال کنید، سپس Transaction Hash را ثبت کنید.",
 
-    createInvestment:"سرمایه‌گذاری",
-    totalProfit:"سود کل",
-    balance:"موجودی",
-    status:"وضعیت",
-    history:"تاریخچه"
+    depositAddress: "آدرس سپرده TRON",
+    copyAddress: "کپی آدرس",
+    amount: "مقدار (TRX)",
+    transactionHash: "Transaction Hash",
+    submitDeposit: "ثبت سپرده",
+
+    withdrawTitle: "برداشت TRX",
+    withdrawAddress: "آدرس کیف پول TRON",
+    withdrawAmount: "مقدار برداشت",
+    submitWithdraw: "ثبت برداشت",
+
+    investmentTitle: "پلان سرمایه‌گذاری 📦",
+    minimum: "مقدار سرمایه‌گذاری",
+    dailyProfit: "سود روزانه",
+    profitRate: "درصد سود روزانه",
+    monthlyProfit: "سود ۳۰ روز",
+    yearlyProfit: "سود ۳۶۰ روز",
+    investmentDays: "مدت سرمایه‌گذاری",
+    days: "روز",
+
+    referralTitle: "برنامه معرفی",
+    notificationTitle: "اعلان‌ها",
+    supportTitle: "پشتیبانی",
+    profileTitle: "پروفایل من",
+
+    language: "زبان",
+    username: "نام کاربری",
+    email: "ایمیل",
+    telegramId: "Telegram ID",
+    accountStatus: "وضعیت حساب",
+    verified: "تأیید شده",
+    pending: "در انتظار",
+    referralCode: "کد معرفی",
+
+    referralLevel1: "سطح اول",
+    referralLevel2: "سطح دوم",
+    referralLevel3: "سطح سوم",
+
+    referralRate1: "۶٪",
+    referralRate2: "۲٪",
+    referralRate3: "۱٪",
+
+    telegramChannel: "کانال Telegram",
+    telegramSupport: "چت / پشتیبانی Telegram",
+
+    copySuccess: "آدرس کپی شد.",
+    loading: "در حال بارگذاری...",
+    noData: "اطلاعاتی موجود نیست.",
+    error: "مشکلی رخ داد.",
+    back: "برگشت",
+
+    createInvestment: "سرمایه‌گذاری",
+    totalProfit: "سود کل",
+    balance: "موجودی",
+    status: "وضعیت",
+    history: "تاریخچه",
+
+    referralDescription:
+      "دوستان خود را دعوت کنید و شبکه معرفی خود را بسازید.",
+
+    announcement: "اعلان",
+
+    splashWelcome: "به Daily TRX خوش آمدید",
+    splashMessage:
+      "مسیر TRX خود را بسازید، موجودی خود را دنبال کنید و دارایی‌های دیجیتال خود را مدیریت کنید.",
+    splashLoading: "Daily TRX در حال آماده‌سازی..."
   }
+
 };
 
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
 function t(key) {
-  return translations[currentLanguage]?.[key]
-    || translations.en[key]
-    || key;
+
+  return (
+    translations[currentLanguage]?.[key] ||
+    translations.en[key] ||
+    key
+  );
 }
+
 
 function escapeHtml(value) {
+
   return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
+
 function telegramId() {
+
   return telegramApp?.initDataUnsafe?.user?.id
     ? String(telegramApp.initDataUnsafe.user.id)
     : "";
 }
 
+
 function formatTRX(value) {
+
   const n = Number(value);
 
   return Number.isFinite(n)
-    ? `${n.toLocaleString(undefined,{
-        maximumFractionDigits:6
+    ? `${n.toLocaleString(undefined, {
+        maximumFractionDigits: 6
       })} TRX`
     : "0 TRX";
 }
-function languageSelector() {
-  return `
-    <div class="language-box">
-      <span>🌐 ${t("language")}</span>
 
-      <select id="languageSelect">
 
-        <option value="en"
-          ${currentLanguage === "en" ? "selected" : ""}>
-          English
-        </option>
+function apiError(
+  data,
+  fallback = "Something went wrong."
+) {
 
-        <option value="ps"
-          ${currentLanguage === "ps" ? "selected" : ""}>
-          پښتو
-        </option>
+  return (
+    data?.message ||
+    data?.error?.message ||
+    fallback
+  );
+}
 
-        <option value="fa"
-          ${currentLanguage === "fa" ? "selected" : ""}>
-          دری
-        </option>
 
-      </select>
+/* =========================================================
+   SPLASH SCREEN
+   ========================================================= */
+
+function createSplashScreen() {
+
+  if (document.getElementById("splash-screen")) {
+    return;
+  }
+
+  const splash =
+    document.createElement("div");
+
+  splash.id = "splash-screen";
+
+  splash.innerHTML = `
+
+    <div class="splash-content">
+
+      <div class="splash-logo-wrap">
+
+        <div class="splash-logo">
+
+          <div class="splash-logo-symbol">
+            ₮
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="splash-brand">
+        DAILY TRX
+      </div>
+
+      <div class="splash-subtitle">
+        ${t("investmentWallet")}
+      </div>
+
+      <div class="splash-welcome">
+        ${t("splashWelcome")}
+      </div>
+
+      <div class="splash-message">
+        ${t("splashMessage")}
+      </div>
+
+      <div class="splash-loader">
+
+        <div class="splash-loader-bar"></div>
+
+      </div>
+
+      <div class="splash-loading">
+        ${t("splashLoading")}
+      </div>
+
     </div>
   `;
+
+  document.body.prepend(splash);
+
+  setTimeout(() => {
+
+    splash.classList.add("hide");
+
+    setTimeout(() => {
+
+      splash.remove();
+
+    }, 650);
+
+  }, 2100);
 }
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+function languageSelector() {
+
+  return `
+    <select
+      id="languageSelect"
+      class="language-select"
+      aria-label="${t("language")}">
+
+      <option
+        value="en"
+        ${currentLanguage === "en" ? "selected" : ""}>
+        English
+      </option>
+
+      <option
+        value="ps"
+        ${currentLanguage === "ps" ? "selected" : ""}>
+        پښتو
+      </option>
+
+      <option
+        value="fa"
+        ${currentLanguage === "fa" ? "selected" : ""}>
+        دری
+      </option>
+
+    </select>
+  `;
+}
+
+
+function appHeader() {
+
+  return `
+
+    <header class="app-header">
+
+      <div class="brand-area">
+
+        <div class="brand-logo">
+          ₮
+        </div>
+
+        <div class="brand-info">
+
+          <strong>
+            DAILY TRX
+          </strong>
+
+          <small>
+            ${t("investmentWallet")}
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <button
+          id="themeButton"
+          class="header-icon"
+          type="button"
+          aria-label="Theme">
+
+          ${currentTheme === "dark"
+            ? "☀️"
+            : "🌙"}
+
+        </button>
+
+
+        <div class="language-wrap">
+
+          <span class="language-icon">
+            🌐
+          </span>
+
+          ${languageSelector()}
+
+        </div>
+
+
+        <button
+          class="header-icon"
+          type="button"
+          data-page="notifications"
+          aria-label="Notifications">
+
+          🔔
+
+        </button>
+
+      </div>
+
+    </header>
+  `;
+}
+
 
 function setupLanguage() {
 
   const el =
     document.getElementById("languageSelect");
 
-  if (!el) return;
+  if (!el || el.dataset.ready) {
+    return;
+  }
+
+  el.dataset.ready = "1";
 
   el.addEventListener("change", () => {
 
@@ -351,6 +640,11 @@ function setupLanguage() {
   });
 }
 
+
+/* =========================================================
+   THEME
+   ========================================================= */
+
 function applyTheme() {
 
   document.body.classList.toggle(
@@ -358,16 +652,21 @@ function applyTheme() {
     currentTheme === "dark"
   );
 
+  document.documentElement.dataset.theme =
+    currentTheme;
+
   const button =
     document.getElementById("themeButton");
 
   if (button) {
+
     button.textContent =
       currentTheme === "dark"
         ? "☀️"
         : "🌙";
   }
 }
+
 
 function setupTheme() {
 
@@ -376,11 +675,13 @@ function setupTheme() {
   const button =
     document.getElementById("themeButton");
 
-  if (!button || button.dataset.ready) return;
+  if (!button || button.dataset.ready) {
+    return;
+  }
 
   button.dataset.ready = "1";
 
-  button.onclick = () => {
+  button.addEventListener("click", () => {
 
     currentTheme =
       currentTheme === "dark"
@@ -393,30 +694,27 @@ function setupTheme() {
     );
 
     applyTheme();
-  };
+  });
 }
 
-function apiError(
-  data,
-  fallback = "Something went wrong."
-) {
-  return (
-    data?.message ||
-    data?.error?.message ||
-    fallback
-  );
-}
+
+/* =========================================================
+   HEADING
+   ========================================================= */
 
 function heading(title, icon) {
 
   return `
+
     <div class="page-heading">
 
       <button
         type="button"
         class="back-button"
         data-page="home">
+
         ←
+
       </button>
 
       <h2>
@@ -427,6 +725,7 @@ function heading(title, icon) {
   `;
 }
 
+
 function card(content, cls = "card") {
 
   return `
@@ -435,95 +734,309 @@ function card(content, cls = "card") {
     </div>
   `;
 }
+
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
 function homePage() {
 
   return `
-    ${languageSelector()}
 
-    <div class="hero-card">
+    ${appHeader()}
 
-      <div class="hero-small">
-        ${t("welcome")}
+
+    <section class="welcome-strip">
+
+      <div>
+
+        <span class="eyebrow">
+          DAILY TRX
+        </span>
+
+        <h1>
+          ${t("welcome")}
+        </h1>
+
+        <p>
+          ${t("investmentWallet")}
+        </p>
+
       </div>
 
-      <h1>Daily TRX</h1>
+    </section>
 
-      <div class="hero-label">
-        ${t("totalBalance")}
+
+    <section class="balance-card">
+
+      <div class="balance-top">
+
+        <span>
+          ${t("totalBalance")}
+        </span>
+
+        <span class="balance-dot">
+          ●
+        </span>
+
       </div>
+
 
       <div
         id="homeBalance"
-        class="hero-balance">
+        class="balance-value">
+
         0 TRX
+
       </div>
 
-    </div>
 
-    <div class="stats-grid">
-
-      <div class="stat-card">
-        <span>${t("availableBalance")}</span>
-        <b id="homeAvailable">0 TRX</b>
+      <div class="balance-usd">
+        ≈ $0.00
       </div>
 
-      <div class="stat-card">
-        <span>${t("invested")}</span>
-        <b id="homeInvested">0 TRX</b>
+
+      <div class="balance-actions">
+
+        <button
+          class="balance-action"
+          data-page="deposit">
+
+          <span>＋</span>
+          ${t("depositNow")}
+
+        </button>
+
+
+        <button
+          class="balance-action"
+          data-page="withdraw">
+
+          <span>↗</span>
+          ${t("withdrawNow")}
+
+        </button>
+
       </div>
 
-      <div class="stat-card">
-        <span>${t("profit")}</span>
-        <b id="homeProfit">0 TRX</b>
+    </section>
+
+
+    <section class="mini-stats">
+
+      <div class="mini-stat">
+
+        <span>
+          ${t("availableBalance")}
+        </span>
+
+        <strong id="homeAvailable">
+          0 TRX
+        </strong>
+
       </div>
 
-    </div>
 
-    <h3 class="section-title">
-      ${t("quickActions")}
-    </h3>
+      <div class="mini-stat">
 
-    <div class="action-grid">
+        <span>
+          ${t("invested")}
+        </span>
 
-      <button data-page="deposit" class="action-card">
-        <span>📥</span>
-        <b>${t("depositNow")}</b>
-      </button>
+        <strong id="homeInvested">
+          0 TRX
+        </strong>
 
-      <button data-page="withdraw" class="action-card">
-        <span>📤</span>
-        <b>${t("withdrawNow")}</b>
-      </button>
+      </div>
 
-      <button data-page="investment" class="action-card">
-        <span>📈</span>
-        <b>${t("viewInvestment")}</b>
-      </button>
 
-      <button data-page="referral" class="action-card">
-        <span>👥</span>
-        <b>${t("referrals")}</b>
-      </button>
+      <div class="mini-stat">
 
-    </div>
+        <span>
+          ${t("profit")}
+        </span>
 
-    <div class="home-links">
+        <strong id="homeProfit">
+          0 TRX
+        </strong>
 
-      <button data-page="notifications">
-        🔔 ${t("notifications")}
-      </button>
+      </div>
 
-      <button data-page="support">
-        🎧 ${t("support")}
-      </button>
+    </section>
 
-      <button data-page="profile">
-        👤 ${t("profile")}
-      </button>
 
-    </div>
+    <section class="quick-section">
+
+      <div class="section-heading">
+
+        <div>
+
+          <span>
+            ${t("quickActions")}
+          </span>
+
+          <h2>
+            Daily TRX
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="quick-grid">
+
+
+        <button
+          class="quick-card"
+          data-page="investment">
+
+          <div class="quick-icon">
+            📈
+          </div>
+
+          <div class="quick-text">
+
+            <strong>
+              ${t("investmentCard")}
+            </strong>
+
+            <small>
+              ${t("investmentDesc")}
+            </small>
+
+          </div>
+
+        </button>
+
+
+        <button
+          class="quick-card"
+          data-page="wallet">
+
+          <div class="quick-icon">
+            ▣
+          </div>
+
+          <div class="quick-text">
+
+            <strong>
+              ${t("walletCard")}
+            </strong>
+
+            <small>
+              ${t("walletDesc")}
+            </small>
+
+          </div>
+
+        </button>
+
+
+        <button
+          class="quick-card"
+          data-page="referral">
+
+          <div class="quick-icon">
+            👥
+          </div>
+
+          <div class="quick-text">
+
+            <strong>
+              ${t("referralCard")}
+            </strong>
+
+            <small>
+              ${t("referralDesc")}
+            </small>
+
+          </div>
+
+        </button>
+
+
+        <button
+          class="quick-card"
+          data-page="notifications">
+
+          <div class="quick-icon">
+            🔔
+          </div>
+
+          <div class="quick-text">
+
+            <strong>
+              ${t("notificationsCard")}
+            </strong>
+
+            <small>
+              ${t("notificationsDesc")}
+            </small>
+
+          </div>
+
+        </button>
+
+
+        <button
+          class="quick-card"
+          data-page="deposit">
+
+          <div class="quick-icon">
+            📥
+          </div>
+
+          <div class="quick-text">
+
+            <strong>
+              ${t("deposit")}
+            </strong>
+
+            <small>
+              ${t("depositNotice").split(".")[0]}
+            </small>
+
+          </div>
+
+        </button>
+
+
+        <button
+          class="quick-card"
+          data-page="withdraw">
+
+          <div class="quick-icon">
+            📤
+          </div>
+
+          <div class="quick-text">
+
+            <strong>
+              ${t("withdraw")}
+            </strong>
+
+            <small>
+              ${t("withdrawAddress")}
+            </small>
+
+          </div>
+
+        </button>
+
+
+      </div>
+
+    </section>
+
   `;
 }
+
+
+/* =========================================================
+   HOME WALLET
+   ========================================================= */
 
 async function loadHomeWallet() {
 
@@ -573,6 +1086,7 @@ async function loadHomeWallet() {
       0
     );
 
+
     const a =
       document.getElementById("homeBalance");
 
@@ -585,20 +1099,36 @@ async function loadHomeWallet() {
     const e =
       document.getElementById("homeProfit");
 
-    if (a) a.textContent = formatTRX(total);
-    if (b) b.textContent = formatTRX(available);
-    if (c) c.textContent = formatTRX(invested);
-    if (e) e.textContent = formatTRX(profit);
+
+    if (a) {
+      a.textContent = formatTRX(total);
+    }
+
+    if (b) {
+      b.textContent = formatTRX(available);
+    }
+
+    if (c) {
+      c.textContent = formatTRX(invested);
+    }
+
+    if (e) {
+      e.textContent = formatTRX(profit);
+    }
 
   } catch (_) {}
 }
 
+
+/* =========================================================
+   WALLET
+   ========================================================= */
+
 function walletPage() {
 
   return `
-    ${heading(t("wallet"),"💰")}
 
-    ${languageSelector()}
+    ${heading(t("wallet"), "💰")}
 
     <div
       id="walletContent"
@@ -609,6 +1139,7 @@ function walletPage() {
     </div>
   `;
 }
+
 
 async function loadWalletPage() {
 
@@ -637,11 +1168,14 @@ async function loadWalletPage() {
       d.data ||
       d;
 
+
     box.innerHTML = `
 
       <div class="wallet-main">
 
-        <span>${t("totalBalance")}</span>
+        <span>
+          ${t("totalBalance")}
+        </span>
 
         <strong>
           ${formatTRX(
@@ -654,40 +1188,58 @@ async function loadWalletPage() {
 
       </div>
 
-      <div class="stats-grid">
 
-        <div class="stat-card">
-          <span>${t("availableBalance")}</span>
-          <b>
+      <div class="mini-stats">
+
+        <div class="mini-stat">
+
+          <span>
+            ${t("availableBalance")}
+          </span>
+
+          <strong>
             ${formatTRX(
               w.available_balance ??
               w.available ??
               w.balance ??
               0
             )}
-          </b>
+          </strong>
+
         </div>
 
-        <div class="stat-card">
-          <span>${t("invested")}</span>
-          <b>
+
+        <div class="mini-stat">
+
+          <span>
+            ${t("invested")}
+          </span>
+
+          <strong>
             ${formatTRX(
               w.invested_balance ??
               w.invested ??
               0
             )}
-          </b>
+          </strong>
+
         </div>
 
-        <div class="stat-card">
-          <span>${t("profit")}</span>
-          <b>
+
+        <div class="mini-stat">
+
+          <span>
+            ${t("profit")}
+          </span>
+
+          <strong>
             ${formatTRX(
               w.profit ??
               w.total_profit ??
               0
             )}
-          </b>
+          </strong>
+
         </div>
 
       </div>
@@ -702,22 +1254,29 @@ async function loadWalletPage() {
     `;
   }
 }
+
+
+/* =========================================================
+   DEPOSIT
+   ========================================================= */
+
 function depositPage() {
 
   return `
-    ${heading(t("depositTitle"),"📥")}
 
-    ${languageSelector()}
+    ${heading(t("depositTitle"), "📥")}
 
     <div class="notice-box">
       ℹ️ ${t("depositNotice")}
     </div>
+
 
     <div class="card deposit-card">
 
       <label>
         ${t("depositAddress")}
       </label>
+
 
       <div class="address-row">
 
@@ -726,6 +1285,7 @@ function depositPage() {
           value="${DEPOSIT_ADDRESS}"
           readonly
         >
+
 
         <button
           id="copyDepositAddress"
@@ -737,6 +1297,7 @@ function depositPage() {
 
       </div>
 
+
       <div class="qr-box">
 
         <img
@@ -746,7 +1307,11 @@ function depositPage() {
 
       </div>
 
-      <label>${t("amount")}</label>
+
+      <label>
+        ${t("amount")}
+      </label>
+
 
       <input
         id="depositAmount"
@@ -756,7 +1321,11 @@ function depositPage() {
         placeholder="0"
       >
 
-      <label>${t("transactionHash")}</label>
+
+      <label>
+        ${t("transactionHash")}
+      </label>
+
 
       <input
         id="depositTxHash"
@@ -764,6 +1333,7 @@ function depositPage() {
         maxlength="64"
         placeholder="64-character TRON transaction hash"
       >
+
 
       <button
         id="submitDeposit"
@@ -774,6 +1344,7 @@ function depositPage() {
 
       </button>
 
+
       <div
         id="depositMessage"
         class="form-message">
@@ -783,148 +1354,189 @@ function depositPage() {
   `;
 }
 
+
 function setupDeposit() {
 
   const copy =
-    document.getElementById("copyDepositAddress");
+    document.getElementById(
+      "copyDepositAddress"
+    );
 
   const submit =
-    document.getElementById("submitDeposit");
+    document.getElementById(
+      "submitDeposit"
+    );
 
-  copy?.addEventListener("click", async () => {
 
-    try {
+  copy?.addEventListener(
+    "click",
+    async () => {
 
-      await navigator.clipboard.writeText(
-        DEPOSIT_ADDRESS
-      );
+      try {
 
-      showFormMessage(
-        t("copySuccess"),
-        "success"
-      );
+        await navigator.clipboard.writeText(
+          DEPOSIT_ADDRESS
+        );
 
-    } catch (_) {
+        showFormMessage(
+          t("copySuccess"),
+          "success"
+        );
 
-      const input =
-        document.getElementById("depositAddress");
+      } catch (_) {
 
-      input?.select();
+        const input =
+          document.getElementById(
+            "depositAddress"
+          );
 
-      document.execCommand("copy");
+        input?.select();
 
-      showFormMessage(
-        t("copySuccess"),
-        "success"
-      );
+        document.execCommand("copy");
+
+        showFormMessage(
+          t("copySuccess"),
+          "success"
+        );
+      }
     }
-  });
+  );
 
-  submit?.addEventListener("click", async () => {
 
-    const amount =
-      document.getElementById("depositAmount")
-        ?.value.trim();
+  submit?.addEventListener(
+    "click",
+    async () => {
 
-    const txHash =
-      document.getElementById("depositTxHash")
-        ?.value.trim();
+      const amount =
+        document
+          .getElementById("depositAmount")
+          ?.value
+          .trim();
 
-    const id = telegramId();
 
-    if (!id) {
+      const txHash =
+        document
+          .getElementById("depositTxHash")
+          ?.value
+          .trim();
 
-      return showFormMessage(
-        "Please open the app from Telegram.",
-        "error"
-      );
-    }
 
-    if (!amount || Number(amount) <= 0) {
+      const id = telegramId();
 
-      return showFormMessage(
-        "Enter a valid TRX amount.",
-        "error"
-      );
-    }
 
-    if (!/^[a-fA-F0-9]{64}$/.test(txHash || "")) {
+      if (!id) {
 
-      return showFormMessage(
-        "Invalid TRON transaction hash.",
-        "error"
-      );
-    }
-
-    submit.disabled = true;
-    submit.textContent = t("loading");
-
-    try {
-
-      const r = await fetch(
-        "/api/deposit",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":"application/json"
-          },
-
-          body:JSON.stringify({
-            telegram_chat_id:id,
-            amount_trx:Number(amount),
-            tx_hash:txHash
-          })
-        }
-      );
-
-      const d = await r.json();
-
-      if (!r.ok || !d.ok) {
-
-        throw new Error(
-          apiError(
-            d,
-            "Deposit submission failed."
-          )
+        return showFormMessage(
+          "Please open the app from Telegram.",
+          "error"
         );
       }
 
-      showFormMessage(
-        d.message ||
-        "Deposit submitted successfully.",
-        "success"
-      );
 
-      document.getElementById(
-        "depositAmount"
-      ).value = "";
+      if (!amount || Number(amount) <= 0) {
 
-      document.getElementById(
-        "depositTxHash"
-      ).value = "";
+        return showFormMessage(
+          "Enter a valid TRX amount.",
+          "error"
+        );
+      }
 
-    } catch (e) {
 
-      showFormMessage(
-        e.message,
-        "error"
-      );
+      if (
+        !/^[a-fA-F0-9]{64}$/.test(
+          txHash || ""
+        )
+      ) {
 
-    } finally {
+        return showFormMessage(
+          "Invalid TRON transaction hash.",
+          "error"
+        );
+      }
 
-      submit.disabled = false;
 
-      submit.textContent =
-        t("submitDeposit");
+      submit.disabled = true;
+      submit.textContent = t("loading");
+
+
+      try {
+
+        const r = await fetch(
+          "/api/deposit",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+              telegram_chat_id: id,
+              amount_trx: Number(amount),
+              tx_hash: txHash
+            })
+          }
+        );
+
+
+        const d = await r.json();
+
+
+        if (!r.ok || !d.ok) {
+
+          throw new Error(
+            apiError(
+              d,
+              "Deposit submission failed."
+            )
+          );
+        }
+
+
+        showFormMessage(
+          d.message ||
+          "Deposit submitted successfully.",
+          "success"
+        );
+
+
+        document.getElementById(
+          "depositAmount"
+        ).value = "";
+
+
+        document.getElementById(
+          "depositTxHash"
+        ).value = "";
+
+
+      } catch (e) {
+
+        showFormMessage(
+          e.message,
+          "error"
+        );
+
+
+      } finally {
+
+        submit.disabled = false;
+
+        submit.textContent =
+          t("submitDeposit");
+      }
     }
-  });
+  );
 }
+
 
 function showFormMessage(text, type) {
 
   const box =
-    document.getElementById("depositMessage");
+    document.getElementById(
+      "depositMessage"
+    );
 
   if (!box) return;
 
@@ -933,12 +1545,18 @@ function showFormMessage(text, type) {
   box.className =
     `form-message ${type}`;
 }
+
+
+/* =========================================================
+   WITHDRAW
+   ========================================================= */
+
 function withdrawPage() {
 
   return `
-    ${heading(t("withdrawTitle"),"📤")}
 
-    ${languageSelector()}
+    ${heading(t("withdrawTitle"), "📤")}
+
 
     <div class="card">
 
@@ -946,9 +1564,11 @@ function withdrawPage() {
         Minimum withdrawal: 20 TRX
       </div>
 
+
       <label>
         ${t("withdrawAddress")}
       </label>
+
 
       <input
         id="withdrawAddress"
@@ -956,9 +1576,11 @@ function withdrawPage() {
         placeholder="T..."
       >
 
+
       <label>
         ${t("withdrawAmount")}
       </label>
+
 
       <input
         id="withdrawAmount"
@@ -967,6 +1589,7 @@ function withdrawPage() {
         step="0.000001"
         placeholder="20"
       >
+
 
       <button
         id="submitWithdraw"
@@ -977,6 +1600,7 @@ function withdrawPage() {
 
       </button>
 
+
       <div
         id="withdrawMessage"
         class="form-message">
@@ -986,136 +1610,172 @@ function withdrawPage() {
   `;
 }
 
+
 function setupWithdraw() {
 
   const button =
-    document.getElementById("submitWithdraw");
+    document.getElementById(
+      "submitWithdraw"
+    );
 
-  button?.addEventListener("click", async () => {
 
-    const address =
-      document.getElementById("withdrawAddress")
-        ?.value.trim();
+  button?.addEventListener(
+    "click",
+    async () => {
 
-    const amount =
-      Number(
-        document.getElementById("withdrawAmount")
-          ?.value
-      );
-
-    const message =
-      document.getElementById("withdrawMessage");
-
-    if (!address) {
-
-      message.textContent =
-        "Enter your TRON wallet address.";
-
-      message.className =
-        "form-message error";
-
-      return;
-    }
-
-    if (
-      !address.startsWith("T") ||
-      address.length < 30
-    ) {
-
-      message.textContent =
-        "Invalid TRON wallet address.";
-
-      message.className =
-        "form-message error";
-
-      return;
-    }
-
-    if (
-      !Number.isFinite(amount) ||
-      amount < 20
-    ) {
-
-      message.textContent =
-        "Minimum withdrawal is 20 TRX.";
-
-      message.className =
-        "form-message error";
-
-      return;
-    }
-
-    const id = telegramId();
-
-    if (!id) return;
-
-    button.disabled = true;
-    button.textContent = t("loading");
-
-    try {
-
-      const r = await fetch(
-        "/api/withdraw",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":"application/json"
-          },
-
-          body:JSON.stringify({
-            telegram_chat_id:id,
-            wallet_address:address,
-            amount_trx:amount
-          })
-        }
-      );
-
-      const d = await r.json();
-
-      if (!r.ok || !d.ok) {
-
-        throw new Error(
-          apiError(
-            d,
-            "Withdrawal failed."
+      const address =
+        document
+          .getElementById(
+            "withdrawAddress"
           )
+          ?.value
+          .trim();
+
+
+      const amount =
+        Number(
+          document
+            .getElementById(
+              "withdrawAmount"
+            )
+            ?.value
         );
+
+
+      const message =
+        document.getElementById(
+          "withdrawMessage"
+        );
+
+
+      if (!address) {
+
+        message.textContent =
+          "Enter your TRON wallet address.";
+
+        message.className =
+          "form-message error";
+
+        return;
       }
 
-      message.textContent =
-        d.message ||
-        "Withdrawal request submitted.";
 
-      message.className =
-        "form-message success";
+      if (
+        !address.startsWith("T") ||
+        address.length < 30
+      ) {
 
-    } catch (e) {
+        message.textContent =
+          "Invalid TRON wallet address.";
 
-      message.textContent =
-        e.message;
+        message.className =
+          "form-message error";
 
-      message.className =
-        "form-message error";
+        return;
+      }
 
-    } finally {
 
-      button.disabled = false;
+      if (
+        !Number.isFinite(amount) ||
+        amount < 20
+      ) {
 
-      button.textContent =
-        t("submitWithdraw");
+        message.textContent =
+          "Minimum withdrawal is 20 TRX.";
+
+        message.className =
+          "form-message error";
+
+        return;
+      }
+
+
+      const id = telegramId();
+
+      if (!id) return;
+
+
+      button.disabled = true;
+      button.textContent = t("loading");
+
+
+      try {
+
+        const r = await fetch(
+          "/api/withdraw",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+              telegram_chat_id: id,
+              wallet_address: address,
+              amount_trx: amount
+            })
+          }
+        );
+
+
+        const d = await r.json();
+
+
+        if (!r.ok || !d.ok) {
+
+          throw new Error(
+            apiError(
+              d,
+              "Withdrawal failed."
+            )
+          );
+        }
+
+
+        message.textContent =
+          d.message ||
+          "Withdrawal request submitted.";
+
+        message.className =
+          "form-message success";
+
+
+      } catch (e) {
+
+        message.textContent =
+          e.message;
+
+        message.className =
+          "form-message error";
+
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          t("submitWithdraw");
+      }
     }
-  });
+  );
 }
+
+
+/* =========================================================
+   INVESTMENT
+   ========================================================= */
+
 function investmentPage() {
 
   return `
+
     ${heading(
       t("investmentTitle"),
       "📈"
     )}
 
-    ${languageSelector()}
 
     <div
       id="investmentContent"
@@ -1129,12 +1789,16 @@ function investmentPage() {
   `;
 }
 
+
 async function loadInvestments() {
 
   const box =
-    document.getElementById("investmentContent");
+    document.getElementById(
+      "investmentContent"
+    );
 
   if (!box) return;
+
 
   try {
 
@@ -1142,7 +1806,9 @@ async function loadInvestments() {
       "/api/investment-plans"
     );
 
+
     const d = await r.json();
+
 
     if (!r.ok || !d.ok) {
 
@@ -1154,10 +1820,12 @@ async function loadInvestments() {
       );
     }
 
+
     const plans =
       Array.isArray(d.plans)
         ? d.plans
         : [];
+
 
     if (!plans.length) {
 
@@ -1170,46 +1838,59 @@ async function loadInvestments() {
       return;
     }
 
+
     box.innerHTML =
       plans.map((p, index) => {
 
-        /*
-         * IMPORTANT API FIELDS:
-         * amount_trx
-         * daily_profit_trx
-         * duration_days
-         */
-
         const investment =
-          Number(p.amount_trx ?? 0);
+          Number(
+            p.amount_trx ?? 0
+          );
+
 
         const dailyProfit =
-          Number(p.daily_profit_trx ?? 0);
+          Number(
+            p.daily_profit_trx ?? 0
+          );
+
 
         const duration =
-          Number(p.duration_days ?? 360) || 360;
+          Number(
+            p.duration_days ?? 360
+          ) || 360;
+
 
         const dailyRate =
           investment > 0
-            ? (dailyProfit / investment) * 100
+            ? (
+                dailyProfit /
+                investment
+              ) * 100
             : 0;
+
 
         const profit30 =
           dailyProfit * 30;
 
+
         const profit360 =
           dailyProfit * 360;
+
 
         const safeName =
           p.name ||
           `Plan ${index + 1}`;
 
+
         return `
+
           <div class="plan-card">
 
             <div class="plan-top">
 
-              <span>📦</span>
+              <span>
+                📦
+              </span>
 
               <b>
                 ${escapeHtml(safeName)}
@@ -1217,11 +1898,16 @@ async function loadInvestments() {
 
             </div>
 
+
             <div class="profit-badge">
+
               🔥
               ${dailyRate.toFixed(2)}%
+
               ${t("dailyProfit")}
+
             </div>
+
 
             <div class="plan-row">
 
@@ -1235,6 +1921,7 @@ async function loadInvestments() {
 
             </div>
 
+
             <div class="plan-row">
 
               <span>
@@ -1246,6 +1933,7 @@ async function loadInvestments() {
               </strong>
 
             </div>
+
 
             <div class="plan-row">
 
@@ -1259,6 +1947,7 @@ async function loadInvestments() {
 
             </div>
 
+
             <div class="plan-row">
 
               <span>
@@ -1270,6 +1959,7 @@ async function loadInvestments() {
               </strong>
 
             </div>
+
 
             <div class="plan-row">
 
@@ -1283,6 +1973,7 @@ async function loadInvestments() {
 
             </div>
 
+
             <div class="plan-row">
 
               <span>
@@ -1290,14 +1981,18 @@ async function loadInvestments() {
               </span>
 
               <strong>
-                ${duration} ${t("days")}
+                ${duration}
+                ${t("days")}
               </strong>
 
             </div>
 
+
             <button
               class="primary-btn invest-btn"
-              data-plan-id="${escapeHtml(p.id ?? "")}"
+              data-plan-id="${escapeHtml(
+                p.id ?? ""
+              )}"
               type="button">
 
               ${t("createInvestment")}
@@ -1308,6 +2003,7 @@ async function loadInvestments() {
         `;
 
       }).join("");
+
 
     document
       .querySelectorAll(".invest-btn")
@@ -1326,12 +2022,14 @@ async function loadInvestments() {
 
       });
 
+
   } catch (e) {
 
     console.error(
       "Investment loading error:",
       e
     );
+
 
     box.innerHTML = `
       <div class="error-box">
@@ -1341,20 +2039,25 @@ async function loadInvestments() {
   }
 }
 
+
 async function createInvestment(planId) {
 
   const id = telegramId();
 
   if (!id || !planId) return;
 
+
   const amount =
     prompt(
       "Enter investment amount in TRX:"
     );
 
+
   if (amount === null) return;
 
+
   const n = Number(amount);
+
 
   if (
     !Number.isFinite(n) ||
@@ -1368,26 +2071,30 @@ async function createInvestment(planId) {
     return;
   }
 
+
   try {
 
     const r = await fetch(
       "/api/create-investment",
       {
-        method:"POST",
+        method: "POST",
 
-        headers:{
-          "Content-Type":"application/json"
+        headers: {
+          "Content-Type":
+            "application/json"
         },
 
-        body:JSON.stringify({
-          telegram_chat_id:id,
-          plan_id:planId,
-          amount_trx:n
+        body: JSON.stringify({
+          telegram_chat_id: id,
+          plan_id: planId,
+          amount_trx: n
         })
       }
     );
 
+
     const d = await r.json();
+
 
     if (!r.ok || !d.ok) {
 
@@ -1399,29 +2106,38 @@ async function createInvestment(planId) {
       );
     }
 
+
     alert(
       d.message ||
       "Investment created successfully."
     );
 
+
     render("investment");
+
 
   } catch (e) {
 
     alert(e.message);
   }
 }
+
+
+/* =========================================================
+   REFERRAL
+   ========================================================= */
+
 function referralPage() {
 
   const id = telegramId();
 
   return `
+
     ${heading(
       t("referralTitle"),
       "👥"
     )}
 
-    ${languageSelector()}
 
     <div class="referral-code card">
 
@@ -1435,36 +2151,49 @@ function referralPage() {
 
     </div>
 
+
     <div class="referral-levels">
 
       <div class="referral-card">
+
         <span>
           🥇 ${t("referralLevel1")}
         </span>
+
         <strong>
           ${t("referralRate1")}
         </strong>
+
       </div>
 
+
       <div class="referral-card">
+
         <span>
           🥈 ${t("referralLevel2")}
         </span>
+
         <strong>
           ${t("referralRate2")}
         </strong>
+
       </div>
 
+
       <div class="referral-card">
+
         <span>
           🥉 ${t("referralLevel3")}
         </span>
+
         <strong>
           ${t("referralRate3")}
         </strong>
+
       </div>
 
     </div>
+
 
     <div class="card">
 
@@ -1473,22 +2202,27 @@ function referralPage() {
       </h3>
 
       <p>
-        Your referral system uses 3 levels.
+        ${t("referralDescription")}
       </p>
 
     </div>
   `;
 }
 
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
 function notificationsPage() {
 
   return `
+
     ${heading(
       t("notificationTitle"),
       "🔔"
     )}
 
-    ${languageSelector()}
 
     <div
       id="notificationsContent"
@@ -1502,6 +2236,7 @@ function notificationsPage() {
   `;
 }
 
+
 async function loadNotifications() {
 
   const box =
@@ -1509,9 +2244,12 @@ async function loadNotifications() {
       "notificationsContent"
     );
 
+
   const id = telegramId();
 
+
   if (!box || !id) return;
+
 
   try {
 
@@ -1519,7 +2257,9 @@ async function loadNotifications() {
       `/api/notifications?telegram_chat_id=${encodeURIComponent(id)}`
     );
 
+
     const d = await r.json();
+
 
     if (!d.ok) {
 
@@ -1528,10 +2268,12 @@ async function loadNotifications() {
       );
     }
 
+
     const items =
       d.notifications ||
       d.data ||
       [];
+
 
     if (!items.length) {
 
@@ -1543,6 +2285,7 @@ async function loadNotifications() {
 
       return;
     }
+
 
     box.innerHTML =
       items.map(n => `
@@ -1575,6 +2318,7 @@ async function loadNotifications() {
 
       `).join("");
 
+
   } catch (e) {
 
     box.innerHTML = `
@@ -1584,24 +2328,33 @@ async function loadNotifications() {
     `;
   }
 }
+
+
+/* =========================================================
+   SUPPORT
+   ========================================================= */
+
 function supportPage() {
 
   return `
+
     ${heading(
       t("supportTitle"),
       "🎧"
     )}
 
-    ${languageSelector()}
 
     <div class="support-grid">
+
 
       <button
         type="button"
         class="support-card"
         data-telegram="https://t.me/mydailytrx_bot">
 
-        <span>📢</span>
+        <span>
+          📢
+        </span>
 
         <b>
           ${t("telegramChannel")}
@@ -1613,12 +2366,15 @@ function supportPage() {
 
       </button>
 
+
       <button
         type="button"
         class="support-card"
         data-telegram="https://t.me/my_Dailytrxbot">
 
-        <span>💬</span>
+        <span>
+          💬
+        </span>
 
         <b>
           ${t("telegramSupport")}
@@ -1632,9 +2388,12 @@ function supportPage() {
 
     </div>
 
+
     <div class="card">
 
-      <h3>Daily TRX</h3>
+      <h3>
+        Daily TRX
+      </h3>
 
       <p>
         For questions and support,
@@ -1645,29 +2404,39 @@ function supportPage() {
   `;
 }
 
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
 function profilePage() {
 
   const user =
     telegramApp?.initDataUnsafe?.user || {};
 
+
   return `
+
     ${heading(
       t("profileTitle"),
       "👤"
     )}
 
-    ${languageSelector()}
 
     <div class="profile-card">
 
       <div class="profile-avatar">
+
         ${(
           user.first_name ||
           "D"
         ).charAt(0).toUpperCase()}
+
       </div>
 
+
       <h2>
+
         ${escapeHtml(
           [
             user.first_name,
@@ -1678,7 +2447,9 @@ function profilePage() {
           ||
           "Daily TRX User"
         )}
+
       </h2>
+
 
       <div class="profile-row">
 
@@ -1694,6 +2465,7 @@ function profilePage() {
 
       </div>
 
+
       <div class="profile-row">
 
         <span>
@@ -1707,6 +2479,7 @@ function profilePage() {
         </b>
 
       </div>
+
 
       <div class="profile-row">
 
@@ -1722,6 +2495,7 @@ function profilePage() {
 
     </div>
 
+
     <button
       class="danger-btn"
       id="logoutLocal"
@@ -1732,6 +2506,7 @@ function profilePage() {
     </button>
   `;
 }
+
 
 function setupProfile() {
 
@@ -1750,19 +2525,25 @@ function setupProfile() {
         );
 
         location.reload();
+
       }
     );
 }
 
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
 function adminPage() {
 
   return `
+
     ${heading(
       "Admin",
       "👑"
     )}
 
-    ${languageSelector()}
 
     <div class="card">
 
@@ -1770,11 +2551,13 @@ function adminPage() {
         Admin Announcement
       </h3>
 
+
       <textarea
         id="adminAnnouncement"
         rows="5"
         placeholder="Write announcement...">
       </textarea>
+
 
       <button
         id="sendAdminAnnouncement"
@@ -1785,6 +2568,7 @@ function adminPage() {
 
       </button>
 
+
       <div
         id="adminMessage"
         class="form-message">
@@ -1794,6 +2578,7 @@ function adminPage() {
   `;
 }
 
+
 function setupAdmin() {
 
   const button =
@@ -1801,21 +2586,28 @@ function setupAdmin() {
       "sendAdminAnnouncement"
     );
 
+
   if (!button) return;
+
 
   button.addEventListener(
     "click",
     async () => {
 
       const message =
-        document.getElementById(
-          "adminAnnouncement"
-        )?.value.trim();
+        document
+          .getElementById(
+            "adminAnnouncement"
+          )
+          ?.value
+          .trim();
+
 
       const box =
         document.getElementById(
           "adminMessage"
         );
+
 
       if (!message) {
 
@@ -1828,19 +2620,20 @@ function setupAdmin() {
         return;
       }
 
+
       try {
 
         const r = await fetch(
           "/api/admin/announcement",
           {
-            method:"POST",
+            method: "POST",
 
-            headers:{
+            headers: {
               "Content-Type":
                 "application/json"
             },
 
-            body:JSON.stringify({
+            body: JSON.stringify({
               telegram_chat_id:
                 telegramId(),
               message
@@ -1848,7 +2641,9 @@ function setupAdmin() {
           }
         );
 
+
         const d = await r.json();
+
 
         if (!r.ok || !d.ok) {
 
@@ -1860,6 +2655,7 @@ function setupAdmin() {
           );
         }
 
+
         box.textContent =
           d.message ||
           "Announcement sent.";
@@ -1867,9 +2663,11 @@ function setupAdmin() {
         box.className =
           "form-message success";
 
+
         document.getElementById(
           "adminAnnouncement"
         ).value = "";
+
 
       } catch (e) {
 
@@ -1882,6 +2680,12 @@ function setupAdmin() {
     }
   );
 }
+
+
+/* =========================================================
+   GLOBAL ANNOUNCEMENT
+   ========================================================= */
+
 async function loadGlobalAnnouncement() {
 
   try {
@@ -1890,40 +2694,55 @@ async function loadGlobalAnnouncement() {
       "/api/global-announcement"
     );
 
+
     const d = await r.json();
+
 
     if (
       !d?.ok ||
       !d.announcement
-    ) return;
+    ) {
+      return;
+    }
 
-    const a = d.announcement;
+
+    const a =
+      d.announcement;
+
 
     const title =
       a.title ||
-      "Announcement";
+      t("announcement");
+
 
     const message =
       a.message ||
       a.body ||
       "";
 
+
     if (!message) return;
+
 
     const home =
       document.querySelector(
-        ".hero-card"
+        ".balance-card"
       );
 
+
     if (!home) return;
+
 
     const box =
       document.createElement("div");
 
+
     box.className =
       "announcement-card";
 
+
     box.innerHTML = `
+
       <b>
         📢 ${escapeHtml(title)}
       </b>
@@ -1931,186 +2750,343 @@ async function loadGlobalAnnouncement() {
       <p>
         ${escapeHtml(message)}
       </p>
+
     `;
 
+
     home.after(box);
+
 
   } catch (_) {}
 }
 
+
+/* =========================================================
+   BOTTOM NAVIGATION
+   ========================================================= */
+
 function renderBottomNavigation() {
 
   return `
-    <div class="mobile-page-nav">
 
-      <button data-page="home">
-        ⌂
+    <nav class="bottom-nav">
+
+      <button
+        data-page="home"
+        class="bottom-nav-item">
+
+        <span>
+          ⌂
+        </span>
+
         <small>
           ${t("home")}
         </small>
+
       </button>
 
-      <button data-page="wallet">
-        ▣
+
+      <button
+        data-page="wallet"
+        class="bottom-nav-item">
+
+        <span>
+          ▣
+        </span>
+
         <small>
           ${t("wallet")}
         </small>
+
       </button>
 
-      <button data-page="deposit">
-        ＋
+
+      <button
+        data-page="support"
+        class="bottom-nav-item">
+
+        <span>
+          🎧
+        </span>
+
         <small>
-          ${t("deposit")}
+          ${t("support")}
         </small>
+
       </button>
 
-      <button data-page="investment">
-        ◈
-        <small>
-          ${t("investment")}
-        </small>
-      </button>
 
-      <button data-page="profile">
-        ♙
+      <button
+        data-page="profile"
+        class="bottom-nav-item">
+
+        <span>
+          ♙
+        </span>
+
         <small>
           ${t("profile")}
         </small>
+
       </button>
 
-    </div>
+    </nav>
   `;
 }
+
+
+/* =========================================================
+   ACTIVE BOTTOM NAV
+   ========================================================= */
+
+function updateBottomNavigation() {
+
+  document
+    .querySelectorAll(
+      ".bottom-nav-item"
+    )
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.page ===
+        window.currentPage
+      );
+
+    });
+}
+
+
+/* =========================================================
+   RENDER
+   ========================================================= */
 
 async function render(target = "home") {
 
   window.currentPage = target;
 
+
   if (!page) return;
+
 
   let content = "";
 
+
   if (target === "home") {
-    content = homePage();
+
+    content =
+      homePage();
+
 
   } else if (target === "wallet") {
-    content = walletPage();
+
+    content =
+      walletPage();
+
 
   } else if (target === "deposit") {
-    content = depositPage();
+
+    content =
+      depositPage();
+
 
   } else if (target === "withdraw") {
-    content = withdrawPage();
+
+    content =
+      withdrawPage();
+
 
   } else if (target === "investment") {
-    content = investmentPage();
+
+    content =
+      investmentPage();
+
 
   } else if (target === "referral") {
-    content = referralPage();
+
+    content =
+      referralPage();
+
 
   } else if (target === "notifications") {
-    content = notificationsPage();
+
+    content =
+      notificationsPage();
+
 
   } else if (target === "support") {
-    content = supportPage();
+
+    content =
+      supportPage();
+
 
   } else if (target === "profile") {
-    content = profilePage();
+
+    content =
+      profilePage();
+
 
   } else if (target === "admin") {
-    content = adminPage();
+
+    content =
+      adminPage();
+
 
   } else {
-    content = homePage();
+
+    content =
+      homePage();
   }
 
-  page.innerHTML = content;
+
+  page.innerHTML =
+    content;
+
 
   setupLanguage();
   setupTheme();
 
+
   if (target === "home") {
+
     loadHomeWallet();
+
   }
+
 
   if (target === "wallet") {
+
     loadWalletPage();
+
   }
+
 
   if (target === "deposit") {
+
     setupDeposit();
+
   }
+
 
   if (target === "withdraw") {
+
     setupWithdraw();
+
   }
+
 
   if (target === "investment") {
+
     loadInvestments();
+
   }
+
 
   if (target === "notifications") {
+
     loadNotifications();
+
   }
+
 
   if (target === "profile") {
+
     setupProfile();
+
   }
 
+
   if (target === "admin") {
+
     setupAdmin();
+
   }
+
+
+  updateBottomNavigation();
+
 }
+
+
+/* =========================================================
+   GLOBAL CLICK HANDLER
+   ========================================================= */
 
 document.addEventListener(
   "click",
   event => {
 
+
     const pageButton =
-      event.target.closest("[data-page]");
+      event.target.closest(
+        "[data-page]"
+      );
+
 
     if (pageButton) {
 
       const target =
         pageButton.dataset.page;
 
+
       if (target) {
 
         render(target);
 
+
         window.scrollTo({
-          top:0,
-          behavior:"smooth"
+          top: 0,
+          behavior: "smooth"
         });
+
       }
+
 
       return;
     }
+
 
     const telegramButton =
       event.target.closest(
         "[data-telegram]"
       );
 
+
     if (telegramButton) {
 
       const url =
         telegramButton.dataset.telegram;
 
+
       if (url) {
+
         openTelegram(url);
+
       }
+
     }
+
   }
 );
+
+
+/* =========================================================
+   TELEGRAM LINKS
+   ========================================================= */
 
 function openTelegram(url) {
 
   if (!url) return;
 
-  if (telegramApp?.openTelegramLink) {
 
-    telegramApp.openTelegramLink(url);
+  if (
+    telegramApp?.openTelegramLink
+  ) {
+
+    telegramApp.openTelegramLink(
+      url
+    );
+
 
   } else {
 
@@ -2119,8 +3095,15 @@ function openTelegram(url) {
       "_blank",
       "noopener,noreferrer"
     );
+
   }
 }
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
 function initializeApp() {
 
   currentLanguage =
@@ -2128,76 +3111,78 @@ function initializeApp() {
       "dailytrx_language"
     ) || "en";
 
+
   currentTheme =
     localStorage.getItem(
       "dailytrx_theme"
-    ) || "light";
+    ) || "dark";
+
 
   document.documentElement.lang =
     currentLanguage;
 
+
   applyTheme();
+
+
+  createSplashScreen();
+
 
   render("home");
 
+
   setTimeout(
     () => {
+
       loadGlobalAnnouncement();
+
     },
-    700
+    900
   );
+
 }
 
-window.render = render;
-window.setupTheme = setupTheme;
+
+window.render =
+  render;
+
+window.setupTheme =
+  setupTheme;
+
 
 initializeApp();
 
-/*
-===========================================================
-DAILY TRX — APP.JS
-===========================================================
 
-Home
-Wallet
-Deposit + QR
-Withdraw
-Investment Plans
-Daily Profit %
-30 Days Profit
-360 Days Profit
-Referral 6% / 2% / 1%
-Notifications
-Telegram Channel
-Telegram Chat / Support
-Profile
-English
-Pashto
-Dari
-Light Mode
-Dark Mode
-Admin
-Global Announcement
+/* =========================================================
+   DAILY TRX CONFIG
+   =========================================================
 
-Investment API:
- /api/investment-plans
+   Deposit Address:
+   TU9R3KZmkasLZbC3jZPyboEfNPFKfuY4kA
 
-Investment fields:
- amount_trx
- daily_profit_trx
- duration_days
+   Admin Telegram ID:
+   6504138324
 
-Deposit Address:
-TU9R3KZmkasLZbC3jZPyboEfNPFKfuY4kA
+   Telegram Channel:
+   @mydailytrx_bot
 
-Admin Telegram ID:
-6504138324
+   Telegram Support:
+   @my_Dailytrxbot
 
-Telegram Channel:
-@mydailytrx_bot
+   Investment API:
+   /api/investment-plans
 
-Telegram Chat / Support:
-@my_Dailytrxbot
+   Investment fields:
+   amount_trx
+   daily_profit_trx
+   duration_days
 
-===========================================================
-*/
+   Referral:
+   Level 1 = 6%
+   Level 2 = 2%
+   Level 3 = 1%
+
+   Withdrawal minimum:
+   20 TRX
+
+   ========================================================= */
