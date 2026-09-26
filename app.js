@@ -1054,66 +1054,88 @@ async function loadHomeWallet() {
 
     if (!d?.ok) return;
 
+
     const w =
       d.wallet ||
       d.balance ||
       d.data ||
       d;
 
-    const total = Number(
-      w.total_balance ??
-      w.balance ??
-      w.total ??
-      0
-    );
 
-    const available = Number(
-      w.available_balance ??
-      w.available ??
-      w.balance ??
-      0
-    );
+    /*
+      Current wallet API:
 
-    const invested = Number(
-      w.invested_balance ??
-      w.invested ??
-      0
-    );
+      available_trx
+      locked_trx
+    */
 
-    const profit = Number(
-      w.profit ??
-      w.total_profit ??
-      0
-    );
+
+    const available =
+      Number(
+        w.available_trx ?? 0
+      );
+
+
+    const locked =
+      Number(
+        w.locked_trx ?? 0
+      );
+
+
+    const total =
+      available + locked;
+
+
+    /*
+      Profit system will be connected later.
+      Until then keep it at 0.
+    */
+
+    const profit = 0;
 
 
     const a =
-      document.getElementById("homeBalance");
+      document.getElementById(
+        "homeBalance"
+      );
 
     const b =
-      document.getElementById("homeAvailable");
+      document.getElementById(
+        "homeAvailable"
+      );
 
     const c =
-      document.getElementById("homeInvested");
+      document.getElementById(
+        "homeInvested"
+      );
 
     const e =
-      document.getElementById("homeProfit");
+      document.getElementById(
+        "homeProfit"
+      );
 
 
     if (a) {
-      a.textContent = formatTRX(total);
+      a.textContent =
+        formatTRX(total);
     }
+
 
     if (b) {
-      b.textContent = formatTRX(available);
+      b.textContent =
+        formatTRX(available);
     }
+
 
     if (c) {
-      c.textContent = formatTRX(invested);
+      c.textContent =
+        formatTRX(locked);
     }
 
+
     if (e) {
-      e.textContent = formatTRX(profit);
+      e.textContent =
+        formatTRX(profit);
     }
 
   } catch (_) {}
@@ -1144,11 +1166,14 @@ function walletPage() {
 async function loadWalletPage() {
 
   const box =
-    document.getElementById("walletContent");
+    document.getElementById(
+      "walletContent"
+    );
 
   const id = telegramId();
 
   if (!box || !id) return;
+
 
   try {
 
@@ -1156,17 +1181,42 @@ async function loadWalletPage() {
       `/api/wallet?telegram_chat_id=${encodeURIComponent(id)}`
     );
 
+
     const d = await r.json();
 
+
     if (!d?.ok) {
-      throw new Error(apiError(d));
+
+      throw new Error(
+        apiError(d)
+      );
     }
+
 
     const w =
       d.wallet ||
       d.balance ||
       d.data ||
       d;
+
+
+    const available =
+      Number(
+        w.available_trx ?? 0
+      );
+
+
+    const locked =
+      Number(
+        w.locked_trx ?? 0
+      );
+
+
+    const total =
+      available + locked;
+
+
+    const profit = 0;
 
 
     box.innerHTML = `
@@ -1178,12 +1228,7 @@ async function loadWalletPage() {
         </span>
 
         <strong>
-          ${formatTRX(
-            w.total_balance ??
-            w.balance ??
-            w.total ??
-            0
-          )}
+          ${formatTRX(total)}
         </strong>
 
       </div>
@@ -1198,12 +1243,7 @@ async function loadWalletPage() {
           </span>
 
           <strong>
-            ${formatTRX(
-              w.available_balance ??
-              w.available ??
-              w.balance ??
-              0
-            )}
+            ${formatTRX(available)}
           </strong>
 
         </div>
@@ -1216,11 +1256,7 @@ async function loadWalletPage() {
           </span>
 
           <strong>
-            ${formatTRX(
-              w.invested_balance ??
-              w.invested ??
-              0
-            )}
+            ${formatTRX(locked)}
           </strong>
 
         </div>
@@ -1233,17 +1269,14 @@ async function loadWalletPage() {
           </span>
 
           <strong>
-            ${formatTRX(
-              w.profit ??
-              w.total_profit ??
-              0
-            )}
+            ${formatTRX(profit)}
           </strong>
 
         </div>
 
       </div>
     `;
+
 
   } catch (e) {
 
@@ -2040,35 +2073,37 @@ async function loadInvestments() {
 }
 
 
+/* =========================================================
+   CREATE INVESTMENT
+   ========================================================= */
+
 async function createInvestment(planId) {
 
   const id = telegramId();
 
-  if (!id || !planId) return;
 
-
-  const amount =
-    prompt(
-      "Enter investment amount in TRX:"
-    );
-
-
-  if (amount === null) return;
-
-
-  const n = Number(amount);
-
-
-  if (
-    !Number.isFinite(n) ||
-    n <= 0
-  ) {
+  if (!id || !planId) {
 
     alert(
-      "Enter a valid amount."
+      "Please open the app from Telegram."
     );
 
     return;
+  }
+
+
+  const button =
+    document.querySelector(
+      `.invest-btn[data-plan-id="${CSS.escape(String(planId))}"]`
+    );
+
+
+  if (button) {
+
+    button.disabled = true;
+
+    button.textContent =
+      t("loading");
   }
 
 
@@ -2086,8 +2121,7 @@ async function createInvestment(planId) {
 
         body: JSON.stringify({
           telegram_chat_id: id,
-          plan_id: planId,
-          amount_trx: n
+          plan_id: Number(planId)
         })
       }
     );
@@ -2108,8 +2142,10 @@ async function createInvestment(planId) {
 
 
     alert(
-      d.message ||
-      "Investment created successfully."
+      `Investment successful!\n\n` +
+      `Amount: ${formatTRX(d.amount_trx)}\n` +
+      `Daily Profit: ${formatTRX(d.daily_profit_trx)}\n` +
+      `Duration: ${d.end_at ? "360 days" : "360 days"}`
     );
 
 
@@ -2118,7 +2154,21 @@ async function createInvestment(planId) {
 
   } catch (e) {
 
-    alert(e.message);
+    alert(
+      e.message ||
+      "Investment failed."
+    );
+
+
+  } finally {
+
+    if (button) {
+
+      button.disabled = false;
+
+      button.textContent =
+        t("createInvestment");
+    }
   }
 }
 
@@ -2198,7 +2248,7 @@ function referralPage() {
     <div class="card">
 
       <h3>
-        ${t("referrals")}
+        ${t("referralTitle")}
       </h3>
 
       <p>
@@ -3172,6 +3222,9 @@ initializeApp();
    Investment API:
    /api/investment-plans
 
+   Create Investment API:
+   /api/create-investment
+
    Investment fields:
    amount_trx
    daily_profit_trx
@@ -3184,5 +3237,9 @@ initializeApp();
 
    Withdrawal minimum:
    20 TRX
+
+   Wallet:
+   available_trx
+   locked_trx
 
    ========================================================= */
