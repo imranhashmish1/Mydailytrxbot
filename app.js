@@ -29,6 +29,11 @@ let walletData = {
 
 let profileData = {};
 
+
+/* =========================================================
+   TRANSLATIONS
+========================================================= */
+
 const translations = {
 
   en: {
@@ -41,28 +46,34 @@ const translations = {
     notifications: "Notifications",
     support: "Support",
     profile: "Profile",
+
     welcome: "Welcome back",
     balance: "Available Balance",
     available: "Available",
     locked: "Locked",
     quickActions: "Quick Actions",
+
     addFunds: "Add Funds",
     invest: "Invest",
     invite: "Invite Friends",
     myWallet: "My Wallet",
+
     depositTRX: "Deposit TRX",
     depositAddress: "Deposit Address",
     copyAddress: "Copy Address",
     amount: "Amount (TRX)",
     transactionHash: "Transaction Hash",
     submitDeposit: "Submit Deposit",
+
     depositInfo:
       "Send TRX to the address above, then submit your transaction hash.",
+
     investmentPlans: "Investment Plans",
     dailyProfit: "Daily Profit",
     duration: "Duration",
     totalProfit: "Total Profit",
     startInvestment: "Start Investment",
+
     referralProgram: "Referral Program",
     referralCode: "Referral Code",
     referralLink: "Referral Link",
@@ -71,11 +82,14 @@ const translations = {
     level1: "Level 1",
     level2: "Level 2",
     level3: "Level 3",
+
     notificationsTitle: "Notifications",
     noNotifications: "No new notifications.",
+
     supportTitle: "Support",
     supportText:
       "For support, please contact the Daily TRX administrator.",
+
     profileTitle: "My Profile",
     username: "Username",
     email: "Email",
@@ -83,27 +97,52 @@ const translations = {
     verified: "Verified",
     yes: "Yes",
     no: "No",
+
     withdrawTitle: "Withdraw",
     withdrawText:
       "Withdrawal service will be available through the system after the required balance and approval conditions are met.",
+
     loading: "Loading...",
     copied: "Copied successfully",
     failed: "Something went wrong",
+
     invalidAmount: "Enter a valid TRX amount.",
-    invalidHash: "Enter a valid 64-character TRON transaction hash.",
+    invalidHash:
+      "Enter a valid 64-character TRON transaction hash.",
+
     depositSuccess: "Deposit submitted successfully.",
+
     investing: "Processing...",
-    investmentSuccess: "Investment created successfully.",
+    investmentSuccess:
+      "Investment created successfully.",
+
     insufficient:
       "Insufficient available TRX.",
-    noPlans: "No active investment plans found.",
+
+    noPlans:
+      "No active investment plans found.",
+
     admin: "Admin",
     announcement: "Announcement",
     noAnnouncement: "No announcement available.",
+
     language: "Language",
     light: "Light",
-    dark: "Dark"
+    dark: "Dark",
+
+    referralDescription:
+      "Invite friends and earn from your referral levels.",
+
+    copyReferralLink:
+      "Copy your complete referral link",
+
+    referralCopied:
+      "Referral link copied successfully",
+
+    loadingApp:
+      "Loading Daily TRX..."
   },
+
 
   ps: {
     dashboard: "ډشبورډ",
@@ -115,41 +154,51 @@ const translations = {
     notifications: "خبرتیاوې",
     support: "مرسته",
     profile: "پروفایل",
+
     welcome: "بیا ښه راغلاست",
     balance: "موجود بیلانس",
     available: "موجود",
     locked: "لاک شوی",
     quickActions: "چټک انتخابونه",
+
     addFunds: "ډیپازټ",
     invest: "انویسټ",
     invite: "ملګري راوبلئ",
     myWallet: "زما والټ",
+
     depositTRX: "TRX ډیپازټ",
     depositAddress: "ډیپازټ ادرس",
     copyAddress: "ادرس کاپي",
     amount: "مقدار (TRX)",
     transactionHash: "ټرانزېکشن Hash",
     submitDeposit: "ډیپازټ ثبت کړه",
+
     depositInfo:
       "TRX پورته ادرس ته واستوئ، بیا خپل Transaction Hash ثبت کړئ.",
+
     investmentPlans: "د انویسټمنټ پلانونه",
     dailyProfit: "ورځنۍ ګټه",
     duration: "موده",
     totalProfit: "ټوله ګټه",
     startInvestment: "انویسټمنټ شروع کړه",
+
     referralProgram: "ریفریل پروګرام",
     referralCode: "ریفریل کوډ",
     referralLink: "ریفریل لینک",
     copyLink: "لینک کاپي",
     share: "شریکول",
+
     level1: "لومړی Level",
     level2: "دوهم Level",
     level3: "درېیم Level",
+
     notificationsTitle: "خبرتیاوې",
     noNotifications: "اوس مهال نوې خبرتیا نشته.",
+
     supportTitle: "مرسته",
     supportText:
       "د مرستې لپاره د Daily TRX له اډمین سره اړیکه ونیسئ.",
+
     profileTitle: "زما پروفایل",
     username: "یوزرنیم",
     email: "ایمیل",
@@ -157,26 +206,56 @@ const translations = {
     verified: "تایید شوی",
     yes: "هو",
     no: "نه",
+
     withdrawTitle: "ویډرا",
     withdrawText:
       "د ویډرا خدمت به د لازم بیلانس او تایید شرایطو له پوره کېدو وروسته فعال شي.",
+
     loading: "لوډ کېږي...",
     copied: "په بریالیتوب کاپي شو",
     failed: "یوه ستونزه رامنځته شوه",
-    invalidAmount: "د TRX صحیح مقدار ولیکئ.",
-    invalidHash: "صحیح 64 کرکټر TRON Transaction Hash ولیکئ.",
-    depositSuccess: "ډیپازټ په بریالیتوب ثبت شو.",
+
+    invalidAmount:
+      "د TRX صحیح مقدار ولیکئ.",
+
+    invalidHash:
+      "صحیح 64 کرکټر TRON Transaction Hash ولیکئ.",
+
+    depositSuccess:
+      "ډیپازټ په بریالیتوب ثبت شو.",
+
     investing: "پروسس کېږي...",
-    investmentSuccess: "انویسټمنټ په بریالیتوب جوړ شو.",
-    insufficient: "موجود TRX کافي نه دی.",
-    noPlans: "فعال انویسټمنټ پلانونه ونه موندل شول.",
+
+    investmentSuccess:
+      "انویسټمنټ په بریالیتوب جوړ شو.",
+
+    insufficient:
+      "موجود TRX کافي نه دی.",
+
+    noPlans:
+      "فعال انویسټمنټ پلانونه ونه موندل شول.",
+
     admin: "اډمین",
     announcement: "اعلان",
     noAnnouncement: "اوس مهال اعلان نشته.",
+
     language: "ژبه",
     light: "روښانه",
-    dark: "تیاره"
+    dark: "تیاره",
+
+    referralDescription:
+      "ملګري راوبلئ او د خپلو Referral Levelونو څخه ګټه ترلاسه کړئ.",
+
+    copyReferralLink:
+      "خپل مکمل Referral Link کاپي کړئ",
+
+    referralCopied:
+      "Referral Link په بریالیتوب کاپي شو",
+
+    loadingApp:
+      "Daily TRX لوډ کېږي..."
   },
+
 
   fa: {
     dashboard: "داشبورد",
@@ -188,41 +267,51 @@ const translations = {
     notifications: "اعلان‌ها",
     support: "پشتیبانی",
     profile: "پروفایل",
+
     welcome: "خوش آمدید",
     balance: "موجودی قابل استفاده",
     available: "قابل استفاده",
     locked: "قفل شده",
     quickActions: "گزینه‌های سریع",
+
     addFunds: "واریز",
     invest: "سرمایه‌گذاری",
     invite: "دعوت دوستان",
     myWallet: "کیف پول من",
+
     depositTRX: "واریز TRX",
     depositAddress: "آدرس واریز",
     copyAddress: "کپی آدرس",
     amount: "مقدار (TRX)",
     transactionHash: "هش تراکنش",
     submitDeposit: "ثبت واریز",
+
     depositInfo:
       "TRX را به آدرس بالا ارسال کنید و سپس هش تراکنش را ثبت کنید.",
+
     investmentPlans: "پلان‌های سرمایه‌گذاری",
     dailyProfit: "سود روزانه",
     duration: "مدت",
     totalProfit: "سود کل",
     startInvestment: "شروع سرمایه‌گذاری",
+
     referralProgram: "برنامه معرفی",
     referralCode: "کد معرفی",
     referralLink: "لینک معرفی",
     copyLink: "کپی لینک",
     share: "اشتراک‌گذاری",
+
     level1: "سطح ۱",
     level2: "سطح ۲",
     level3: "سطح ۳",
+
     notificationsTitle: "اعلان‌ها",
     noNotifications: "اعلان جدیدی وجود ندارد.",
+
     supportTitle: "پشتیبانی",
     supportText:
       "برای پشتیبانی با مدیر Daily TRX تماس بگیرید.",
+
     profileTitle: "پروفایل من",
     username: "نام کاربری",
     email: "ایمیل",
@@ -230,53 +319,101 @@ const translations = {
     verified: "تایید شده",
     yes: "بله",
     no: "خیر",
+
     withdrawTitle: "برداشت",
     withdrawText:
       "خدمات برداشت پس از تکمیل شرایط لازم موجودی و تایید فعال خواهد شد.",
+
     loading: "در حال بارگذاری...",
     copied: "با موفقیت کپی شد",
     failed: "مشکلی رخ داد",
-    invalidAmount: "مقدار صحیح TRX را وارد کنید.",
-    invalidHash: "هش صحیح ۶۴ کاراکتری TRON را وارد کنید.",
-    depositSuccess: "واریز با موفقیت ثبت شد.",
+
+    invalidAmount:
+      "مقدار صحیح TRX را وارد کنید.",
+
+    invalidHash:
+      "هش صحیح ۶۴ کاراکتری TRON را وارد کنید.",
+
+    depositSuccess:
+      "واریز با موفقیت ثبت شد.",
+
     investing: "در حال پردازش...",
-    investmentSuccess: "سرمایه‌گذاری با موفقیت ایجاد شد.",
-    insufficient: "موجودی TRX کافی نیست.",
-    noPlans: "پلان فعال سرمایه‌گذاری پیدا نشد.",
+
+    investmentSuccess:
+      "سرمایه‌گذاری با موفقیت ایجاد شد.",
+
+    insufficient:
+      "موجودی TRX کافی نیست.",
+
+    noPlans:
+      "پلان فعال سرمایه‌گذاری پیدا نشد.",
+
     admin: "مدیر",
     announcement: "اعلان",
     noAnnouncement: "اعلانی وجود ندارد.",
+
     language: "زبان",
     light: "روشن",
-    dark: "تیره"
+    dark: "تیره",
+
+    referralDescription:
+      "دوستان خود را دعوت کنید و از سطوح معرفی خود درآمد دریافت کنید.",
+
+    copyReferralLink:
+      "لینک کامل معرفی خود را کپی کنید",
+
+    referralCopied:
+      "لینک معرفی با موفقیت کپی شد",
+
+    loadingApp:
+      "در حال بارگذاری Daily TRX..."
   }
+
 };
 
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
 function t(key) {
-  return translations[currentLanguage]?.[key] ||
-         translations.en[key] ||
-         key;
+
+  return (
+    translations[currentLanguage]?.[key] ||
+    translations.en[key] ||
+    key
+  );
 }
 
+
 function getTelegramId() {
+
   return String(
     tg?.initDataUnsafe?.user?.id ||
-    localStorage.getItem("dailytrx_telegram_id") ||
+    localStorage.getItem(
+      "dailytrx_telegram_id"
+    ) ||
     ""
   );
 }
 
+
 function getUsername() {
+
   return (
     profileData.username ||
     profileData.profile?.username ||
     tg?.initDataUnsafe?.user?.username ||
-    localStorage.getItem("dailytrx_username") ||
+    localStorage.getItem(
+      "dailytrx_username"
+    ) ||
     "User"
   );
 }
 
+
 function escapeHtml(value) {
+
   return String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -285,7 +422,9 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+
 function money(value) {
+
   const n = Number(value || 0);
 
   return n.toLocaleString(undefined, {
@@ -293,29 +432,159 @@ function money(value) {
   });
 }
 
-function setTheme() {
-  document.documentElement.dataset.theme = currentTheme;
+
+/* =========================================================
+   THEME — FIXED
+========================================================= */
+
+function applyTheme() {
+
+  currentTheme =
+    currentTheme === "light"
+      ? "light"
+      : "dark";
+
+  document.body.classList.toggle(
+    "light",
+    currentTheme === "light"
+  );
+
+  document.documentElement.dataset.theme =
+    currentTheme;
+
+  document.documentElement.style.colorScheme =
+    currentTheme;
+
+  localStorage.setItem(
+    "dailytrx_theme",
+    currentTheme
+  );
 }
+
+
+function toggleTheme() {
+
+  currentTheme =
+    currentTheme === "dark"
+      ? "light"
+      : "dark";
+
+  applyTheme();
+
+  render(currentPage);
+}
+
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
 
 function applyLanguageDirection() {
-  document.documentElement.lang = currentLanguage;
 
-  if (currentLanguage === "ps" || currentLanguage === "fa") {
-    document.documentElement.dir = "rtl";
+  document.documentElement.lang =
+    currentLanguage;
+
+  if (
+    currentLanguage === "ps" ||
+    currentLanguage === "fa"
+  ) {
+
+    document.documentElement.dir =
+      "rtl";
+
   } else {
-    document.documentElement.dir = "ltr";
+
+    document.documentElement.dir =
+      "ltr";
   }
 }
 
-setTheme();
+
+applyTheme();
 applyLanguageDirection();
 
-async function apiGet(url) {
-  const response = await fetch(url);
 
-  const data = await response.json();
+/* =========================================================
+   SPLASH SCREEN
+========================================================= */
+
+function createSplash() {
+
+  if (document.getElementById("splashScreen")) {
+    return;
+  }
+
+  const splash =
+    document.createElement("div");
+
+  splash.id = "splashScreen";
+
+  splash.innerHTML = `
+
+    <div class="splash-box">
+
+      <div class="splash-logo">
+        <span>₮</span>
+      </div>
+
+      <div class="splash-title">
+        Daily TRX
+      </div>
+
+      <div class="splash-subtitle">
+        ${escapeHtml(t("loadingApp"))}
+      </div>
+
+      <div class="loading-line"></div>
+
+    </div>
+
+  `;
+
+  document.body.prepend(splash);
+}
+
+
+function hideSplash() {
+
+  const splash =
+    document.getElementById(
+      "splashScreen"
+    );
+
+  if (!splash) {
+    return;
+  }
+
+  setTimeout(() => {
+
+    splash.classList.add("hide");
+
+    setTimeout(() => {
+      splash.remove();
+    }, 450);
+
+  }, 900);
+}
+
+
+createSplash();
+
+
+/* =========================================================
+   API
+========================================================= */
+
+async function apiGet(url) {
+
+  const response =
+    await fetch(url);
+
+  const data =
+    await response.json();
 
   if (!response.ok) {
+
     throw new Error(
       data?.message ||
       data?.error ||
@@ -325,19 +594,28 @@ async function apiGet(url) {
 
   return data;
 }
+
 
 async function apiPost(url, body) {
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
 
-  const data = await response.json();
+  const response =
+    await fetch(url, {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
+
+      body: JSON.stringify(body)
+    });
+
+  const data =
+    await response.json();
 
   if (!response.ok) {
+
     throw new Error(
       data?.message ||
       data?.error ||
@@ -348,120 +626,200 @@ async function apiPost(url, body) {
   return data;
 }
 
-/* Header */
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 function header(title = "Daily TRX") {
 
   return `
+
     <div class="top-header">
 
-      <div class="brand">
+      <div class="header-row">
 
-        <div class="brand-small">₮</div>
+        <div class="brand">
 
-        <div>
-          <div class="brand-title">
-            Daily TRX
+          <div class="brand-logo">
+            ₮
           </div>
 
-          <div class="brand-subtitle">
-            ${escapeHtml(title)}
+          <div class="brand-text">
+
+            <div class="brand-title">
+              Daily TRX
+            </div>
+
+            <div class="brand-subtitle">
+              ${escapeHtml(title)}
+            </div>
+
           </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+          <select
+            id="languageSelect"
+            class="language-select"
+            aria-label="${escapeHtml(t("language"))}"
+          >
+
+            <option
+              value="en"
+              ${currentLanguage === "en" ? "selected" : ""}
+            >
+              EN
+            </option>
+
+            <option
+              value="ps"
+              ${currentLanguage === "ps" ? "selected" : ""}
+            >
+              پښتو
+            </option>
+
+            <option
+              value="fa"
+              ${currentLanguage === "fa" ? "selected" : ""}
+            >
+              فارسی
+            </option>
+
+          </select>
+
+
+          <button
+            class="theme-btn"
+            id="themeButton"
+            type="button"
+            aria-label="${escapeHtml(
+              currentTheme === "dark"
+                ? t("light")
+                : t("dark")
+            )}"
+          >
+
+            ${
+              currentTheme === "dark"
+                ? "☀️"
+                : "🌙"
+            }
+
+          </button>
+
         </div>
 
       </div>
 
-      <div class="header-actions">
-
-        <select
-          id="languageSelect"
-          class="language-select"
-        >
-          <option value="en" ${currentLanguage === "en" ? "selected" : ""}>
-            EN
-          </option>
-
-          <option value="ps" ${currentLanguage === "ps" ? "selected" : ""}>
-            پښتو
-          </option>
-
-          <option value="fa" ${currentLanguage === "fa" ? "selected" : ""}>
-            فارسی
-          </option>
-        </select>
-
-        <button
-          class="icon-button"
-          id="themeButton"
-          type="button"
-        >
-          ${currentTheme === "dark" ? "☀️" : "🌙"}
-        </button>
-
-      </div>
-
     </div>
+
   `;
 }
 
-/* Navigation */
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 function navigation() {
 
   const items = [
+
     ["home", "⌂", t("dashboard")],
+
     ["wallet", "▣", t("wallet")],
+
     ["deposit", "＋", t("deposit")],
+
     ["investment", "◈", t("investment")],
+
     ["profile", "●", t("profile")]
+
   ];
 
+
   return `
+
     <nav class="bottom-nav">
 
       ${items.map(item => `
+
         <button
           type="button"
-          class="nav-button ${currentPage === item[0] ? "active" : ""}"
+          class="nav-item ${
+            currentPage === item[0]
+              ? "active"
+              : ""
+          }"
           data-page="${item[0]}"
         >
-          <span class="nav-icon">${item[1]}</span>
-          <span class="nav-label">${escapeHtml(item[2])}</span>
+
+          <span class="nav-icon">
+            ${item[1]}
+          </span>
+
+          <span>
+            ${escapeHtml(item[2])}
+          </span>
+
         </button>
+
       `).join("")}
 
     </nav>
+
   `;
 }
 
-/* Home */
+
+/* =========================================================
+   HOME
+========================================================= */
 
 async function renderHome() {
 
   page.innerHTML = `
+
     ${header(t("dashboard"))}
 
-    <div class="welcome">
+    <div class="page-content">
 
-      <h2>
-        ${escapeHtml(t("welcome"))},
-        ${escapeHtml(getUsername())} 👋
-      </h2>
+      <div class="welcome">
 
-      <p>${escapeHtml(t("dashboard"))}</p>
+        <h2>
+          ${escapeHtml(t("welcome"))},
+          ${escapeHtml(getUsername())} 👋
+        </h2>
 
-    </div>
+        <p>
+          ${escapeHtml(t("dashboard"))}
+        </p>
 
-    <div id="homeContent">
+      </div>
 
-      <div class="card loading-box">
-        <div class="spinner"></div>
-        <div>${escapeHtml(t("loading"))}</div>
+
+      <div id="homeContent">
+
+        <div class="card loading-box">
+
+          <div class="spinner"></div>
+
+          <div>
+            ${escapeHtml(t("loading"))}
+          </div>
+
+        </div>
+
       </div>
 
     </div>
 
     ${navigation()}
+
   `;
 
   bindHeader();
@@ -473,13 +831,22 @@ async function renderHome() {
     let announcement = null;
 
     try {
-      const data = await apiGet("/api/announcement");
+
+      const data =
+        await apiGet(
+          "/api/announcement"
+        );
+
       announcement =
         data?.announcement ||
         null;
+
     } catch (_) {}
 
-    document.getElementById("homeContent").innerHTML = `
+
+    document.getElementById(
+      "homeContent"
+    ).innerHTML = `
 
       <div class="card balance-card">
 
@@ -488,63 +855,94 @@ async function renderHome() {
         </div>
 
         <div class="balance-value">
-          ${money(walletData.available_trx)}
-          <span class="balance-unit">TRX</span>
+
+          ${money(
+            walletData.available_trx
+          )}
+
+          <span class="balance-unit">
+            TRX
+          </span>
+
         </div>
+
 
         <div class="balance-row">
 
           <div class="small-stat">
+
             <div class="small-stat-label">
               ${escapeHtml(t("available"))}
             </div>
 
             <div class="small-stat-value">
-              ${money(walletData.available_trx)}
+              ${money(
+                walletData.available_trx
+              )}
             </div>
+
           </div>
 
+
           <div class="small-stat">
+
             <div class="small-stat-label">
               ${escapeHtml(t("locked"))}
             </div>
 
             <div class="small-stat-value">
-              ${money(walletData.locked_trx)}
+              ${money(
+                walletData.locked_trx
+              )}
             </div>
+
           </div>
 
         </div>
 
       </div>
 
+
       ${
         announcement
-        ? `
-          <div class="card">
-            <div class="card-title">
-              📢 ${escapeHtml(t("announcement"))}
+          ? `
+
+            <div class="card">
+
+              <div class="card-title">
+                📢 ${escapeHtml(
+                  t("announcement")
+                )}
+              </div>
+
+              <div class="notice">
+
+                ${escapeHtml(
+                  typeof announcement ===
+                  "string"
+                    ? announcement
+                    : announcement.message ||
+                      announcement.text ||
+                      ""
+                )}
+
+              </div>
+
             </div>
 
-            <div class="notice">
-              ${escapeHtml(
-                typeof announcement === "string"
-                  ? announcement
-                  : announcement.message ||
-                    announcement.text ||
-                    ""
-              )}
-            </div>
-          </div>
-        `
-        : ""
+          `
+          : ""
       }
+
 
       <div class="card">
 
         <div class="card-title">
-          ${escapeHtml(t("quickActions"))}
+          ${escapeHtml(
+            t("quickActions")
+          )}
         </div>
+
 
         <div class="quick-grid">
 
@@ -552,36 +950,95 @@ async function renderHome() {
             class="quick-card"
             data-page="deposit"
           >
-            <div class="quick-icon">💳</div>
-            <div class="quick-title">${escapeHtml(t("addFunds"))}</div>
-            <div class="quick-text">${escapeHtml(t("deposit"))}</div>
+
+            <div class="quick-icon">
+              💳
+            </div>
+
+            <div class="quick-title">
+              ${escapeHtml(
+                t("addFunds")
+              )}
+            </div>
+
+            <div class="quick-text">
+              ${escapeHtml(
+                t("deposit")
+              )}
+            </div>
+
           </button>
+
 
           <button
             class="quick-card"
             data-page="investment"
           >
-            <div class="quick-icon">📈</div>
-            <div class="quick-title">${escapeHtml(t("invest"))}</div>
-            <div class="quick-text">${escapeHtml(t("investment"))}</div>
+
+            <div class="quick-icon">
+              📈
+            </div>
+
+            <div class="quick-title">
+              ${escapeHtml(
+                t("invest")
+              )}
+            </div>
+
+            <div class="quick-text">
+              ${escapeHtml(
+                t("investment")
+              )}
+            </div>
+
           </button>
+
 
           <button
             class="quick-card"
             data-page="referral"
           >
-            <div class="quick-icon">👥</div>
-            <div class="quick-title">${escapeHtml(t("invite"))}</div>
-            <div class="quick-text">${escapeHtml(t("referral"))}</div>
+
+            <div class="quick-icon">
+              👥
+            </div>
+
+            <div class="quick-title">
+              ${escapeHtml(
+                t("invite")
+              )}
+            </div>
+
+            <div class="quick-text">
+              ${escapeHtml(
+                t("referral")
+              )}
+            </div>
+
           </button>
+
 
           <button
             class="quick-card"
             data-page="wallet"
           >
-            <div class="quick-icon">💰</div>
-            <div class="quick-title">${escapeHtml(t("myWallet"))}</div>
-            <div class="quick-text">${escapeHtml(t("wallet"))}</div>
+
+            <div class="quick-icon">
+              💰
+            </div>
+
+            <div class="quick-title">
+              ${escapeHtml(
+                t("myWallet")
+              )}
+            </div>
+
+            <div class="quick-text">
+              ${escapeHtml(
+                t("wallet")
+              )}
+            </div>
+
           </button>
 
         </div>
@@ -594,29 +1051,53 @@ async function renderHome() {
 
   } catch (error) {
 
-    document.getElementById("homeContent").innerHTML = `
+    document.getElementById(
+      "homeContent"
+    ).innerHTML = `
+
       <div class="card">
+
         <div class="notice">
-          ${escapeHtml(error.message || t("failed"))}
+          ${escapeHtml(
+            error.message ||
+            t("failed")
+          )}
         </div>
+
       </div>
+
     `;
+
   }
 }
 
-/* Wallet */
+
+/* =========================================================
+   WALLET
+========================================================= */
 
 async function renderWallet() {
 
   page.innerHTML = `
+
     ${header(t("wallet"))}
 
-    <div class="card loading-box">
-      <div class="spinner"></div>
-      <div>${escapeHtml(t("loading"))}</div>
+    <div class="page-content">
+
+      <div class="card loading-box">
+
+        <div class="spinner"></div>
+
+        <div>
+          ${escapeHtml(t("loading"))}
+        </div>
+
+      </div>
+
     </div>
 
     ${navigation()}
+
   `;
 
   bindHeader();
@@ -626,73 +1107,139 @@ async function renderWallet() {
     await loadWallet();
 
     page.innerHTML = `
+
       ${header(t("wallet"))}
 
-      <div class="card balance-card">
+      <div class="page-content">
 
-        <div class="balance-label">
-          ${escapeHtml(t("balance"))}
-        </div>
+        <div class="card balance-card">
 
-        <div class="balance-value">
-          ${money(walletData.available_trx)}
-          <span class="balance-unit">TRX</span>
-        </div>
+          <div class="balance-label">
+            ${escapeHtml(t("balance"))}
+          </div>
 
-      </div>
+          <div class="balance-value">
 
-      <div class="card">
-
-        <div class="info-line">
-          <span class="info-label">
-            ${escapeHtml(t("available"))}
-          </span>
-
-          <span class="info-value">
-            ${money(walletData.available_trx)} TRX
-          </span>
-        </div>
-
-        <div class="info-line">
-          <span class="info-label">
-            ${escapeHtml(t("locked"))}
-          </span>
-
-          <span class="info-value">
-            ${money(walletData.locked_trx)} TRX
-          </span>
-        </div>
-
-        <div class="info-line">
-          <span class="info-label">
-            Total
-          </span>
-
-          <span class="info-value">
             ${money(
-              Number(walletData.available_trx || 0) +
-              Number(walletData.locked_trx || 0)
-            )} TRX
-          </span>
+              walletData.available_trx
+            )}
+
+            <span class="balance-unit">
+              TRX
+            </span>
+
+          </div>
+
         </div>
 
-      </div>
 
-      <div class="quick-grid">
+        <div class="card">
 
-        <button class="quick-card" data-page="deposit">
-          <div class="quick-icon">＋</div>
-          <div class="quick-title">${escapeHtml(t("deposit"))}</div>
-        </button>
+          <div class="info-line">
 
-        <button class="quick-card" data-page="withdraw">
-          <div class="quick-icon">↗</div>
-          <div class="quick-title">${escapeHtml(t("withdraw"))}</div>
-        </button>
+            <span class="info-label">
+              ${escapeHtml(
+                t("available")
+              )}
+            </span>
+
+            <span class="info-value">
+              ${money(
+                walletData.available_trx
+              )} TRX
+            </span>
+
+          </div>
+
+
+          <div class="info-line">
+
+            <span class="info-label">
+              ${escapeHtml(
+                t("locked")
+              )}
+            </span>
+
+            <span class="info-value">
+              ${money(
+                walletData.locked_trx
+              )} TRX
+            </span>
+
+          </div>
+
+
+          <div class="info-line">
+
+            <span class="info-label">
+              Total
+            </span>
+
+            <span class="info-value">
+
+              ${money(
+                Number(
+                  walletData.available_trx ||
+                  0
+                ) +
+                Number(
+                  walletData.locked_trx ||
+                  0
+                )
+              )}
+
+              TRX
+
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+          <button
+            class="quick-card"
+            data-page="deposit"
+          >
+
+            <div class="quick-icon">
+              ＋
+            </div>
+
+            <div class="quick-title">
+              ${escapeHtml(
+                t("deposit")
+              )}
+            </div>
+
+          </button>
+
+
+          <button
+            class="quick-card"
+            data-page="withdraw"
+          >
+
+            <div class="quick-icon">
+              ↗
+            </div>
+
+            <div class="quick-title">
+              ${escapeHtml(
+                t("withdraw")
+              )}
+            </div>
+
+          </button>
+
+        </div>
 
       </div>
 
       ${navigation()}
+
     `;
 
     bindHeader();
@@ -701,166 +1248,267 @@ async function renderWallet() {
   } catch (error) {
 
     page.innerHTML = `
+
       ${header(t("wallet"))}
 
-      <div class="card">
-        <div class="notice">
-          ${escapeHtml(error.message || t("failed"))}
+      <div class="page-content">
+
+        <div class="card">
+
+          <div class="notice">
+            ${escapeHtml(
+              error.message ||
+              t("failed")
+            )}
+          </div>
+
         </div>
+
       </div>
 
       ${navigation()}
+
     `;
 
     bindHeader();
   }
 }
 
-/* Deposit */
+
+/* =========================================================
+   DEPOSIT
+========================================================= */
 
 function renderDeposit() {
 
   const qr =
     "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
-    encodeURIComponent(DEPOSIT_ADDRESS);
+    encodeURIComponent(
+      DEPOSIT_ADDRESS
+    );
+
 
   page.innerHTML = `
 
     ${header(t("depositTRX"))}
 
-    <div class="card">
+    <div class="page-content">
 
-      <div class="card-title">
-        ${escapeHtml(t("depositAddress"))}
-      </div>
+      <div class="card">
 
-      <div class="qr-box">
-        <img
-          src="${qr}"
-          alt="TRX Deposit QR"
-        />
-      </div>
+        <div class="card-title">
+          ${escapeHtml(
+            t("depositAddress")
+          )}
+        </div>
 
-      <div class="address-box">
-        ${escapeHtml(DEPOSIT_ADDRESS)}
-      </div>
 
-      <button
-        id="copyAddressButton"
-        class="secondary-button"
-      >
-        📋 ${escapeHtml(t("copyAddress"))}
-      </button>
+        <div class="qr-box">
 
-    </div>
+          <img
+            src="${qr}"
+            alt="TRX Deposit QR"
+          />
 
-    <div class="card">
+        </div>
 
-      <div class="notice">
-        ${escapeHtml(t("depositInfo"))}
-      </div>
 
-      <div class="input-group" style="margin-top:15px">
+        <div class="address-box">
+          ${escapeHtml(
+            DEPOSIT_ADDRESS
+          )}
+        </div>
 
-        <label>
-          ${escapeHtml(t("amount"))}
-        </label>
 
-        <input
-          id="depositAmount"
-          type="number"
-          min="0"
-          step="0.000001"
-          placeholder="100"
-        />
+        <button
+          id="copyAddressButton"
+          class="secondary-button"
+        >
+          📋 ${escapeHtml(
+            t("copyAddress")
+          )}
+        </button>
 
       </div>
 
-      <div class="input-group">
 
-        <label>
-          ${escapeHtml(t("transactionHash"))}
-        </label>
+      <div class="card">
 
-        <input
-          id="depositTxHash"
-          type="text"
-          placeholder="64-character TRON TXID"
-          autocomplete="off"
-        />
+        <div class="notice">
+          ${escapeHtml(
+            t("depositInfo")
+          )}
+        </div>
+
+
+        <div
+          class="input-group"
+          style="margin-top:15px"
+        >
+
+          <label>
+            ${escapeHtml(
+              t("amount")
+            )}
+          </label>
+
+          <input
+            id="depositAmount"
+            type="number"
+            min="0"
+            step="0.000001"
+            placeholder="100"
+          />
+
+        </div>
+
+
+        <div class="input-group">
+
+          <label>
+            ${escapeHtml(
+              t("transactionHash")
+            )}
+          </label>
+
+          <input
+            id="depositTxHash"
+            type="text"
+            placeholder="64-character TRON TXID"
+            autocomplete="off"
+          />
+
+        </div>
+
+
+        <button
+          id="submitDepositButton"
+          class="primary-button"
+        >
+          ${escapeHtml(
+            t("submitDeposit")
+          )}
+        </button>
+
+
+        <p
+          id="depositMessage"
+          class="form-message"
+        ></p>
 
       </div>
-
-      <button
-        id="submitDepositButton"
-        class="primary-button"
-      >
-        ${escapeHtml(t("submitDeposit"))}
-      </button>
-
-      <p id="depositMessage" class="form-message"></p>
 
     </div>
 
     ${navigation()}
+
   `;
 
   bindHeader();
 
-  document
-    .getElementById("copyAddressButton")
-    ?.addEventListener("click", async () => {
-
-      await copyText(DEPOSIT_ADDRESS);
-
-      const button =
-        document.getElementById("copyAddressButton");
-
-      button.textContent = "✓ " + t("copied");
-
-      setTimeout(() => {
-        button.textContent = "📋 " + t("copyAddress");
-      }, 1500);
-    });
 
   document
-    .getElementById("submitDepositButton")
-    ?.addEventListener("click", submitDeposit);
+    .getElementById(
+      "copyAddressButton"
+    )
+    ?.addEventListener(
+      "click",
+      async () => {
+
+        await copyText(
+          DEPOSIT_ADDRESS
+        );
+
+        const button =
+          document.getElementById(
+            "copyAddressButton"
+          );
+
+        button.textContent =
+          "✓ " + t("copied");
+
+        setTimeout(() => {
+
+          button.textContent =
+            "📋 " +
+            t("copyAddress");
+
+        }, 1500);
+      }
+    );
+
+
+  document
+    .getElementById(
+      "submitDepositButton"
+    )
+    ?.addEventListener(
+      "click",
+      submitDeposit
+    );
 }
+
 
 async function submitDeposit() {
 
   const button =
-    document.getElementById("submitDepositButton");
+    document.getElementById(
+      "submitDepositButton"
+    );
 
   const message =
-    document.getElementById("depositMessage");
+    document.getElementById(
+      "depositMessage"
+    );
 
   const amount =
-    Number(document.getElementById("depositAmount")?.value || 0);
+    Number(
+      document.getElementById(
+        "depositAmount"
+      )?.value || 0
+    );
 
   const txHash =
     String(
-      document.getElementById("depositTxHash")?.value || ""
+      document.getElementById(
+        "depositTxHash"
+      )?.value || ""
     ).trim();
+
 
   if (!amount || amount <= 0) {
 
-    message.textContent = "❌ " + t("invalidAmount");
-    message.className = "form-message error-text";
+    message.textContent =
+      "❌ " +
+      t("invalidAmount");
+
+    message.className =
+      "form-message error-text";
 
     return;
   }
 
-  if (!/^[a-fA-F0-9]{64}$/.test(txHash)) {
 
-    message.textContent = "❌ " + t("invalidHash");
-    message.className = "form-message error-text";
+  if (
+    !/^[a-fA-F0-9]{64}$/.test(
+      txHash
+    )
+  ) {
+
+    message.textContent =
+      "❌ " +
+      t("invalidHash");
+
+    message.className =
+      "form-message error-text";
 
     return;
   }
 
-  const telegramId = getTelegramId();
+
+  const telegramId =
+    getTelegramId();
+
 
   if (!telegramId) {
 
@@ -873,40 +1521,65 @@ async function submitDeposit() {
     return;
   }
 
+
   button.disabled = true;
-  button.textContent = t("loading");
+  button.textContent =
+    t("loading");
 
   message.textContent = "";
 
+
   try {
 
-    const result = await apiPost("/api/deposit", {
-      telegram_chat_id: telegramId,
-      amount_trx: amount,
-      tx_hash: txHash
-    });
+    const result =
+      await apiPost(
+        "/api/deposit",
+        {
+          telegram_chat_id:
+            telegramId,
+
+          amount_trx:
+            amount,
+
+          tx_hash:
+            txHash
+        }
+      );
+
 
     if (!result.ok) {
+
       throw new Error(
-        result.message || t("failed")
+        result.message ||
+        t("failed")
       );
     }
 
+
     message.textContent =
-      "✅ " + t("depositSuccess");
+      "✅ " +
+      t("depositSuccess");
 
     message.className =
       "form-message success-text";
 
-    document.getElementById("depositAmount").value = "";
-    document.getElementById("depositTxHash").value = "";
+
+    document.getElementById(
+      "depositAmount"
+    ).value = "";
+
+    document.getElementById(
+      "depositTxHash"
+    ).value = "";
+
 
     await loadWallet();
 
   } catch (error) {
 
     message.textContent =
-      "❌ " + (
+      "❌ " +
+      (
         error.message ||
         t("failed")
       );
@@ -917,49 +1590,86 @@ async function submitDeposit() {
   } finally {
 
     button.disabled = false;
-    button.textContent = t("submitDeposit");
+
+    button.textContent =
+      t("submitDeposit");
   }
 }
 
-/* Investment */
+
+/* =========================================================
+   INVESTMENT
+========================================================= */
 
 async function renderInvestment() {
 
   page.innerHTML = `
-    ${header(t("investmentPlans"))}
 
-    <div class="card loading-box">
-      <div class="spinner"></div>
-      <div>${escapeHtml(t("loading"))}</div>
+    ${header(
+      t("investmentPlans")
+    )}
+
+    <div class="page-content">
+
+      <div class="card loading-box">
+
+        <div class="spinner"></div>
+
+        <div>
+          ${escapeHtml(
+            t("loading")
+          )}
+        </div>
+
+      </div>
+
     </div>
 
     ${navigation()}
+
   `;
 
   bindHeader();
 
+
   try {
 
     const data =
-      await apiGet("/api/investment-plans");
+      await apiGet(
+        "/api/investment-plans"
+      );
+
 
     const plans =
       Array.isArray(data)
         ? data
         : data.plans || [];
 
+
     if (!plans.length) {
 
       page.innerHTML = `
-        ${header(t("investmentPlans"))}
 
-        <div class="card">
-          <div class="notice">
-            ${escapeHtml(t("noPlans"))}
+        ${header(
+          t("investmentPlans")
+        )}
+
+        <div class="page-content">
+
+          <div class="card">
+
+            <div class="notice">
+              ${escapeHtml(
+                t("noPlans")
+              )}
+            </div>
+
           </div>
+
         </div>
 
         ${navigation()}
+
       `;
 
       bindHeader();
@@ -967,310 +1677,655 @@ async function renderInvestment() {
       return;
     }
 
+
     page.innerHTML = `
-      ${header(t("investmentPlans"))}
 
-      <div id="plansContainer">
+      ${header(
+        t("investmentPlans")
+      )}
 
-        ${plans.map(plan => {
+      <div class="page-content">
 
-          const amount =
-            Number(plan.amount_trx || 0);
+        <div id="plansContainer">
 
-          const daily =
-            Number(plan.daily_profit_trx || 0);
+          ${plans.map(
+            plan => {
 
-          const days =
-            Number(plan.duration_days || 0);
+              const amount =
+                Number(
+                  plan.amount_trx ||
+                  0
+                );
 
-          const total =
-            daily * days;
+              const daily =
+                Number(
+                  plan.daily_profit_trx ||
+                  0
+                );
 
-          return `
-            <div class="card plan-card">
+              const days =
+                Number(
+                  plan.duration_days ||
+                  0
+                );
 
-              <div class="plan-name">
-                📦 ${escapeHtml(
-                  plan.name ||
-                  "Investment Plan"
-                )}
-              </div>
+              const total =
+                daily * days;
 
-              <div class="plan-amount">
-                ${money(amount)} TRX
-              </div>
 
-              <div class="plan-row">
-                <span>${escapeHtml(t("dailyProfit"))}</span>
-                <strong>${money(daily)} TRX</strong>
-              </div>
+              return `
 
-              <div class="plan-row">
-                <span>${escapeHtml(t("duration"))}</span>
-                <strong>${days} days</strong>
-              </div>
+                <div class="card plan-card">
 
-              <div class="plan-row">
-                <span>${escapeHtml(t("totalProfit"))}</span>
-                <strong>${money(total)} TRX</strong>
-              </div>
+                  <div class="plan-name">
+                    📦 ${escapeHtml(
+                      plan.name ||
+                      "Investment Plan"
+                    )}
+                  </div>
 
-              <button
-                class="primary-button invest-button"
-                data-plan-id="${escapeHtml(plan.id)}"
-              >
-                ${escapeHtml(t("startInvestment"))}
-              </button>
 
-              <p
-                class="form-message"
-                id="investmentMessage-${escapeHtml(plan.id)}"
-              ></p>
+                  <div class="plan-amount">
+                    ${money(amount)}
+                    TRX
+                  </div>
 
-            </div>
-          `;
-        }).join("")}
+
+                  <div class="plan-row">
+
+                    <span>
+                      ${escapeHtml(
+                        t("dailyProfit")
+                      )}
+                    </span>
+
+                    <strong>
+                      ${money(daily)}
+                      TRX
+                    </strong>
+
+                  </div>
+
+
+                  <div class="plan-row">
+
+                    <span>
+                      ${escapeHtml(
+                        t("duration")
+                      )}
+                    </span>
+
+                    <strong>
+                      ${days} days
+                    </strong>
+
+                  </div>
+
+
+                  <div class="plan-row">
+
+                    <span>
+                      ${escapeHtml(
+                        t("totalProfit")
+                      )}
+                    </span>
+
+                    <strong>
+                      ${money(total)}
+                      TRX
+                    </strong>
+
+                  </div>
+
+
+                  <button
+                    class="primary-button invest-button"
+                    data-plan-id="${escapeHtml(
+                      plan.id
+                    )}"
+                  >
+                    ${escapeHtml(
+                      t("startInvestment")
+                    )}
+                  </button>
+
+
+                  <p
+                    class="form-message"
+                    id="investmentMessage-${escapeHtml(
+                      plan.id
+                    )}"
+                  ></p>
+
+                </div>
+
+              `;
+            }
+          ).join("")}
+
+        </div>
 
       </div>
 
       ${navigation()}
+
     `;
+
 
     bindHeader();
 
+
     document
-      .querySelectorAll(".invest-button")
+      .querySelectorAll(
+        ".invest-button"
+      )
       .forEach(button => {
 
         button.addEventListener(
           "click",
-          () => createInvestment(
-            button.dataset.planId,
-            button
-          )
+          () => {
+
+            createInvestment(
+              button.dataset.planId,
+              button
+            );
+
+          }
         );
+
       });
+
 
   } catch (error) {
 
     page.innerHTML = `
-      ${header(t("investmentPlans"))}
 
-      <div class="card">
-        <div class="notice">
-          ${escapeHtml(
-            error.message || t("failed")
-          )}
+      ${header(
+        t("investmentPlans")
+      )}
+
+      <div class="page-content">
+
+        <div class="card">
+
+          <div class="notice">
+            ${escapeHtml(
+              error.message ||
+              t("failed")
+            )}
+          </div>
+
         </div>
+
       </div>
 
       ${navigation()}
+
     `;
 
     bindHeader();
   }
 }
 
-async function createInvestment(planId, button) {
 
-  const telegramId = getTelegramId();
+async function createInvestment(
+  planId,
+  button
+) {
+
+  const telegramId =
+    getTelegramId();
+
 
   if (!telegramId) {
-    alert("Telegram ID not found.");
+
+    alert(
+      "Telegram ID not found."
+    );
+
     return;
   }
 
+
   button.disabled = true;
-  button.textContent = t("investing");
+
+  button.textContent =
+    t("investing");
+
 
   try {
 
     const result =
-      await apiPost("/api/create-investment", {
-        telegram_chat_id: telegramId,
-        plan_id: Number(planId)
-      });
+      await apiPost(
+        "/api/create-investment",
+        {
+          telegram_chat_id:
+            telegramId,
+
+          plan_id:
+            Number(planId)
+        }
+      );
+
 
     if (!result.ok) {
+
       throw new Error(
         result.message ||
         t("failed")
       );
     }
 
+
     alert(
       "✅ " +
-      (result.message ||
-       t("investmentSuccess"))
+      (
+        result.message ||
+        t("investmentSuccess")
+      )
     );
+
 
     await loadWallet();
 
     renderInvestment();
 
+
   } catch (error) {
 
     alert(
       "❌ " +
-      (error.message ||
-       t("failed"))
+      (
+        error.message ||
+        t("failed")
+      )
     );
 
+
     button.disabled = false;
+
     button.textContent =
       t("startInvestment");
   }
 }
 
-/* Referral */
 
-async function renderReferral() {
+/* =========================================================
+   REFERRAL — COMPLETE LINK
+========================================================= */
 
-  const telegramId = getTelegramId();
+async function getReferralProfile() {
+
+  const telegramId =
+    getTelegramId();
+
+
+  if (!telegramId) {
+    return null;
+  }
+
 
   try {
 
     const data =
       await apiGet(
         "/api/profile?telegram_chat_id=" +
-        encodeURIComponent(telegramId)
+        encodeURIComponent(
+          telegramId
+        )
       );
+
 
     profileData =
       data?.profile ||
       data ||
       profileData;
 
-  } catch (_) {}
 
-  const code =
+    return profileData;
+
+  } catch (_) {
+
+    return profileData;
+  }
+}
+
+
+function getReferralCode() {
+
+  return (
     profileData.referral_code ||
     profileData.profile?.referral_code ||
-    "NOT-AVAILABLE";
+    ""
+  );
+}
 
-  const link =
+
+function buildReferralLink(
+  referralCode
+) {
+
+  if (!referralCode) {
+    return "";
+  }
+
+
+  return (
     "https://t.me/" +
     BOT_USERNAME +
     "?start=" +
-    encodeURIComponent(code);
+    encodeURIComponent(
+      referralCode
+    )
+  );
+}
+
+
+async function renderReferral() {
+
+  await getReferralProfile();
+
+
+  const code =
+    getReferralCode();
+
+
+  const link =
+    buildReferralLink(code);
+
 
   page.innerHTML = `
 
-    ${header(t("referralProgram"))}
+    ${header(
+      t("referralProgram")
+    )}
 
-    <div class="card">
+    <div class="page-content">
 
-      <div class="card-title">
-        ${escapeHtml(t("referralCode"))}
-      </div>
 
-      <div class="referral-code">
-        ${escapeHtml(code)}
-      </div>
+      <div class="card">
 
-      <div class="card-title">
-        ${escapeHtml(t("referralLink"))}
-      </div>
-
-      <div class="referral-link">
-        ${escapeHtml(link)}
-      </div>
-
-      <button
-        id="copyReferral"
-        class="secondary-button"
-      >
-        📋 ${escapeHtml(t("copyLink"))}
-      </button>
-
-      <button
-        id="shareReferral"
-        class="primary-button"
-      >
-        ↗ ${escapeHtml(t("share"))}
-      </button>
-
-    </div>
-
-    <div class="card">
-
-      <div class="card-title">
-        ${escapeHtml(t("referralProgram"))}
-      </div>
-
-      <div class="level-grid">
-
-        <div class="level-card">
-          <div class="level-number">
-            ${escapeHtml(t("level1"))}
-          </div>
-          <div class="level-rate">6%</div>
+        <div class="card-title">
+          👥 ${escapeHtml(
+            t("referralProgram")
+          )}
         </div>
 
-        <div class="level-card">
-          <div class="level-number">
-            ${escapeHtml(t("level2"))}
-          </div>
-          <div class="level-rate">2%</div>
-        </div>
 
-        <div class="level-card">
-          <div class="level-number">
-            ${escapeHtml(t("level3"))}
-          </div>
-          <div class="level-rate">1%</div>
+        <div class="notice">
+          ${escapeHtml(
+            t("referralDescription")
+          )}
         </div>
 
       </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          ${escapeHtml(
+            t("referralCode")
+          )}
+        </div>
+
+
+        <div class="referral-code">
+          ${
+            escapeHtml(
+              code ||
+              "NOT-AVAILABLE"
+            )
+          }
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          🔗 ${escapeHtml(
+            t("referralLink")
+          )}
+        </div>
+
+
+        ${
+          link
+            ? `
+
+              <div class="referral-link-box">
+
+                <input
+                  class="referral-link-input"
+                  id="referralLinkInput"
+                  type="text"
+                  readonly
+                  value="${escapeHtml(
+                    link
+                  )}"
+                />
+
+                <button
+                  id="copyReferral"
+                  class="copy-btn"
+                  type="button"
+                >
+                  📋
+                </button>
+
+              </div>
+
+
+              <button
+                id="shareReferral"
+                class="primary-btn"
+                type="button"
+                style="width:100%;margin-top:10px"
+              >
+                ↗ ${escapeHtml(
+                  t("share")
+                )}
+              </button>
+
+            `
+            : `
+
+              <div class="notice">
+                Referral code is not available yet.
+              </div>
+
+            `
+        }
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          💰 ${escapeHtml(
+            t("referralProgram")
+          )}
+        </div>
+
+
+        <div class="referral-levels">
+
+
+          <div class="referral-level">
+
+            <div class="level-left">
+
+              <div class="level-number">
+                1
+              </div>
+
+              <div class="level-name">
+                ${escapeHtml(
+                  t("level1")
+                )}
+              </div>
+
+            </div>
+
+            <div class="level-rate">
+              6%
+            </div>
+
+          </div>
+
+
+          <div class="referral-level">
+
+            <div class="level-left">
+
+              <div class="level-number">
+                2
+              </div>
+
+              <div class="level-name">
+                ${escapeHtml(
+                  t("level2")
+                )}
+              </div>
+
+            </div>
+
+            <div class="level-rate">
+              2%
+            </div>
+
+          </div>
+
+
+          <div class="referral-level">
+
+            <div class="level-left">
+
+              <div class="level-number">
+                3
+              </div>
+
+              <div class="level-name">
+                ${escapeHtml(
+                  t("level3")
+                )}
+              </div>
+
+            </div>
+
+            <div class="level-rate">
+              1%
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
 
     </div>
 
     ${navigation()}
+
   `;
+
 
   bindHeader();
 
-  document
-    .getElementById("copyReferral")
-    ?.addEventListener("click", async () => {
-
-      await copyText(link);
-
-      document.getElementById(
-        "copyReferral"
-      ).textContent = "✓ " + t("copied");
-    });
 
   document
-    .getElementById("shareReferral")
-    ?.addEventListener("click", () => {
+    .getElementById(
+      "copyReferral"
+    )
+    ?.addEventListener(
+      "click",
+      async () => {
 
-      const shareUrl =
-        "https://t.me/share/url?url=" +
-        encodeURIComponent(link) +
-        "&text=" +
-        encodeURIComponent(
-          "Join Daily TRX using my referral link."
-        );
+        await copyText(link);
 
-      if (tg?.openTelegramLink) {
-        tg.openTelegramLink(shareUrl);
-      } else {
-        window.open(shareUrl, "_blank");
+
+        const button =
+          document.getElementById(
+            "copyReferral"
+          );
+
+
+        button.textContent =
+          "✓";
+
+
+        setTimeout(() => {
+
+          button.textContent =
+            "📋";
+
+        }, 1500);
+
       }
-    });
+    );
+
+
+  document
+    .getElementById(
+      "shareReferral"
+    )
+    ?.addEventListener(
+      "click",
+      () => {
+
+        const shareUrl =
+          "https://t.me/share/url?url=" +
+          encodeURIComponent(
+            link
+          ) +
+          "&text=" +
+          encodeURIComponent(
+            "Join Daily TRX using my referral link."
+          );
+
+
+        if (
+          tg?.openTelegramLink
+        ) {
+
+          tg.openTelegramLink(
+            shareUrl
+          );
+
+        } else {
+
+          window.open(
+            shareUrl,
+            "_blank"
+          );
+
+        }
+
+      }
+    );
 }
 
-/* Notifications */
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
 
 async function renderNotifications() {
 
   let announcement = null;
 
+
   try {
 
     const data =
-      await apiGet("/api/announcement");
+      await apiGet(
+        "/api/announcement"
+      );
 
     announcement =
       data?.announcement ||
@@ -1278,130 +2333,212 @@ async function renderNotifications() {
 
   } catch (_) {}
 
+
   page.innerHTML = `
 
-    ${header(t("notificationsTitle"))}
+    ${header(
+      t("notificationsTitle")
+    )}
 
-    <div class="card">
+    <div class="page-content">
 
-      <div class="card-title">
-        📢 ${escapeHtml(t("notificationsTitle"))}
+      <div class="card">
+
+        <div class="card-title">
+          📢 ${escapeHtml(
+            t("notificationsTitle")
+          )}
+        </div>
+
+
+        ${
+          announcement
+            ? `
+
+              <div class="notice">
+                ${escapeHtml(
+                  typeof announcement ===
+                  "string"
+                    ? announcement
+                    : announcement.message ||
+                      announcement.text ||
+                      ""
+                )}
+              </div>
+
+            `
+            : `
+
+              <div class="notice">
+                ${escapeHtml(
+                  t("noNotifications")
+                )}
+              </div>
+
+            `
+        }
+
       </div>
-
-      ${
-        announcement
-        ? `
-          <div class="notice">
-            ${escapeHtml(
-              typeof announcement === "string"
-                ? announcement
-                : announcement.message ||
-                  announcement.text ||
-                  ""
-            )}
-          </div>
-        `
-        : `
-          <div class="notice">
-            ${escapeHtml(t("noNotifications"))}
-          </div>
-        `
-      }
 
     </div>
 
     ${navigation()}
+
   `;
+
 
   bindHeader();
 }
 
-/* Support */
+
+/* =========================================================
+   SUPPORT
+========================================================= */
 
 function renderSupport() {
 
   page.innerHTML = `
 
-    ${header(t("supportTitle"))}
+    ${header(
+      t("supportTitle")
+    )}
 
-    <div class="card">
+    <div class="page-content">
 
-      <div class="card-title">
-        🎧 ${escapeHtml(t("supportTitle"))}
+      <div class="card">
+
+        <div class="card-title">
+          🎧 ${escapeHtml(
+            t("supportTitle")
+          )}
+        </div>
+
+
+        <div class="notice">
+          ${escapeHtml(
+            t("supportText")
+          )}
+        </div>
+
+
+        <button
+          class="primary-button"
+          id="adminContact"
+        >
+          ${escapeHtml(
+            t("support")
+          )}
+        </button>
+
       </div>
-
-      <div class="notice">
-        ${escapeHtml(t("supportText"))}
-      </div>
-
-      <button
-        class="primary-button"
-        id="adminContact"
-      >
-        ${escapeHtml(t("support"))}
-      </button>
 
     </div>
 
     ${navigation()}
+
   `;
+
 
   bindHeader();
 
+
   document
-    .getElementById("adminContact")
-    ?.addEventListener("click", () => {
+    .getElementById(
+      "adminContact"
+    )
+    ?.addEventListener(
+      "click",
+      () => {
 
-      const url =
-        "https://t.me/" + BOT_USERNAME;
+        const url =
+          "https://t.me/" +
+          BOT_USERNAME;
 
-      if (tg?.openTelegramLink) {
-        tg.openTelegramLink(url);
-      } else {
-        window.open(url, "_blank");
+
+        if (
+          tg?.openTelegramLink
+        ) {
+
+          tg.openTelegramLink(
+            url
+          );
+
+        } else {
+
+          window.open(
+            url,
+            "_blank"
+          );
+
+        }
+
       }
-    });
+    );
 }
 
-/* Withdraw */
+
+/* =========================================================
+   WITHDRAW
+========================================================= */
 
 function renderWithdraw() {
 
   page.innerHTML = `
 
-    ${header(t("withdrawTitle"))}
+    ${header(
+      t("withdrawTitle")
+    )}
 
-    <div class="card">
+    <div class="page-content">
 
-      <div class="card-title">
-        💸 ${escapeHtml(t("withdrawTitle"))}
-      </div>
+      <div class="card">
 
-      <div class="notice">
-        ${escapeHtml(t("withdrawText"))}
+        <div class="card-title">
+          💸 ${escapeHtml(
+            t("withdrawTitle")
+          )}
+        </div>
+
+
+        <div class="notice">
+          ${escapeHtml(
+            t("withdrawText")
+          )}
+        </div>
+
       </div>
 
     </div>
 
     ${navigation()}
+
   `;
+
 
   bindHeader();
 }
 
-/* Profile */
+
+/* =========================================================
+   PROFILE
+========================================================= */
 
 async function renderProfile() {
 
-  const telegramId = getTelegramId();
+  const telegramId =
+    getTelegramId();
+
 
   try {
 
     const data =
       await apiGet(
         "/api/profile?telegram_chat_id=" +
-        encodeURIComponent(telegramId)
+        encodeURIComponent(
+          telegramId
+        )
       );
+
 
     profileData =
       data?.profile ||
@@ -1410,127 +2547,188 @@ async function renderProfile() {
 
   } catch (_) {}
 
+
   const username =
     profileData.username ||
     tg?.initDataUnsafe?.user?.username ||
     "—";
 
+
   const email =
     profileData.email ||
     "—";
 
+
   const verified =
     profileData.is_verified;
 
+
   page.innerHTML = `
 
-    ${header(t("profileTitle"))}
+    ${header(
+      t("profileTitle")
+    )}
 
-    <div class="card">
+    <div class="page-content">
 
-      <div class="card-title">
-        👤 ${escapeHtml(t("profileTitle"))}
+      <div class="card">
+
+        <div class="card-title">
+          👤 ${escapeHtml(
+            t("profileTitle")
+          )}
+        </div>
+
+
+        <div class="info-line">
+
+          <span class="info-label">
+            ${escapeHtml(
+              t("username")
+            )}
+          </span>
+
+          <span class="info-value">
+            ${escapeHtml(
+              username
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="info-line">
+
+          <span class="info-label">
+            ${escapeHtml(
+              t("email")
+            )}
+          </span>
+
+          <span class="info-value">
+            ${escapeHtml(
+              email
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="info-line">
+
+          <span class="info-label">
+            ${escapeHtml(
+              t("telegramId")
+            )}
+          </span>
+
+          <span class="info-value">
+            ${escapeHtml(
+              telegramId ||
+              "—"
+            )}
+          </span>
+
+        </div>
+
+
+        <div class="info-line">
+
+          <span class="info-label">
+            ${escapeHtml(
+              t("verified")
+            )}
+          </span>
+
+          <span class="info-value">
+
+            ${
+              verified
+                ? "✓ " + t("yes")
+                : t("no")
+            }
+
+          </span>
+
+        </div>
+
       </div>
 
-      <div class="info-line">
 
-        <span class="info-label">
-          ${escapeHtml(t("username"))}
-        </span>
+      <div class="card">
 
-        <span class="info-value">
-          ${escapeHtml(username)}
-        </span>
+        <button
+          class="secondary-button"
+          data-page="referral"
+        >
+          👥 ${escapeHtml(
+            t("referral")
+          )}
+        </button>
 
-      </div>
 
-      <div class="info-line">
+        <button
+          class="secondary-button"
+          data-page="notifications"
+        >
+          🔔 ${escapeHtml(
+            t("notifications")
+          )}
+        </button>
 
-        <span class="info-label">
-          ${escapeHtml(t("email"))}
-        </span>
 
-        <span class="info-value">
-          ${escapeHtml(email)}
-        </span>
-
-      </div>
-
-      <div class="info-line">
-
-        <span class="info-label">
-          ${escapeHtml(t("telegramId"))}
-        </span>
-
-        <span class="info-value">
-          ${escapeHtml(telegramId || "—")}
-        </span>
+        <button
+          class="secondary-button"
+          data-page="support"
+        >
+          🎧 ${escapeHtml(
+            t("support")
+          )}
+        </button>
 
       </div>
-
-      <div class="info-line">
-
-        <span class="info-label">
-          ${escapeHtml(t("verified"))}
-        </span>
-
-        <span class="info-value">
-          ${verified ? "✓ " + t("yes") : t("no")}
-        </span>
-
-      </div>
-
-    </div>
-
-    <div class="card">
-
-      <button
-        class="secondary-button"
-        data-page="referral"
-      >
-        👥 ${escapeHtml(t("referral"))}
-      </button>
-
-      <button
-        class="secondary-button"
-        data-page="notifications"
-      >
-        🔔 ${escapeHtml(t("notifications"))}
-      </button>
-
-      <button
-        class="secondary-button"
-        data-page="support"
-      >
-        🎧 ${escapeHtml(t("support"))}
-      </button>
 
     </div>
 
     ${navigation()}
+
   `;
+
 
   bindHeader();
   bindPageButtons();
 }
 
-/* Load wallet */
+
+/* =========================================================
+   WALLET API
+========================================================= */
 
 async function loadWallet() {
 
-  const telegramId = getTelegramId();
+  const telegramId =
+    getTelegramId();
+
 
   if (!telegramId) {
-    throw new Error("Telegram ID not found");
+
+    throw new Error(
+      "Telegram ID not found"
+    );
   }
+
 
   const data =
     await apiGet(
       "/api/wallet?telegram_chat_id=" +
-      encodeURIComponent(telegramId)
+      encodeURIComponent(
+        telegramId
+      )
     );
 
+
   walletData = {
+
     available_trx:
       Number(
         data?.available_trx ??
@@ -1544,33 +2742,56 @@ async function loadWallet() {
         data?.wallet?.locked_trx ??
         0
       )
+
   };
+
 
   return walletData;
 }
 
-/* Copy */
+
+/* =========================================================
+   COPY
+========================================================= */
 
 async function copyText(text) {
 
   try {
 
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(
+      text
+    );
 
     return true;
 
   } catch (_) {
 
     const textarea =
-      document.createElement("textarea");
+      document.createElement(
+        "textarea"
+      );
+
 
     textarea.value = text;
 
-    document.body.appendChild(textarea);
+    textarea.style.position =
+      "fixed";
+
+    textarea.style.opacity =
+      "0";
+
+
+    document.body.appendChild(
+      textarea
+    );
+
 
     textarea.select();
 
-    document.execCommand("copy");
+    document.execCommand(
+      "copy"
+    );
+
 
     textarea.remove();
 
@@ -1578,12 +2799,18 @@ async function copyText(text) {
   }
 }
 
-/* Header controls */
+
+/* =========================================================
+   HEADER CONTROLS
+========================================================= */
 
 function bindHeader() {
 
   const language =
-    document.getElementById("languageSelect");
+    document.getElementById(
+      "languageSelect"
+    );
+
 
   if (language) {
 
@@ -1594,51 +2821,53 @@ function bindHeader() {
         currentLanguage =
           language.value;
 
+
         localStorage.setItem(
           "dailytrx_language",
           currentLanguage
         );
 
+
         applyLanguageDirection();
 
-        render(currentPage);
+
+        render(
+          currentPage
+        );
+
       }
     );
+
   }
 
+
   const theme =
-    document.getElementById("themeButton");
+    document.getElementById(
+      "themeButton"
+    );
+
 
   if (theme) {
 
     theme.addEventListener(
       "click",
-      () => {
-
-        currentTheme =
-          currentTheme === "dark"
-            ? "light"
-            : "dark";
-
-        localStorage.setItem(
-          "dailytrx_theme",
-          currentTheme
-        );
-
-        setTheme();
-
-        render(currentPage);
-      }
+      toggleTheme
     );
+
   }
 }
 
-/* Buttons */
+
+/* =========================================================
+   PAGE BUTTONS
+========================================================= */
 
 function bindPageButtons() {
 
   document
-    .querySelectorAll("[data-page]")
+    .querySelectorAll(
+      "[data-page]"
+    )
     .forEach(button => {
 
       button.addEventListener(
@@ -1648,21 +2877,31 @@ function bindPageButtons() {
           render(
             button.dataset.page
           );
+
         }
       );
+
     });
 }
 
-/* Render */
 
-async function render(pageName) {
+/* =========================================================
+   RENDER
+========================================================= */
 
-  currentPage = pageName;
+async function render(
+  pageName
+) {
+
+  currentPage =
+    pageName;
+
 
   window.scrollTo({
     top: 0,
-    behavior: "instant"
+    behavior: "auto"
   });
+
 
   switch (pageName) {
 
@@ -1705,70 +2944,129 @@ async function render(pageName) {
     default:
       await renderHome();
   }
+
+
+  applyTheme();
 }
 
-window.render = render;
 
-/* Start app */
+window.render =
+  render;
+
+
+/* =========================================================
+   START APP
+========================================================= */
 
 const telegramUser =
   tg?.initDataUnsafe?.user;
+
 
 if (telegramUser?.id) {
 
   localStorage.setItem(
     "dailytrx_telegram_id",
-    String(telegramUser.id)
+    String(
+      telegramUser.id
+    )
   );
+
 }
 
+
 const app =
-  document.getElementById("app");
+  document.getElementById(
+    "app"
+  );
+
 
 const registration =
-  document.getElementById("registration");
+  document.getElementById(
+    "registration"
+  );
+
 
 const oldRegistered =
   localStorage.getItem(
     "dailytrx_registered"
   );
 
+
 const userId =
   getTelegramId();
+
 
 const userRegistered =
   userId
     ? localStorage.getItem(
-        "dailytrx_registered_" + userId
+        "dailytrx_registered_" +
+        userId
       )
     : oldRegistered;
 
-if (userRegistered === "true" || oldRegistered === "true") {
 
-  registration?.classList.add("hidden");
+/* Existing user */
 
-  app?.classList.remove("app-hidden");
+if (
+  userRegistered === "true" ||
+  oldRegistered === "true"
+) {
 
-  render("home");
+  registration?.classList.add(
+    "hidden"
+  );
 
-} else {
+  app?.classList.remove(
+    "app-hidden"
+  );
 
-  app?.classList.add("app-hidden");
 
-  registration?.classList.remove("hidden");
+  render("home")
+    .finally(() => {
+      hideSplash();
+    });
+
+
+}
+
+
+/* New user */
+
+else {
+
+  app?.classList.add(
+    "app-hidden"
+  );
+
+  registration?.classList.remove(
+    "hidden"
+  );
+
 
   const referral =
-    tg?.initDataUnsafe?.start_param || "";
+    tg?.initDataUnsafe?.start_param ||
+    "";
+
 
   const referralInput =
-    document.getElementById("regReferral");
+    document.getElementById(
+      "regReferral"
+    );
+
 
   if (referralInput) {
-    referralInput.value = referral;
+
+    referralInput.value =
+      referral;
+
   }
 
+
   const registerButton =
-    document.getElementById("registerButton");
+    document.getElementById(
+      "registerButton"
+    );
+
 
   registerButton?.addEventListener(
     "click",
@@ -1781,12 +3079,14 @@ if (userRegistered === "true" || oldRegistered === "true") {
           )?.value || ""
         ).trim();
 
+
       const email =
         String(
           document.getElementById(
             "regEmail"
           )?.value || ""
         ).trim();
+
 
       const pin =
         String(
@@ -1795,12 +3095,14 @@ if (userRegistered === "true" || oldRegistered === "true") {
           )?.value || ""
         ).trim();
 
+
       const confirmPin =
         String(
           document.getElementById(
             "regConfirmPin"
           )?.value || ""
         ).trim();
+
 
       const referralCode =
         String(
@@ -1809,12 +3111,17 @@ if (userRegistered === "true" || oldRegistered === "true") {
           )?.value || ""
         ).trim();
 
+
       const message =
         document.getElementById(
           "registerMessage"
         );
 
-      if (!username || username.length < 3) {
+
+      if (
+        !username ||
+        username.length < 3
+      ) {
 
         message.textContent =
           "❌ Username must contain at least 3 characters.";
@@ -1822,7 +3129,11 @@ if (userRegistered === "true" || oldRegistered === "true") {
         return;
       }
 
-      if (!email || !email.includes("@")) {
+
+      if (
+        !email ||
+        !email.includes("@")
+      ) {
 
         message.textContent =
           "❌ Enter a valid email.";
@@ -1830,7 +3141,12 @@ if (userRegistered === "true" || oldRegistered === "true") {
         return;
       }
 
-      if (!/^\d{4,6}$/.test(pin)) {
+
+      if (
+        !/^\d{4,6}$/.test(
+          pin
+        )
+      ) {
 
         message.textContent =
           "❌ PIN must contain 4–6 digits.";
@@ -1838,7 +3154,10 @@ if (userRegistered === "true" || oldRegistered === "true") {
         return;
       }
 
-      if (pin !== confirmPin) {
+
+      if (
+        pin !== confirmPin
+      ) {
 
         message.textContent =
           "❌ PINs do not match.";
@@ -1846,8 +3165,10 @@ if (userRegistered === "true" || oldRegistered === "true") {
         return;
       }
 
+
       const telegramId =
         getTelegramId();
+
 
       if (!telegramId) {
 
@@ -1857,39 +3178,52 @@ if (userRegistered === "true" || oldRegistered === "true") {
         return;
       }
 
-      registerButton.disabled = true;
-      registerButton.textContent = "Creating...";
+
+      registerButton.disabled =
+        true;
+
+      registerButton.textContent =
+        "Creating...";
+
 
       try {
 
         const result =
-          await apiPost("/api/register", {
+          await apiPost(
+            "/api/register",
+            {
 
-            telegram_chat_id:
-              telegramId,
+              telegram_chat_id:
+                telegramId,
 
-            username,
+              username,
 
-            email,
+              email,
 
-            pin,
+              pin,
 
-            referral_code:
-              referralCode
+              referral_code:
+                referralCode
 
-          });
+            }
+          );
+
 
         if (!result.ok) {
+
           throw new Error(
             result.message ||
             "Registration failed."
           );
+
         }
+
 
         localStorage.setItem(
           "dailytrx_registered",
           "true"
         );
+
 
         localStorage.setItem(
           "dailytrx_registered_" +
@@ -1897,26 +3231,40 @@ if (userRegistered === "true" || oldRegistered === "true") {
           "true"
         );
 
+
         localStorage.setItem(
           "dailytrx_username",
           username
         );
 
+
         profileData = {
+
           username,
+
           email,
-          ...(result.profile || {})
+
+          ...(result.profile ||
+            {})
+
         };
+
 
         registration.classList.add(
           "hidden"
         );
 
+
         app.classList.remove(
           "app-hidden"
         );
 
-        render("home");
+
+        render("home")
+          .finally(() => {
+            hideSplash();
+          });
+
 
       } catch (error) {
 
@@ -1927,11 +3275,28 @@ if (userRegistered === "true" || oldRegistered === "true") {
             "Registration failed."
           );
 
-        registerButton.disabled = false;
+
+        registerButton.disabled =
+          false;
+
+
         registerButton.textContent =
           "Create Account";
       }
+
     }
   );
+
+
+  /* Registration page should not stay forever under splash */
+
+  setTimeout(() => {
+    hideSplash();
+  }, 1200);
+
 }
-console.log("DAILY TRX NEW APP JS LOADED 2026");
+
+
+console.log(
+  "DAILY TRX NEW APP JS LOADED 2026 - FINAL UI"
+);
