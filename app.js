@@ -1934,3 +1934,4 @@ if (userRegistered === "true" || oldRegistered === "true") {
     }
   );
 }
+console.log("DAILY TRX NEW APP JS LOADED 2026");
