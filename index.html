@@ -1,62 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   >
 
-  <meta name="theme-color" content="#0b0d12">
+  <meta
+    name="theme-color"
+    content="#070b12"
+  >
 
   <title>Daily TRX</title>
 
+  <!-- Telegram Mini App -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <link rel="stylesheet" href="style.css?v=20260926-02">
+  <!-- Main CSS -->
+  <link
+    rel="stylesheet"
+    href="style.css?v=20260926-03"
+  >
+
 </head>
+
 
 <body>
 
-  <!-- =========================
-       SPLASH SCREEN
-  ========================== -->
-  <div id="splash" class="splash">
-
-    <div class="splash-logo">
-      <span>₮</span>
-    </div>
-
-    <h1>Daily TRX</h1>
-
-    <p>TRX Investment Platform</p>
-
-    <div class="loader">
-      <span></span>
-    </div>
-
-  </div>
-
-
-  <!-- =========================
+  <!-- =========================================
        REGISTRATION
-  ========================== -->
-  <section id="registration" class="registration hidden">
+  ========================================== -->
+
+  <section
+    id="registration"
+    class="registration hidden"
+  >
 
     <div class="register-card">
 
-      <div class="register-logo">
-        ₮
+      <div class="brand-large">
+
+        <div class="brand-icon">
+          ₮
+        </div>
+
+        <h1>
+          Daily TRX
+        </h1>
+
+        <p>
+          Create your account
+        </p>
+
       </div>
 
-      <h1>Welcome to Daily TRX</h1>
 
-      <p class="register-subtitle">
-        Create your account to continue
-      </p>
-
-      <div class="form-group">
+      <div class="input-group">
 
         <label for="regUsername">
           Username
@@ -65,15 +68,15 @@
         <input
           id="regUsername"
           type="text"
-          autocomplete="username"
           placeholder="Enter username"
           maxlength="30"
+          autocomplete="off"
         >
 
       </div>
 
 
-      <div class="form-group">
+      <div class="input-group">
 
         <label for="regEmail">
           Email
@@ -82,14 +85,14 @@
         <input
           id="regEmail"
           type="email"
-          autocomplete="email"
           placeholder="Enter email"
+          autocomplete="email"
         >
 
       </div>
 
 
-      <div class="form-group">
+      <div class="input-group">
 
         <label for="regPin">
           PIN
@@ -98,16 +101,15 @@
         <input
           id="regPin"
           type="password"
-          inputmode="numeric"
-          autocomplete="new-password"
           placeholder="4–6 digit PIN"
+          inputmode="numeric"
           maxlength="6"
         >
 
       </div>
 
 
-      <div class="form-group">
+      <div class="input-group">
 
         <label for="regConfirmPin">
           Confirm PIN
@@ -116,30 +118,21 @@
         <input
           id="regConfirmPin"
           type="password"
+          placeholder="Confirm PIN"
           inputmode="numeric"
-          autocomplete="new-password"
-          placeholder="Confirm your PIN"
           maxlength="6"
         >
 
       </div>
 
 
-      <div class="form-group">
+      <!-- Referral is filled automatically
+           from Telegram start parameter -->
 
-        <label for="regReferral">
-          Referral Code
-          <span class="optional">Optional</span>
-        </label>
-
-        <input
-          id="regReferral"
-          type="text"
-          placeholder="Referral code"
-          maxlength="30"
-        >
-
-      </div>
+      <input
+        id="regReferral"
+        type="hidden"
+      >
 
 
       <button
@@ -151,128 +144,40 @@
       </button>
 
 
-      <div
+      <p
         id="registerMessage"
         class="form-message"
-      ></div>
+      ></p>
 
     </div>
 
   </section>
 
 
-  <!-- =========================
-       MAIN APP
-  ========================== -->
-  <main id="app" class="app hidden">
+  <!-- =========================================
+       MAIN APPLICATION
+  ========================================== -->
 
-    <!-- TOP BAR -->
-    <header class="topbar">
+  <main
+    id="app"
+    class="app app-hidden"
+  >
 
-      <div class="brand">
-
-        <div class="brand-logo">
-          ₮
-        </div>
-
-        <div class="brand-text">
-
-          <strong>Daily TRX</strong>
-
-          <small id="headerUsername">
-            Dashboard
-          </small>
-
-        </div>
-
-      </div>
-
-
-      <div class="top-actions">
-
-        <button
-          id="notificationButton"
-          class="icon-button"
-          type="button"
-          aria-label="Notifications"
-        >
-          🔔
-          <span
-            id="notificationBadge"
-            class="notification-badge hidden"
-          >
-            0
-          </span>
-        </button>
-
-
-        <button
-          id="themeButton"
-          class="icon-button"
-          type="button"
-          aria-label="Theme"
-        >
-          🌙
-        </button>
-
-      </div>
-
-    </header>
-
-
-    <!-- PAGE CONTENT -->
-    <section id="page" class="page"></section>
-
-
-    <!-- BOTTOM NAVIGATION -->
-    <nav class="bottom-nav">
-
-      <button
-        type="button"
-        data-page="home"
-        class="nav-button active"
-      >
-        <span class="nav-icon">⌂</span>
-        <span>Home</span>
-      </button>
-
-
-      <button
-        type="button"
-        data-page="wallet"
-        class="nav-button"
-      >
-        <span class="nav-icon">◈</span>
-        <span>Wallet</span>
-      </button>
-
-
-      <button
-        type="button"
-        data-page="investment"
-        class="nav-button"
-      >
-        <span class="nav-icon">▣</span>
-        <span>Invest</span>
-      </button>
-
-
-      <button
-        type="button"
-        data-page="profile"
-        class="nav-button"
-      >
-        <span class="nav-icon">◉</span>
-        <span>Profile</span>
-      </button>
-
-    </nav>
+    <div id="page"></div>
 
   </main>
 
 
-  <!-- CURRENT APP LOGIC -->
-  <script src="app.js?v=20260926-02"></script>
+  <!-- =========================================
+       APP JS
+       
+       IMPORTANT:
+       New version number forces Telegram
+       WebView to load the new JavaScript.
+  ========================================== -->
+
+  <script src="app.js?v=20260926-03"></script>
 
 </body>
+
 </html>
