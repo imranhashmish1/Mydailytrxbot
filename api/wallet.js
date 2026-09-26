@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     const response = await fetch(
       `${supabaseUrl}/rest/v1/wallet_balances?telegram_chat_id=eq.${encodeURIComponent(
         telegram_chat_id
-      )}&select=id,telegram_chat_id,balance_trx,Update_at,Lock_TRX&limit=1`,
+      )}&select=id,telegram_chat_id,available_trx,locked_trx,updated_at&limit=1`,
       {
         method: "GET",
         headers: {
@@ -45,6 +45,8 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
+      console.error("Wallet database error:", data);
+
       return res.status(500).json({
         ok: false,
         message: "Could not load wallet balance",
@@ -57,23 +59,38 @@ export default async function handler(req, res) {
         ok: true,
         wallet: {
           telegram_chat_id,
-          balance_trx: 0,
-          lock_trx: 0
-        }
+          available_trx: 0,
+          locked_trx: 0,
+          updated_at: null
+        },
+        available_trx: 0,
+        locked_trx: 0
       });
     }
 
     const wallet = data[0];
 
+    const available = Number(
+      wallet.available_trx || 0
+    );
+
+    const locked = Number(
+      wallet.locked_trx || 0
+    );
+
     return res.status(200).json({
       ok: true,
+
       wallet: {
         id: wallet.id,
         telegram_chat_id: wallet.telegram_chat_id,
-        balance_trx: Number(wallet.balance_trx || 0),
-        lock_trx: Number(wallet.Lock_TRX || 0),
-        update_at: wallet.Update_at || null
-      }
+        available_trx: available,
+        locked_trx: locked,
+        updated_at: wallet.updated_at || null
+      },
+
+      available_trx: available,
+      locked_trx: locked
     });
 
   } catch (error) {
