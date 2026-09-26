@@ -20,7 +20,8 @@ export default async function handler(req, res) {
     if (!telegram_chat_id || !username || !email || !pin) {
       return res.status(400).json({
         ok: false,
-        message: "telegram_chat_id, username, email and pin are required"
+        message:
+          "telegram_chat_id, username, email and pin are required"
       });
     }
 
@@ -62,14 +63,21 @@ export default async function handler(req, res) {
 
     const telegramId = String(telegram_chat_id);
 
-    // Check existing Telegram user
+    const headers = {
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
+      "Content-Type": "application/json"
+    };
+
+    /*
+     * 1. Check existing Telegram user
+     */
     const existingResponse = await fetch(
-      `${supabaseUrl}/rest/v1/bot_users?telegram_chat_id=eq.${encodeURIComponent(telegramId)}&select=id,referral_code,referred_by_code`,
+      `${supabaseUrl}/rest/v1/bot_users` +
+      `?telegram_chat_id=eq.${encodeURIComponent(telegramId)}` +
+      `&select=id,telegram_chat_id,referral_code,referred_by_code`,
       {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`
-        }
+        headers
       }
     );
 
@@ -86,34 +94,46 @@ export default async function handler(req, res) {
     const existingUsers = await existingResponse.json();
     const existingUser = existingUsers[0] || null;
 
-    // Keep existing referral code if user already has one
+    /*
+     * 2. Keep existing referral code,
+     *    otherwise create a new one.
+     */
     const ownReferralCode =
       existingUser?.referral_code ||
-      ("TRX" + crypto.randomBytes(5).toString("hex")).toUpperCase();
+      ("TRX" + crypto.randomBytes(5).toString("hex"))
+        .toUpperCase();
 
-    // Referral code can come from:
-    // 1. Registration form
-    // 2. Telegram /start referral link saved by telegram.js
+    /*
+     * Referral source can come from:
+     *
+     * 1. Registration form
+     * 2. Telegram /start referral link
+     * 3. Existing saved referred_by_code
+     */
     const suppliedReferralCode =
       referral_code ||
       existingUser?.referred_by_code ||
       null;
 
+    /*
+     * 3. Hash PIN
+     */
     const pinHash = crypto
       .createHash("sha256")
       .update(String(pin))
       .digest("hex");
 
-    // Register / update user
+    /*
+     * 4. Register / update user
+     */
     const response = await fetch(
       `${supabaseUrl}/rest/v1/bot_users?on_conflict=telegram_chat_id`,
       {
         method: "POST",
         headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-          "Content-Type": "application/json",
-          Prefer: "resolution=merge-duplicates,return=representation"
+          ...headers,
+          Prefer:
+            "resolution=merge-duplicates,return=representation"
         },
         body: JSON.stringify({
           telegram_chat_id: telegramId,
@@ -137,69 +157,244 @@ export default async function handler(req, res) {
       });
     }
 
+    /*
+     * 5. Referral system
+     *
+     * Level 1 = 6%
+     * Level 2 = 2%
+     * Level 3 = 1%
+     *
+     * This only creates the referral relationship.
+     * Commission is paid later when an investment
+     * is created.
+     */
+
     let referralCreated = false;
+    let referralLevelsCreated = 0;
     let referralMessage = null;
 
-    /*
-     * If a referral code exists, connect this user
-     * to the referral system.
-     */
-    if (suppliedReferralCode) {
+    if (
+      suppliedReferralCode &&
+      suppliedReferralCode !== ownReferralCode
+    ) {
       try {
-        const host = req.headers.host;
+        let currentReferralCode =
+          String(suppliedReferralCode).trim();
 
-        const protocol =
-          req.headers["x-forwarded-proto"] || "https";
+        for (let level = 1; level <= 3; level++) {
 
-        const referralApiUrl =
-          `${protocol}://${host}/api/referral`;
-
-        const referralResponse = await fetch(
-          referralApiUrl,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              telegram_chat_id: telegramId,
-              referral_code: suppliedReferralCode
-            })
+          if (!currentReferralCode) {
+            break;
           }
-        );
 
-        const referralData = await referralResponse.json();
+          /*
+           * Find the user who owns this referral code.
+           */
+          const referrerResponse = await fetch(
+            `${supabaseUrl}/rest/v1/bot_users` +
+            `?referral_code=eq.${encodeURIComponent(currentReferralCode)}` +
+            `&select=telegram_chat_id,referral_code,referred_by_code` +
+            `&limit=1`,
+            {
+              headers: {
+                apikey: supabaseKey,
+                Authorization: `Bearer ${supabaseKey}`
+              }
+            }
+          );
 
-        referralCreated =
-          referralResponse.ok &&
-          referralData?.ok === true;
+          if (!referrerResponse.ok) {
+            console.error(
+              "Could not find referral owner:",
+              await referrerResponse.text()
+            );
+            break;
+          }
 
-        referralMessage =
-          referralData?.message || null;
+          const referrerUsers =
+            await referrerResponse.json();
+
+          const referrer = referrerUsers[0];
+
+          /*
+           * Referral code does not belong to a user.
+           */
+          if (!referrer) {
+            break;
+          }
+
+          const referrerTelegramId =
+            String(referrer.telegram_chat_id);
+
+          /*
+           * Never allow self-referral.
+           */
+          if (referrerTelegramId === telegramId) {
+            break;
+          }
+
+          /*
+           * Commission rate for this referral level.
+           */
+          let commissionRate = 0;
+
+          if (level === 1) {
+            commissionRate = 0.06;
+          } else if (level === 2) {
+            commissionRate = 0.02;
+          } else if (level === 3) {
+            commissionRate = 0.01;
+          }
+
+          /*
+           * Check whether this exact referral
+           * relationship already exists.
+           */
+          const existingReferralResponse =
+            await fetch(
+              `${supabaseUrl}/rest/v1/referrals` +
+              `?referrer_telegram_chat_id=eq.${encodeURIComponent(referrerTelegramId)}` +
+              `&referred_telegram_chat_id=eq.${encodeURIComponent(telegramId)}` +
+              `&level=eq.${level}` +
+              `&select=id` +
+              `&limit=1`,
+              {
+                headers: {
+                  apikey: supabaseKey,
+                  Authorization: `Bearer ${supabaseKey}`
+                }
+              }
+            );
+
+          if (existingReferralResponse.ok) {
+            const existingReferral =
+              await existingReferralResponse.json();
+
+            if (
+              Array.isArray(existingReferral) &&
+              existingReferral.length > 0
+            ) {
+              /*
+               * Already exists.
+               * Continue upward to check next level.
+               */
+            } else {
+              /*
+               * Create referral relationship.
+               */
+              const insertReferralResponse =
+                await fetch(
+                  `${supabaseUrl}/rest/v1/referrals`,
+                  {
+                    method: "POST",
+                    headers: {
+                      ...headers,
+                      Prefer: "return=representation"
+                    },
+                    body: JSON.stringify({
+                      referrer_telegram_chat_id:
+                        referrerTelegramId,
+
+                      referred_telegram_chat_id:
+                        telegramId,
+
+                      level,
+
+                      commission_rate:
+                        commissionRate,
+
+                      total_commission_trx: 0
+                    })
+                  }
+                );
+
+              const insertReferralData =
+                await insertReferralResponse.json();
+
+              if (!insertReferralResponse.ok) {
+                console.error(
+                  "Referral insert failed:",
+                  insertReferralData
+                );
+
+                /*
+                 * Registration itself remains successful.
+                 */
+                referralMessage =
+                  "Registration succeeded, but referral connection needs review.";
+
+                break;
+              }
+
+              referralCreated = true;
+              referralLevelsCreated++;
+            }
+          }
+
+          /*
+           * Move upward through the referral chain.
+           *
+           * Example:
+           *
+           * User C
+           *   ↓
+           * User B
+           *   ↓
+           * User A
+           *
+           * C gets:
+           * Level 1 → B
+           * Level 2 → A
+           */
+          currentReferralCode =
+            referrer.referred_by_code || null;
+        }
+
+        if (referralLevelsCreated > 0) {
+          referralMessage =
+            `${referralLevelsCreated} referral level(s) connected successfully.`;
+        }
 
       } catch (referralError) {
         console.error(
-          "Referral connection error:",
-          referralError.message
+          "Referral processing error:",
+          referralError
         );
 
         referralMessage =
-          "Registration succeeded, but referral could not be connected yet.";
+          "Registration succeeded, but referral connection needs review.";
       }
     }
 
+    /*
+     * 6. Final response
+     */
     return res.status(200).json({
       ok: true,
       message: "Registration successful",
+
       user: data?.[0] || data,
+
       referral_code: ownReferralCode,
-      referred_by_code: suppliedReferralCode,
-      referral_created: referralCreated,
-      referral_message: referralMessage
+
+      referred_by_code:
+        suppliedReferralCode,
+
+      referral_created:
+        referralCreated,
+
+      referral_levels_created:
+        referralLevelsCreated,
+
+      referral_message:
+        referralMessage
     });
 
   } catch (error) {
-    console.error("Registration error:", error);
+    console.error(
+      "Registration error:",
+      error
+    );
 
     return res.status(500).json({
       ok: false,
