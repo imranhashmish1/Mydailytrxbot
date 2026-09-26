@@ -7,148 +7,285 @@ if (telegramApp) {
 
 const page = document.getElementById("page");
 
-const ADMIN_ID = "6504138324";
-
 const DEPOSIT_ADDRESS =
   "TU9R3KZmkasLZbC3jZPyboEfNPFKfuY4kA";
 
-let currentPage = "home";
+const BOT_USERNAME = "MyDailyTRXBot";
+const ADMIN_ID = "6504138324";
+
+window.currentPage = "home";
+
+let currentLanguage =
+  localStorage.getItem("dailytrx_language") || "en";
+
+let currentTheme =
+  localStorage.getItem("dailytrx_theme") || "light";
+
+
+/* =========================
+   TELEGRAM
+========================= */
+
+function getTelegramId() {
+  return String(
+    telegramApp?.initDataUnsafe?.user?.id || ""
+  );
+}
+
+function getTelegramUser() {
+  return telegramApp?.initDataUnsafe?.user || {};
+}
+
+
+/* =========================
+   TRANSLATIONS
+========================= */
 
 const translations = {
+
   en: {
     home: "Home",
     wallet: "Wallet",
     deposit: "Deposit",
-    invest: "Invest",
-    profile: "Profile",
-    support: "Support",
-    referral: "Referral",
-    notifications: "Notifications",
     withdraw: "Withdraw",
     investment: "Investment",
-    balance: "Available Balance",
-    locked: "Locked",
-    profit: "Total Profit",
+    referral: "Referral",
+    notifications: "Notifications",
+    support: "Support",
+    profile: "Profile",
+
+    dashboard: "Dashboard",
+    welcome: "Welcome to Daily TRX",
+    available: "Available Balance",
+    locked: "Locked Balance",
+    total: "Total Balance",
     quickActions: "Quick Actions",
+
     depositNow: "Deposit",
     withdrawNow: "Withdraw",
     investNow: "Invest",
-    referrals: "Referrals",
-    welcome: "Welcome to Daily TRX",
-    investmentPlans: "Investment Plans",
+    referralNow: "Referral",
+
+    depositTitle: "Deposit TRX",
+    depositText: "Send TRX to the address below.",
+    copyAddress: "Copy Address",
+    amount: "Amount (TRX)",
+    txHash: "Transaction Hash",
+    submitDeposit: "Submit Deposit",
+
+    investmentTitle: "Investment Plans",
     dailyProfit: "Daily Profit",
     duration: "Duration",
-    amount: "Amount",
     totalProfit: "Total Profit",
-    invest: "Invest",
-    copy: "Copy",
-    submitDeposit: "Submit Deposit",
-    transactionHash: "Transaction Hash",
-    amountTrx: "Amount (TRX)",
+    invest: "Invest Now",
+
+    referralTitle: "Referral Program",
+    referralText: "Invite users and earn referral commissions.",
     referralCode: "Referral Code",
-    inviteLink: "Invite Link",
-    copyLink: "Copy Link",
-    noData: "No data available yet.",
-    language: "Language"
+    referralLink: "Referral Link",
+    copyLink: "Copy Referral Link",
+    shareLink: "Share Link",
+    level1: "Level 1",
+    level2: "Level 2",
+    level3: "Level 3",
+
+    withdrawTitle: "Withdraw",
+    withdrawText: "Withdrawals require admin approval.",
+
+    profileTitle: "Profile",
+    username: "Username",
+    telegramId: "Telegram ID",
+
+    notificationsTitle: "Notifications",
+    supportTitle: "Support",
+
+    copied: "Copied successfully!",
+    invalidHash: "Invalid TRON transaction hash",
+    depositFailed: "Deposit submission failed",
+    investmentCreated: "Investment created successfully",
+    insufficient: "Insufficient available TRX"
   },
 
   ps: {
     home: "کور",
     wallet: "والټ",
     deposit: "ډیپازټ",
-    invest: "پانګونه",
-    profile: "پروفایل",
-    support: "مرسته",
+    withdraw: "ویډرا",
+    investment: "انویسټمنټ",
     referral: "ریفریل",
     notifications: "خبرتیاوې",
-    withdraw: "ویډرا",
-    investment: "پانګونه",
-    balance: "موجوده بیلانس",
-    locked: "لاک شوی",
-    profit: "ټوله ګټه",
-    quickActions: "چټک انتخابونه",
+    support: "مرسته",
+    profile: "پروفایل",
+
+    dashboard: "ډاشبورډ",
+    welcome: "Daily TRX ته ښه راغلاست",
+    available: "موجود بیلانس",
+    locked: "لاک شوی بیلانس",
+    total: "ټول بیلانس",
+    quickActions: "چټک خدمات",
+
     depositNow: "ډیپازټ",
     withdrawNow: "ویډرا",
-    investNow: "پانګونه",
-    referrals: "ریفریلونه",
-    welcome: "Daily TRX ته ښه راغلاست",
-    investmentPlans: "د پانګونې پلانونه",
+    investNow: "انویسټ",
+    referralNow: "ریفریل",
+
+    depositTitle: "TRX ډیپازټ",
+    depositText: "TRX لاندې ادرس ته واستوئ.",
+    copyAddress: "ادرس کاپي",
+    amount: "مقدار (TRX)",
+    txHash: "Transaction Hash",
+    submitDeposit: "ډیپازټ ثبت کړه",
+
+    investmentTitle: "انویسټمنټ پلانونه",
     dailyProfit: "ورځنۍ ګټه",
     duration: "موده",
-    amount: "مقدار",
     totalProfit: "ټوله ګټه",
-    submitDeposit: "ډیپازټ ثبت کړه",
-    transactionHash: "Transaction Hash",
-    amountTrx: "مقدار (TRX)",
+    invest: "اوس انویسټ کړه",
+
+    referralTitle: "ریفریل پروګرام",
+    referralText: "کاروونکي دعوت کړئ او د ریفریل کمېشن ترلاسه کړئ.",
     referralCode: "ریفریل کوډ",
-    inviteLink: "د دعوت لینک",
-    copyLink: "لینک کاپي",
-    noData: "تر اوسه معلومات نشته.",
-    language: "ژبه"
+    referralLink: "ریفریل لینک",
+    copyLink: "ریفریل لینک کاپي",
+    shareLink: "لینک شریکول",
+    level1: "لومړی لیول",
+    level2: "دوهم لیول",
+    level3: "درېیم لیول",
+
+    withdrawTitle: "ویډرا",
+    withdrawText: "ویډرا د اډمین تایید ته اړتیا لري.",
+
+    profileTitle: "پروفایل",
+    username: "یوزرنیم",
+    telegramId: "Telegram ID",
+
+    notificationsTitle: "خبرتیاوې",
+    supportTitle: "مرسته",
+
+    copied: "په بریالیتوب کاپي شو!",
+    invalidHash: "د TRON Transaction Hash ناسم دی",
+    depositFailed: "ډیپازټ ثبت نه شو",
+    investmentCreated: "انویسټمنټ په بریالیتوب جوړ شو",
+    insufficient: "موجود TRX کافي نه دی"
   },
 
   fa: {
     home: "خانه",
     wallet: "کیف پول",
-    deposit: "واریز",
-    invest: "سرمایه‌گذاری",
-    profile: "پروفایل",
-    support: "پشتیبانی",
-    referral: "معرفی",
-    notifications: "اعلان‌ها",
+    deposit: "دیپازیت",
     withdraw: "برداشت",
     investment: "سرمایه‌گذاری",
-    balance: "موجودی",
-    locked: "قفل شده",
-    profit: "سود کل",
-    quickActions: "گزینه‌های سریع",
-    depositNow: "واریز",
+    referral: "معرفی",
+    notifications: "اعلان‌ها",
+    support: "پشتیبانی",
+    profile: "پروفایل",
+
+    dashboard: "داشبورد",
+    welcome: "به Daily TRX خوش آمدید",
+    available: "موجودی قابل استفاده",
+    locked: "موجودی قفل‌شده",
+    total: "موجودی کل",
+    quickActions: "خدمات سریع",
+
+    depositNow: "دیپازیت",
     withdrawNow: "برداشت",
     investNow: "سرمایه‌گذاری",
-    referrals: "معرفی‌ها",
-    welcome: "به Daily TRX خوش آمدید",
-    investmentPlans: "پلان‌های سرمایه‌گذاری",
+    referralNow: "معرفی",
+
+    depositTitle: "دیپازیت TRX",
+    depositText: "TRX را به آدرس زیر ارسال کنید.",
+    copyAddress: "کپی آدرس",
+    amount: "مقدار (TRX)",
+    txHash: "Transaction Hash",
+    submitDeposit: "ثبت دیپازیت",
+
+    investmentTitle: "پلان‌های سرمایه‌گذاری",
     dailyProfit: "سود روزانه",
     duration: "مدت",
-    amount: "مقدار",
     totalProfit: "سود کل",
-    submitDeposit: "ثبت واریز",
-    transactionHash: "هش تراکنش",
-    amountTrx: "مقدار (TRX)",
+    invest: "سرمایه‌گذاری",
+
+    referralTitle: "برنامه معرفی",
+    referralText: "کاربران را دعوت کنید و کمیسیون دریافت کنید.",
     referralCode: "کد معرفی",
-    inviteLink: "لینک دعوت",
-    copyLink: "کپی لینک",
-    noData: "هنوز معلوماتی موجود نیست.",
-    language: "زبان"
+    referralLink: "لینک معرفی",
+    copyLink: "کپی لینک معرفی",
+    shareLink: "اشتراک لینک",
+    level1: "سطح اول",
+    level2: "سطح دوم",
+    level3: "سطح سوم",
+
+    withdrawTitle: "برداشت",
+    withdrawText: "برداشت نیاز به تأیید ادمین دارد.",
+
+    profileTitle: "پروفایل",
+    username: "نام کاربری",
+    telegramId: "Telegram ID",
+
+    notificationsTitle: "اعلان‌ها",
+    supportTitle: "پشتیبانی",
+
+    copied: "با موفقیت کپی شد!",
+    invalidHash: "Transaction Hash نادرست است",
+    depositFailed: "ثبت دیپازیت انجام نشد",
+    investmentCreated: "سرمایه‌گذاری با موفقیت ایجاد شد",
+    insufficient: "TRX موجود کافی نیست"
   }
 };
 
-let currentLanguage =
-  localStorage.getItem("dailytrx_language") || "en";
 
 function t(key) {
-  return (
-    translations[currentLanguage]?.[key] ||
-    translations.en[key] ||
-    key
+  return translations[currentLanguage]?.[key] ||
+         translations.en[key] ||
+         key;
+}
+
+
+/* =========================
+   THEME
+========================= */
+
+function applyTheme() {
+  document.body.classList.remove("light", "dark");
+  document.body.classList.add(currentTheme);
+
+  localStorage.setItem(
+    "dailytrx_theme",
+    currentTheme
   );
 }
 
-function getTelegramUser() {
-  return telegramApp?.initDataUnsafe?.user || null;
+function toggleTheme() {
+
+  currentTheme =
+    currentTheme === "light"
+      ? "dark"
+      : "light";
+
+  applyTheme();
+
+  render(window.currentPage);
 }
 
-function getTelegramId() {
-  const user = getTelegramUser();
-  return user?.id ? String(user.id) : "";
-}
 
-function getUsername() {
-  return (
-    localStorage.getItem("dailytrx_username") ||
-    getTelegramUser()?.first_name ||
-    "User"
+/* =========================
+   LANGUAGE
+========================= */
+
+function changeLanguage(language) {
+
+  if (!translations[language]) {
+    return;
+  }
+
+  currentLanguage = language;
+
+  localStorage.setItem(
+    "dailytrx_language",
+    language
   );
+
+  render(window.currentPage);
 }
 
 
@@ -157,52 +294,52 @@ function getUsername() {
 ========================= */
 
 function appHeader() {
+
   return `
     <header class="app-header">
 
       <div class="brand-area">
 
         <div class="brand-logo">
-          ₮
+          TRX
         </div>
 
         <div class="brand-info">
-          <strong>DAILY TRX</strong>
-          <small>Investment Wallet</small>
+          <h2>Daily TRX</h2>
+          <span>${t(window.currentPage)}</span>
         </div>
 
       </div>
 
       <div class="header-actions">
 
-        <div class="language-wrap">
-          <span class="language-icon">🌐</span>
+        <select
+          class="language-select"
+          onchange="changeLanguage(this.value)"
+        >
 
-          <select
-            id="languageSelect"
-            class="language-select"
-          >
-            <option value="en" ${currentLanguage === "en" ? "selected" : ""}>
-              EN
-            </option>
+          <option value="en"
+            ${currentLanguage === "en" ? "selected" : ""}>
+            EN
+          </option>
 
-            <option value="ps" ${currentLanguage === "ps" ? "selected" : ""}>
-              پښتو
-            </option>
+          <option value="ps"
+            ${currentLanguage === "ps" ? "selected" : ""}>
+            پښتو
+          </option>
 
-            <option value="fa" ${currentLanguage === "fa" ? "selected" : ""}>
-              دری
-            </option>
-          </select>
-        </div>
+          <option value="fa"
+            ${currentLanguage === "fa" ? "selected" : ""}>
+            فارسی
+          </option>
+
+        </select>
 
         <button
-          id="themeButton"
           class="header-icon"
-          type="button"
-          aria-label="Change theme"
+          onclick="toggleTheme()"
         >
-          ☾
+          ${currentTheme === "light" ? "🌙" : "☀️"}
         </button>
 
       </div>
@@ -213,56 +350,52 @@ function appHeader() {
 
 
 /* =========================
-   BOTTOM NAVIGATION
+   BOTTOM NAV
 ========================= */
 
 function renderBottomNavigation() {
+
   return `
     <nav class="bottom-nav">
 
       <button
-        class="bottom-nav-item ${currentPage === "home" ? "active" : ""}"
+        class="bottom-nav-item ${window.currentPage === "home" ? "active" : ""}"
         data-page="home"
-        type="button"
       >
-        <span>⌂</span>
-        <small>${t("home")}</small>
+        <span class="nav-icon">🏠</span>
+        <span>${t("home")}</span>
       </button>
 
       <button
-        class="bottom-nav-item ${currentPage === "wallet" ? "active" : ""}"
+        class="bottom-nav-item ${window.currentPage === "wallet" ? "active" : ""}"
         data-page="wallet"
-        type="button"
       >
-        <span>▣</span>
-        <small>${t("wallet")}</small>
+        <span class="nav-icon">💰</span>
+        <span>${t("wallet")}</span>
       </button>
 
       <button
-        class="bottom-nav-item ${currentPage === "deposit" ? "active" : ""}"
+        class="bottom-nav-item ${window.currentPage === "deposit" ? "active" : ""}"
         data-page="deposit"
-        type="button"
       >
-        <span>＋</span>
-        <small>${t("deposit")}</small>
+        <span class="nav-icon">➕</span>
+        <span>${t("deposit")}</span>
       </button>
 
       <button
-        class="bottom-nav-item ${currentPage === "investment" ? "active" : ""}"
+        class="bottom-nav-item ${window.currentPage === "investment" ? "active" : ""}"
         data-page="investment"
-        type="button"
       >
-        <span>◈</span>
-        <small>${t("invest")}</small>
+        <span class="nav-icon">📈</span>
+        <span>${t("investment")}</span>
       </button>
 
       <button
-        class="bottom-nav-item ${currentPage === "profile" ? "active" : ""}"
+        class="bottom-nav-item ${window.currentPage === "profile" ? "active" : ""}"
         data-page="profile"
-        type="button"
       >
-        <span>♙</span>
-        <small>${t("profile")}</small>
+        <span class="nav-icon">👤</span>
+        <span>${t("profile")}</span>
       </button>
 
     </nav>
@@ -275,7 +408,8 @@ function renderBottomNavigation() {
 ========================= */
 
 function pageWrapper(content) {
-  return `
+
+  page.innerHTML = `
     ${appHeader()}
 
     <div class="page-container">
@@ -284,6 +418,51 @@ function pageWrapper(content) {
 
     ${renderBottomNavigation()}
   `;
+
+  window.scrollTo(0, 0);
+}
+
+
+/* =========================
+   WALLET
+========================= */
+
+async function getWallet() {
+
+  const telegramId = getTelegramId();
+
+  if (!telegramId) {
+    return {
+      available_trx: 0,
+      locked_trx: 0
+    };
+  }
+
+  try {
+
+    const response = await fetch(
+      `/api/wallet?telegram_chat_id=${encodeURIComponent(telegramId)}`
+    );
+
+    const data = await response.json();
+
+    return {
+      available_trx:
+        Number(data.available_trx || 0),
+
+      locked_trx:
+        Number(data.locked_trx || 0)
+    };
+
+  } catch (error) {
+
+    console.error("Wallet error:", error);
+
+    return {
+      available_trx: 0,
+      locked_trx: 0
+    };
+  }
 }
 
 
@@ -293,252 +472,162 @@ function pageWrapper(content) {
 
 async function homePage() {
 
-  const username = getUsername();
+  const wallet = await getWallet();
 
-  let wallet = {
-    available_trx: 0,
-    locked_trx: 0
-  };
+  const available =
+    Number(wallet.available_trx || 0);
 
-  try {
-    const response = await fetch(
-      `/api/wallet?telegram_chat_id=${encodeURIComponent(
-        getTelegramId()
-      )}`
-    );
+  const locked =
+    Number(wallet.locked_trx || 0);
 
-    const data = await response.json();
+  const total =
+    available + locked;
 
-    if (data.ok) {
-      wallet = data;
-    }
-  } catch (error) {
-    console.error("Wallet load error:", error);
-  }
-
-  page.innerHTML = pageWrapper(`
+  pageWrapper(`
 
     <div class="welcome-strip">
-      <strong>
-        ${t("welcome")}, ${escapeHtml(username)} 👋
-      </strong>
 
-      <span>
-        Manage your TRX wallet and investments from one place.
-      </span>
+      <h1>${t("welcome")}</h1>
+
+      <p>
+        Daily TRX Wallet & Investment
+      </p>
+
     </div>
-
 
     <div class="balance-card">
 
-      <div class="balance-top">
-        <span>${t("balance")}</span>
-        <span>TRX</span>
+      <div class="balance-label">
+        ${t("total")}
       </div>
 
       <div class="balance-value">
-        ${formatTrx(wallet.available_trx)}
-        <small>TRX</small>
+        ${total.toFixed(2)}
+        <span class="balance-unit">TRX</span>
       </div>
 
-      <div class="balance-actions">
+      <div class="balance-stats">
 
-        <button
-          class="balance-action"
-          data-page="deposit"
-          type="button"
-        >
-          ＋ ${t("depositNow")}
-        </button>
+        <div class="balance-stat">
+          <small>${t("available")}</small>
+          <strong>
+            ${available.toFixed(2)} TRX
+          </strong>
+        </div>
 
-        <button
-          class="balance-action"
-          data-page="withdraw"
-          type="button"
-        >
-          ↑ ${t("withdrawNow")}
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="mini-stats">
-
-      <div class="stat-card">
-        <small>${t("locked")}</small>
-        <strong>
-          ${formatTrx(wallet.locked_trx)} TRX
-        </strong>
-      </div>
-
-      <div class="stat-card">
-        <small>${t("profit")}</small>
-        <strong>
-          0 TRX
-        </strong>
-      </div>
-
-    </div>
-
-
-    <div class="quick-section">
-
-      <div class="section-heading">
-        <strong>${t("quickActions")}</strong>
-        <span>Daily TRX</span>
-      </div>
-
-      <div class="quick-grid">
-
-        <button
-          class="quick-card"
-          data-page="deposit"
-          type="button"
-        >
-          <span class="quick-icon">＋</span>
-
-          <span class="quick-text">
-            <strong>${t("depositNow")}</strong>
-            <small>Add TRX</small>
-          </span>
-        </button>
-
-
-        <button
-          class="quick-card"
-          data-page="investment"
-          type="button"
-        >
-          <span class="quick-icon">◈</span>
-
-          <span class="quick-text">
-            <strong>${t("investNow")}</strong>
-            <small>Choose a plan</small>
-          </span>
-        </button>
-
-
-        <button
-          class="quick-card"
-          data-page="referral"
-          type="button"
-        >
-          <span class="quick-icon">👥</span>
-
-          <span class="quick-text">
-            <strong>${t("referrals")}</strong>
-            <small>Invite friends</small>
-          </span>
-        </button>
-
-
-        <button
-          class="quick-card"
-          data-page="support"
-          type="button"
-        >
-          <span class="quick-icon">?</span>
-
-          <span class="quick-text">
-            <strong>${t("support")}</strong>
-            <small>Get help</small>
-          </span>
-        </button>
+        <div class="balance-stat">
+          <small>${t("locked")}</small>
+          <strong>
+            ${locked.toFixed(2)} TRX
+          </strong>
+        </div>
 
       </div>
 
     </div>
 
+    <div class="quick-title">
+      ${t("quickActions")}
+    </div>
+
+    <div class="quick-actions">
+
+      <button
+        class="quick-card"
+        data-page="deposit"
+      >
+        <div class="quick-icon">➕</div>
+        <strong>${t("depositNow")}</strong>
+        <span>TRX Deposit</span>
+      </button>
+
+      <button
+        class="quick-card"
+        data-page="withdraw"
+      >
+        <div class="quick-icon">💸</div>
+        <strong>${t("withdrawNow")}</strong>
+        <span>TRX Withdrawal</span>
+      </button>
+
+      <button
+        class="quick-card"
+        data-page="investment"
+      >
+        <div class="quick-icon">📈</div>
+        <strong>${t("investNow")}</strong>
+        <span>Investment Plans</span>
+      </button>
+
+      <button
+        class="quick-card"
+        data-page="referral"
+      >
+        <div class="quick-icon">👥</div>
+        <strong>${t("referralNow")}</strong>
+        <span>Invite & Earn</span>
+      </button>
+
+    </div>
   `);
-
-  bindHeader();
 }
 
 
 /* =========================
-   WALLET
+   WALLET PAGE
 ========================= */
 
 async function walletPage() {
 
-  let wallet = {
-    available_trx: 0,
-    locked_trx: 0
-  };
+  const wallet = await getWallet();
 
-  try {
+  const available =
+    Number(wallet.available_trx || 0);
 
-    const response = await fetch(
-      `/api/wallet?telegram_chat_id=${encodeURIComponent(
-        getTelegramId()
-      )}`
-    );
+  const locked =
+    Number(wallet.locked_trx || 0);
 
-    const data = await response.json();
+  const total =
+    available + locked;
 
-    if (data.ok) {
-      wallet = data;
-    }
+  pageWrapper(`
 
-  } catch (error) {
-    console.error(error);
-  }
+    <h1 class="page-title">
+      ${t("wallet")}
+    </h1>
 
-  page.innerHTML = pageWrapper(`
-
-    <div class="page-heading">
-      <h2>${t("wallet")}</h2>
-    </div>
-
+    <p class="page-subtitle">
+      Your TRX wallet
+    </p>
 
     <div class="balance-card">
 
-      <div class="balance-top">
-        <span>${t("balance")}</span>
-        <span>TRX</span>
+      <div class="balance-label">
+        ${t("total")}
       </div>
 
       <div class="balance-value">
-        ${formatTrx(wallet.available_trx)}
-        <small>TRX</small>
+        ${total.toFixed(2)}
+        <span class="balance-unit">TRX</span>
       </div>
 
-    </div>
+      <div class="balance-stats">
 
+        <div class="balance-stat">
+          <small>${t("available")}</small>
+          <strong>${available.toFixed(2)} TRX</strong>
+        </div>
 
-    <div class="mini-stats">
+        <div class="balance-stat">
+          <small>${t("locked")}</small>
+          <strong>${locked.toFixed(2)} TRX</strong>
+        </div>
 
-      <div class="stat-card">
-        <small>${t("locked")}</small>
-        <strong>
-          ${formatTrx(wallet.locked_trx)} TRX
-        </strong>
       </div>
 
-      <div class="stat-card">
-        <small>${t("profit")}</small>
-        <strong>
-          0 TRX
-        </strong>
-      </div>
-
-    </div>
-
-
-    <div class="card">
-      <h3>Wallet Information</h3>
-
-      <p>
-        Your available TRX can be used for investment or withdrawal.
-        Locked TRX represents funds currently committed to investments.
-      </p>
     </div>
 
   `);
-
-  bindHeader();
 }
 
 
@@ -548,332 +637,209 @@ async function walletPage() {
 
 function depositPage() {
 
-  const qrUrl =
-    "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" +
-    encodeURIComponent(DEPOSIT_ADDRESS);
+  const qr =
+    `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(DEPOSIT_ADDRESS)}`;
 
-  page.innerHTML = pageWrapper(`
+  pageWrapper(`
 
-    <div class="page-heading">
-      <h2>${t("deposit")}</h2>
-    </div>
+    <h1 class="page-title">
+      ${t("depositTitle")}
+    </h1>
 
+    <p class="page-subtitle">
+      ${t("depositText")}
+    </p>
 
     <div class="deposit-card">
 
-      <div class="section-heading">
-        <strong>TRX Deposit</strong>
-        <span>TRON Network</span>
-      </div>
-
-
-      <div class="qr-wrap">
+      <div class="qr-box">
         <img
-          src="${qrUrl}"
-          alt="TRX Deposit QR Code"
+          src="${qr}"
+          alt="TRX QR"
         >
       </div>
 
-
-      <div class="form-group">
-
-        <label>
-          Deposit Address
-        </label>
-
-        <div class="address-box">
-
-          <input
-            id="depositAddress"
-            value="${DEPOSIT_ADDRESS}"
-            readonly
-          >
-
-          <button
-            id="copyAddress"
-            class="copy-btn"
-            type="button"
-          >
-            ${t("copy")}
-          </button>
-
-        </div>
-
+      <div class="address-box">
+        ${DEPOSIT_ADDRESS}
       </div>
 
+      <button
+        class="copy-button"
+        onclick="copyDepositAddress()"
+      >
+        ${t("copyAddress")}
+      </button>
+
+    </div>
+
+    <div class="deposit-card">
 
       <div class="form-group">
 
-        <label for="depositAmount">
-          ${t("amountTrx")}
-        </label>
+        <label>${t("amount")}</label>
 
         <input
           id="depositAmount"
           type="number"
           min="0"
-          step="0.000001"
-          placeholder="Enter TRX amount"
+          step="0.01"
+          placeholder="100"
         >
 
       </div>
-
 
       <div class="form-group">
 
-        <label for="txHash">
-          ${t("transactionHash")}
-        </label>
+        <label>${t("txHash")}</label>
 
         <input
-          id="txHash"
+          id="depositTxHash"
           type="text"
-          placeholder="Enter 64-character TRON TX hash"
-          autocomplete="off"
+          placeholder="64 character TRON TX hash"
         >
 
       </div>
 
-
-      <div
-        id="depositMessage"
-        class="register-message"
-      ></div>
-
-
       <button
-        id="submitDeposit"
-        class="primary-btn"
-        type="button"
+        id="depositSubmit"
+        class="primary-button"
+        onclick="submitDeposit()"
       >
         ${t("submitDeposit")}
       </button>
 
+      <div
+        id="depositMessage"
+        class="form-message"
+      ></div>
+
     </div>
 
   `);
+}
 
-  bindHeader();
-  bindDeposit();
+
+async function copyDepositAddress() {
+
+  try {
+
+    await navigator.clipboard.writeText(
+      DEPOSIT_ADDRESS
+    );
+
+    alert(t("copied"));
+
+  } catch {
+
+    alert(DEPOSIT_ADDRESS);
+  }
 }
 
 
 /* =========================
-   DEPOSIT EVENTS
+   DEPOSIT SUBMIT
 ========================= */
 
-function bindDeposit() {
+async function submitDeposit() {
 
-  const copyButton =
-    document.getElementById("copyAddress");
+  const amount =
+    Number(
+      document.getElementById("depositAmount")?.value
+    );
 
-  copyButton?.addEventListener(
-    "click",
-    async () => {
+  const txHash =
+    document.getElementById("depositTxHash")
+      ?.value
+      .trim();
 
-      try {
+  const message =
+    document.getElementById("depositMessage");
 
-        await navigator.clipboard.writeText(
-          DEPOSIT_ADDRESS
-        );
+  const button =
+    document.getElementById("depositSubmit");
 
-        copyButton.textContent =
-          "Copied ✓";
+  const telegramId =
+    getTelegramId();
 
-        setTimeout(() => {
-          copyButton.textContent =
-            t("copy");
-        }, 1500);
 
-      } catch (error) {
+  if (!amount || amount <= 0) {
 
-        const input =
-          document.getElementById(
-            "depositAddress"
-          );
+    message.textContent =
+      "❌ Enter a valid amount.";
 
-        input?.select();
+    return;
+  }
 
-        document.execCommand("copy");
 
-        copyButton.textContent =
-          "Copied ✓";
+  if (!/^[a-fA-F0-9]{64}$/.test(txHash)) {
 
+    message.textContent =
+      "❌ " + t("invalidHash");
+
+    return;
+  }
+
+
+  if (!telegramId) {
+
+    message.textContent =
+      "❌ Telegram user not detected.";
+
+    return;
+  }
+
+
+  button.disabled = true;
+  button.textContent = "Checking...";
+
+
+  try {
+
+    const response = await fetch(
+      "/api/deposit",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          telegram_chat_id: telegramId,
+          amount_trx: amount,
+          tx_hash: txHash
+        })
       }
-
-    }
-  );
-
-
-  const submitButton =
-    document.getElementById(
-      "submitDeposit"
     );
 
 
-  submitButton?.addEventListener(
-    "click",
-    async () => {
-
-      const amount =
-        document.getElementById(
-          "depositAmount"
-        )?.value.trim();
+    const data = await response.json();
 
 
-      const txHash =
-        document.getElementById(
-          "txHash"
-        )?.value.trim();
-
-
-      const message =
-        document.getElementById(
-          "depositMessage"
-        );
-
-
-      message.textContent = "";
-
-      message.className =
-        "register-message";
-
-
-      if (!amount || Number(amount) <= 0) {
-
-        message.textContent =
-          "Enter a valid TRX amount.";
-
-        message.classList.add("error");
-
-        return;
-      }
-
-
-      if (
-        !/^[a-fA-F0-9]{64}$/.test(
-          txHash
-        )
-      ) {
-
-        message.textContent =
-          "Invalid TRON transaction hash.";
-
-        message.classList.add("error");
-
-        return;
-      }
-
-
-      const telegramId =
-        getTelegramId();
-
-
-      if (!telegramId) {
-
-        message.textContent =
-          "Please open Daily TRX from Telegram.";
-
-        message.classList.add("error");
-
-        return;
-      }
-
-
-      submitButton.disabled =
-        true;
-
-      submitButton.textContent =
-        "Checking transaction...";
-
-
-      try {
-
-        const response =
-          await fetch(
-            "/api/deposit",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body: JSON.stringify({
-
-                telegram_chat_id:
-                  telegramId,
-
-                amount_trx:
-                  Number(amount),
-
-                tx_hash:
-                  txHash
-
-              })
-
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (
-          !response.ok ||
-          !data.ok
-        ) {
-
-          throw new Error(
-            data.message ||
-            "Deposit submission failed."
-          );
-
-        }
-
-
-        message.textContent =
-          "Deposit verified successfully ✓";
-
-        message.classList.add(
-          "success"
-        );
-
-
-        document.getElementById(
-          "depositAmount"
-        ).value = "";
-
-
-        document.getElementById(
-          "txHash"
-        ).value = "";
-
-
-      } catch (error) {
-
-        message.textContent =
-          error.message ||
-          "Could not verify deposit.";
-
-        message.classList.add(
-          "error"
-        );
-
-      } finally {
-
-        submitButton.disabled =
-          false;
-
-        submitButton.textContent =
-          t("submitDeposit");
-
-      }
-
+    if (!response.ok || data.ok === false) {
+      throw new Error(
+        data.message ||
+        t("depositFailed")
+      );
     }
-  );
+
+
+    message.textContent =
+      "✅ Deposit verified successfully.";
+
+  } catch (error) {
+
+    console.error(error);
+
+    message.textContent =
+      "❌ " +
+      (error.message || t("depositFailed"));
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = t("submitDeposit");
+  }
 }
 
 
@@ -883,73 +849,48 @@ function bindDeposit() {
 
 function withdrawPage() {
 
-  page.innerHTML = pageWrapper(`
+  pageWrapper(`
 
-    <div class="page-heading">
-      <button
-        class="back-btn"
-        data-page="wallet"
-        type="button"
-      >
-        ←
-      </button>
+    <h1 class="page-title">
+      ${t("withdrawTitle")}
+    </h1>
 
-      <h2>${t("withdraw")}</h2>
-    </div>
-
+    <p class="page-subtitle">
+      ${t("withdrawText")}
+    </p>
 
     <div class="card">
 
-      <div class="withdraw-warning">
-        Withdrawals require verification and admin approval.
-        Minimum withdrawal and network rules will be applied by
-        the backend.
-      </div>
-
-
       <div class="form-group">
-
-        <label>
-          TRON Wallet Address
-        </label>
-
-        <input
-          type="text"
-          placeholder="Enter your TRX wallet address"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Amount (TRX)
-        </label>
+        <label>Amount (TRX)</label>
 
         <input
           type="number"
-          min="0"
-          step="0.000001"
           placeholder="Enter amount"
+          disabled
         >
-
       </div>
 
+      <div class="form-group">
+        <label>TRON Address</label>
+
+        <input
+          type="text"
+          placeholder="TRON wallet address"
+          disabled
+        >
+      </div>
 
       <button
-        class="primary-btn"
-        type="button"
+        class="primary-button"
         disabled
       >
-        Withdraw
+        ${t("withdrawTitle")}
       </button>
 
     </div>
 
   `);
-
-  bindHeader();
 }
 
 
@@ -959,79 +900,57 @@ function withdrawPage() {
 
 async function investmentPage() {
 
-  page.innerHTML = pageWrapper(`
+  pageWrapper(`
 
-    <div class="page-heading">
-      <h2>${t("investment")}</h2>
-    </div>
+    <h1 class="page-title">
+      ${t("investmentTitle")}
+    </h1>
+
+    <p class="page-subtitle">
+      360-day locked investment plans
+    </p>
 
     <div
       id="investmentPlans"
-      class="plans-grid"
+      class="investment-plans"
     >
-
-      <div class="empty-state">
-        Loading investment plans...
+      <div class="card">
+        Loading plans...
       </div>
-
     </div>
 
   `);
-
-  bindHeader();
-
-  await loadInvestmentPlans();
-}
-
-
-async function loadInvestmentPlans() {
-
-  const container =
-    document.getElementById(
-      "investmentPlans"
-    );
-
-  if (!container) {
-    return;
-  }
 
 
   try {
 
     const response =
-      await fetch(
-        "/api/investment-plans"
-      );
-
+      await fetch("/api/investment-plans");
 
     const data =
       await response.json();
 
 
-    if (
-      !response.ok ||
-      !data.ok
-    ) {
-
+    if (!data.ok) {
       throw new Error(
-        data.message ||
-        "Could not load investment plans."
+        data.message || "Could not load plans"
       );
-
     }
 
 
     const plans =
-      Array.isArray(data.plans)
-        ? data.plans
-        : [];
+      data.plans || data.data || [];
+
+
+    const container =
+      document.getElementById("investmentPlans");
 
 
     if (!plans.length) {
 
       container.innerHTML = `
-        <div class="empty-state">
-          ${t("noData")}
+        <div class="card">
+          No active investment plans.
         </div>
       `;
 
@@ -1040,130 +959,80 @@ async function loadInvestmentPlans() {
 
 
     container.innerHTML =
-      plans
-        .map(plan =>
-          investmentPlanCard(plan)
-        )
-        .join("");
+      plans.map(plan => {
+
+        const amount =
+          Number(plan.amount_trx || 0);
+
+        const daily =
+          Number(plan.daily_profit_trx || 0);
+
+        const days =
+          Number(plan.duration_days || 360);
+
+        const total =
+          daily * days;
 
 
-    container
-      .querySelectorAll(
-        "[data-invest-plan]"
-      )
-      .forEach(button => {
+        return `
 
-        button.addEventListener(
-          "click",
-          () => {
+          <div class="plan-card">
 
-            const planId =
-              button.dataset.investPlan;
+            <h3>
+              ${plan.name || "Investment Plan"}
+            </h3>
 
-            createInvestment(
-              planId
-            );
+            <div class="plan-amount">
+              ${amount.toLocaleString()} TRX
+            </div>
 
-          }
-        );
+            <div class="plan-row">
+              <span>${t("dailyProfit")}</span>
+              <strong>
+                ${daily.toLocaleString()} TRX
+              </strong>
+            </div>
 
-      });
+            <div class="plan-row">
+              <span>${t("duration")}</span>
+              <strong>
+                ${days} Days
+              </strong>
+            </div>
+
+            <div class="plan-row">
+              <span>${t("totalProfit")}</span>
+              <strong>
+                ${total.toLocaleString()} TRX
+              </strong>
+            </div>
+
+            <button
+              class="plan-button"
+              onclick="createInvestment(${Number(plan.id)})"
+            >
+              ${t("invest")}
+            </button>
+
+          </div>
+
+        `;
+
+      }).join("");
 
 
   } catch (error) {
 
-    console.error(
-      "Investment plans error:",
-      error
-    );
+    console.error(error);
 
-
-    container.innerHTML = `
-      <div class="error-box">
-        ${escapeHtml(
-          error.message ||
-          "Could not load investment plans."
-        )}
+    document.getElementById(
+      "investmentPlans"
+    ).innerHTML = `
+      <div class="card">
+        ❌ Could not load investment plans.
       </div>
     `;
-
   }
-}
-
-
-function investmentPlanCard(plan) {
-
-  const amount =
-    Number(plan.amount_trx || 0);
-
-  const daily =
-    Number(plan.daily_profit_trx || 0);
-
-  const days =
-    Number(plan.duration_days || 360);
-
-  const total =
-    daily * days;
-
-
-  return `
-    <div class="plan-card">
-
-      <h3>
-        ${escapeHtml(
-          plan.name ||
-          "Investment Plan"
-        )}
-      </h3>
-
-
-      <div class="profit-badge">
-        ${formatTrx(daily)} TRX / day
-      </div>
-
-
-      <div class="plan-row">
-        <span>${t("amount")}</span>
-        <strong>
-          ${formatTrx(amount)} TRX
-        </strong>
-      </div>
-
-
-      <div class="plan-row">
-        <span>${t("dailyProfit")}</span>
-        <strong>
-          ${formatTrx(daily)} TRX
-        </strong>
-      </div>
-
-
-      <div class="plan-row">
-        <span>${t("duration")}</span>
-        <strong>
-          ${days} days
-        </strong>
-      </div>
-
-
-      <div class="plan-row">
-        <span>${t("totalProfit")}</span>
-        <strong>
-          ${formatTrx(total)} TRX
-        </strong>
-      </div>
-
-
-      <button
-        class="invest-btn"
-        data-invest-plan="${plan.id}"
-        type="button"
-      >
-        ${t("investNow")}
-      </button>
-
-    </div>
-  `;
 }
 
 
@@ -1178,32 +1047,16 @@ async function createInvestment(planId) {
 
 
   if (!telegramId) {
-
-    alert(
-      "Please open Daily TRX from Telegram."
-    );
-
+    alert("Telegram user not detected.");
     return;
   }
 
 
-  const button =
-    document.querySelector(
-      `[data-invest-plan="${CSS.escape(
-        String(planId)
-      )}"]`
-    );
+  const confirmed =
+    confirm("Start this investment plan?");
 
 
-  if (button) {
-
-    button.disabled =
-      true;
-
-    button.textContent =
-      "Processing...";
-
-  }
+  if (!confirmed) return;
 
 
   try {
@@ -1215,20 +1068,13 @@ async function createInvestment(planId) {
           method: "POST",
 
           headers: {
-            "Content-Type":
-              "application/json"
+            "Content-Type": "application/json"
           },
 
           body: JSON.stringify({
-
-            telegram_chat_id:
-              telegramId,
-
-            plan_id:
-              Number(planId)
-
+            telegram_chat_id: telegramId,
+            plan_id: Number(planId)
           })
-
         }
       );
 
@@ -1237,52 +1083,30 @@ async function createInvestment(planId) {
       await response.json();
 
 
-    if (
-      !response.ok ||
-      !data.ok
-    ) {
+    if (!response.ok || data.ok === false) {
 
       throw new Error(
         data.message ||
-        "Investment could not be created."
+        t("insufficient")
       );
-
     }
 
 
     alert(
-      `Investment created successfully!\n\n` +
-      `Amount: ${formatTrx(
-        data.amount_trx
-      )} TRX\n` +
-      `Daily Profit: ${formatTrx(
-        data.daily_profit_trx
-      )} TRX`
+      "✅ " + t("investmentCreated")
     );
 
-
-    await walletPage();
+    render("wallet");
 
 
   } catch (error) {
 
+    console.error(error);
+
     alert(
-      error.message ||
-      "Investment failed."
+      "❌ " +
+      (error.message || "Investment failed")
     );
-
-  } finally {
-
-    if (button) {
-
-      button.disabled =
-        false;
-
-      button.textContent =
-        t("investNow");
-
-    }
-
   }
 }
 
@@ -1293,80 +1117,92 @@ async function createInvestment(planId) {
 
 async function referralPage() {
 
-  page.innerHTML = pageWrapper(`
+  pageWrapper(`
 
-    <div class="page-heading">
-      <h2>${t("referral")}</h2>
-    </div>
+    <h1 class="page-title">
+      ${t("referralTitle")}
+    </h1>
 
+    <p class="page-subtitle">
+      ${t("referralText")}
+    </p>
 
-    <div class="card">
+    <div class="referral-box">
 
-      <div class="referral-code">
-
-        <small>
-          ${t("referralCode")}
-        </small>
-
-        <strong id="myReferralCode">
-          Loading...
-        </strong>
-
-      </div>
-
-
-      <div class="section-heading">
-        <strong>${t("inviteLink")}</strong>
-      </div>
-
+      <h3>
+        ${t("referralCode")}
+      </h3>
 
       <div
-        id="myReferralLink"
-        class="referral-link"
+        id="referralCode"
+        class="referral-code"
+      >
+        Loading...
+      </div>
+
+
+      <h3 class="referral-link-title">
+        ${t("referralLink")}
+      </h3>
+
+      <div
+        id="referralLink"
+        class="referral-link-box"
       >
         Loading...
       </div>
 
 
       <button
-        id="copyReferral"
-        class="primary-btn"
-        type="button"
-        style="margin-top:12px;"
+        id="copyReferralButton"
+        class="primary-button"
+        onclick="copyReferralLink()"
       >
-        ${t("copyLink")}
+        📋 ${t("copyLink")}
+      </button>
+
+
+      <button
+        id="shareReferralButton"
+        class="share-button"
+        onclick="shareReferralLink()"
+      >
+        📤 ${t("shareLink")}
       </button>
 
     </div>
 
 
-    <div class="card">
+    <div class="referral-levels">
 
-      <h3>Referral Commission</h3>
+      <div class="referral-level">
+        <strong>${t("level1")}</strong>
+        <span>6%</span>
+      </div>
 
-      <p>
-        Level 1 — 6%<br>
-        Level 2 — 2%<br>
-        Level 3 — 1%
-      </p>
+      <div class="referral-level">
+        <strong>${t("level2")}</strong>
+        <span>2%</span>
+      </div>
+
+      <div class="referral-level">
+        <strong>${t("level3")}</strong>
+        <span>1%</span>
+      </div>
 
     </div>
 
   `);
 
-  bindHeader();
-
-  await loadReferralData();
-}
-
-
-async function loadReferralData() {
 
   const telegramId =
     getTelegramId();
 
 
   if (!telegramId) {
+
+    setReferralError();
+
     return;
   }
 
@@ -1375,9 +1211,7 @@ async function loadReferralData() {
 
     const response =
       await fetch(
-        `/api/profile?telegram_chat_id=${encodeURIComponent(
-          telegramId
-        )}`
+        `/api/profile?telegram_chat_id=${encodeURIComponent(telegramId)}`
       );
 
 
@@ -1385,91 +1219,39 @@ async function loadReferralData() {
       await response.json();
 
 
-    if (!response.ok || !data.ok) {
-      throw new Error(
-        data.message ||
-        "Could not load profile."
-      );
-    }
-
-
     const code =
       data.referral_code ||
-      data.user?.referral_code ||
+      data.profile?.referral_code ||
       "";
 
 
-    const referralCode =
-      document.getElementById(
-        "myReferralCode"
-      );
+    if (!code) {
 
+      setReferralError();
 
-    const referralLink =
-      document.getElementById(
-        "myReferralLink"
-      );
-
-
-    if (referralCode) {
-
-      referralCode.textContent =
-        code || "—";
-
+      return;
     }
 
 
-    if (referralLink) {
-
-      referralLink.textContent =
-        code
-          ? `https://t.me/MyDailyTRXBot?start=${code}`
-          : "—";
-
-    }
+    const cleanCode =
+      String(code).trim();
 
 
-    const copyButton =
-      document.getElementById(
-        "copyReferral"
-      );
+    const link =
+      `https://t.me/${BOT_USERNAME}?start=${encodeURIComponent(cleanCode)}`;
 
 
-    copyButton?.addEventListener(
-      "click",
-      async () => {
+    document.getElementById(
+      "referralCode"
+    ).textContent = cleanCode;
 
-        if (!code) {
-          return;
-        }
 
-        const link =
-          `https://t.me/MyDailyTRXBot?start=${code}`;
+    document.getElementById(
+      "referralLink"
+    ).textContent = link;
 
-        try {
 
-          await navigator.clipboard.writeText(
-            link
-          );
-
-          copyButton.textContent =
-            "Copied ✓";
-
-          setTimeout(() => {
-
-            copyButton.textContent =
-              t("copyLink");
-
-          }, 1500);
-
-        } catch (error) {
-
-          alert(link);
-
-        }
-
-      }
-    );
+    window.dailyReferralLink = link;
 
 
   } catch (error) {
@@ -1479,7 +1261,106 @@ async function loadReferralData() {
       error
     );
 
+    setReferralError();
   }
+}
+
+
+function setReferralError() {
+
+  const code =
+    document.getElementById("referralCode");
+
+  const link =
+    document.getElementById("referralLink");
+
+  if (code) {
+    code.textContent = "Not available";
+  }
+
+  if (link) {
+    link.textContent = "Referral link unavailable";
+  }
+}
+
+
+/* =========================
+   COPY REFERRAL LINK
+========================= */
+
+async function copyReferralLink() {
+
+  const link =
+    window.dailyReferralLink;
+
+
+  if (!link) {
+
+    alert("Referral link is not available.");
+
+    return;
+  }
+
+
+  try {
+
+    await navigator.clipboard.writeText(link);
+
+    alert(t("copied"));
+
+  } catch {
+
+    prompt(
+      "Copy your referral link:",
+      link
+    );
+  }
+}
+
+
+/* =========================
+   SHARE REFERRAL LINK
+========================= */
+
+function shareReferralLink() {
+
+  const link =
+    window.dailyReferralLink;
+
+
+  if (!link) {
+
+    alert("Referral link is not available.");
+
+    return;
+  }
+
+
+  const text =
+    `Join Daily TRX using my referral link:\n${link}`;
+
+
+  const telegramShare =
+    `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent("Join Daily TRX")}`;
+
+
+  if (
+    telegramApp &&
+    telegramApp.openTelegramLink
+  ) {
+
+    telegramApp.openTelegramLink(
+      telegramShare
+    );
+
+    return;
+  }
+
+
+  window.open(
+    telegramShare,
+    "_blank"
+  );
 }
 
 
@@ -1489,115 +1370,68 @@ async function loadReferralData() {
 
 async function notificationsPage() {
 
-  page.innerHTML = pageWrapper(`
+  pageWrapper(`
 
-    <div class="page-heading">
-      <h2>${t("notifications")}</h2>
-    </div>
-
+    <h1 class="page-title">
+      ${t("notificationsTitle")}
+    </h1>
 
     <div
-      id="notificationsList"
+      id="announcement"
+      class="notice-card"
     >
-      <div class="empty-state">
-        Loading...
-      </div>
+      Loading...
     </div>
 
   `);
-
-  bindHeader();
-
-  await loadAnnouncements();
-}
-
-
-async function loadAnnouncements() {
-
-  const container =
-    document.getElementById(
-      "notificationsList"
-    );
-
-
-  if (!container) {
-    return;
-  }
 
 
   try {
 
     const response =
-      await fetch(
-        "/api/announcement"
-      );
-
+      await fetch("/api/announcement");
 
     const data =
       await response.json();
 
 
+    const box =
+      document.getElementById("announcement");
+
+
     if (
-      !response.ok ||
-      !data.ok
+      data.ok &&
+      data.announcement
     ) {
 
-      throw new Error(
-        data.message ||
-        "Could not load announcement."
-      );
+      box.innerHTML = `
 
-    }
-
-
-    if (!data.announcement) {
-
-      container.innerHTML = `
-        <div class="empty-state">
-          ${t("noData")}
-        </div>
-      `;
-
-      return;
-    }
-
-
-    const announcement =
-      data.announcement;
-
-
-    container.innerHTML = `
-      <div class="notification-card">
-
-        <strong>
-          ${escapeHtml(
-            announcement.title ||
-            "Announcement"
-          )}
-        </strong>
+        <h3>
+          ${data.announcement.title || "Announcement"}
+        </h3>
 
         <p>
-          ${escapeHtml(
-            announcement.message ||
-            ""
-          )}
+          ${data.announcement.message || ""}
         </p>
 
-      </div>
+      `;
+
+    } else {
+
+      box.innerHTML = `
+        <h3>No announcements</h3>
+        <p>No new notifications.</p>
+      `;
+    }
+
+
+  } catch {
+
+    document.getElementById(
+      "announcement"
+    ).innerHTML = `
+      <p>Could not load announcement.</p>
     `;
-
-
-  } catch (error) {
-
-    container.innerHTML = `
-      <div class="error-box">
-        ${escapeHtml(
-          error.message ||
-          "Could not load notifications."
-        )}
-      </div>
-    `;
-
   }
 }
 
@@ -1608,53 +1442,26 @@ async function loadAnnouncements() {
 
 function supportPage() {
 
-  page.innerHTML = pageWrapper(`
+  pageWrapper(`
 
-    <div class="page-heading">
-      <h2>${t("support")}</h2>
-    </div>
-
+    <h1 class="page-title">
+      ${t("supportTitle")}
+    </h1>
 
     <div class="support-card">
 
-      <div class="support-item">
+      <h3>
+        Daily TRX Support
+      </h3>
 
-        <div class="support-icon">
-          💬
-        </div>
-
-        <div>
-          <strong>Telegram Support</strong>
-
-          <p>
-            Contact Daily TRX support through Telegram.
-          </p>
-        </div>
-
-      </div>
-
-
-      <div class="support-item">
-
-        <div class="support-icon">
-          ❓
-        </div>
-
-        <div>
-          <strong>Need Help?</strong>
-
-          <p>
-            Contact the administrator for account issues.
-          </p>
-        </div>
-
-      </div>
+      <p>
+        If you have a problem with your account,
+        deposit or investment, please contact support.
+      </p>
 
     </div>
 
   `);
-
-  bindHeader();
 }
 
 
@@ -1662,57 +1469,46 @@ function supportPage() {
    PROFILE
 ========================= */
 
-async function profilePage() {
+function profilePage() {
+
+  const user =
+    getTelegramUser();
 
   const username =
-    getUsername();
+    user.username
+      ? "@" + user.username
+      : "Not available";
 
 
-  const telegramId =
-    getTelegramId();
+  pageWrapper(`
 
-
-  page.innerHTML = pageWrapper(`
-
-    <div class="page-heading">
-      <h2>${t("profile")}</h2>
-    </div>
-
+    <h1 class="page-title">
+      ${t("profileTitle")}
+    </h1>
 
     <div class="profile-card">
 
       <div class="profile-avatar">
-        ♙
+        ${(user.first_name || "U")
+          .charAt(0)
+          .toUpperCase()}
       </div>
 
+      <div class="profile-item">
+        <span>${t("username")}</span>
+        <strong>${username}</strong>
+      </div>
 
-      <h3>
-        ${escapeHtml(username)}
-      </h3>
-
-
-      <p>
-        Telegram ID: ${escapeHtml(
-          telegramId || "—"
-        )}
-      </p>
-
-    </div>
-
-
-    <div class="card">
-
-      <h3>Account</h3>
-
-      <p>
-        Your Daily TRX account is connected to your Telegram account.
-      </p>
+      <div class="profile-item">
+        <span>${t("telegramId")}</span>
+        <strong>
+          ${getTelegramId() || "Not available"}
+        </strong>
+      </div>
 
     </div>
 
   `);
-
-  bindHeader();
 }
 
 
@@ -1722,134 +1518,30 @@ async function profilePage() {
 
 function adminPage() {
 
-  if (
-    getTelegramId() !== ADMIN_ID
-  ) {
-
-    page.innerHTML = pageWrapper(`
-      <div class="error-box">
-        Access denied.
-      </div>
-    `);
-
-    bindHeader();
-
+  if (getTelegramId() !== ADMIN_ID) {
+    render("home");
     return;
   }
 
+  pageWrapper(`
 
-  page.innerHTML = pageWrapper(`
-
-    <div class="page-heading">
-      <h2>Admin</h2>
-    </div>
-
+    <h1 class="page-title">
+      Admin
+    </h1>
 
     <div class="card">
 
-      <h3>Daily TRX Admin</h3>
+      <h3>
+        Daily TRX Admin
+      </h3>
 
       <p>
-        Admin controls will be connected to the backend here.
+        Admin dashboard.
       </p>
 
     </div>
 
   `);
-
-  bindHeader();
-}
-
-
-/* =========================
-   HEADER EVENTS
-========================= */
-
-function bindHeader() {
-
-  const languageSelect =
-    document.getElementById(
-      "languageSelect"
-    );
-
-
-  languageSelect?.addEventListener(
-    "change",
-    () => {
-
-      currentLanguage =
-        languageSelect.value;
-
-      localStorage.setItem(
-        "dailytrx_language",
-        currentLanguage
-      );
-
-      render(
-        currentPage
-      );
-
-    }
-  );
-
-
-  const themeButton =
-    document.getElementById(
-      "themeButton"
-    );
-
-
-  themeButton?.addEventListener(
-    "click",
-    () => {
-
-      document.body.classList.toggle(
-        "light"
-      );
-
-
-      const light =
-        document.body.classList.contains(
-          "light"
-        );
-
-
-      localStorage.setItem(
-        "dailytrx_theme",
-        light
-          ? "light"
-          : "dark"
-      );
-
-
-      themeButton.textContent =
-        light
-          ? "☀"
-          : "☾";
-
-    }
-  );
-
-
-  const savedTheme =
-    localStorage.getItem(
-      "dailytrx_theme"
-    );
-
-
-  if (savedTheme === "light") {
-
-    document.body.classList.add(
-      "light"
-    );
-
-    if (themeButton) {
-      themeButton.textContent =
-        "☀";
-    }
-
-  }
-
 }
 
 
@@ -1857,26 +1549,21 @@ function bindHeader() {
    RENDER
 ========================= */
 
-async function render(targetPage) {
+function render(targetPage) {
 
-  currentPage =
+  window.currentPage =
     targetPage || "home";
 
+  applyTheme();
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-
-  switch (currentPage) {
+  switch (window.currentPage) {
 
     case "home":
-      await homePage();
+      homePage();
       break;
 
     case "wallet":
-      await walletPage();
+      walletPage();
       break;
 
     case "deposit":
@@ -1888,15 +1575,15 @@ async function render(targetPage) {
       break;
 
     case "investment":
-      await investmentPage();
+      investmentPage();
       break;
 
     case "referral":
-      await referralPage();
+      referralPage();
       break;
 
     case "notifications":
-      await notificationsPage();
+      notificationsPage();
       break;
 
     case "support":
@@ -1904,7 +1591,7 @@ async function render(targetPage) {
       break;
 
     case "profile":
-      await profilePage();
+      profilePage();
       break;
 
     case "admin":
@@ -1912,20 +1599,13 @@ async function render(targetPage) {
       break;
 
     default:
-      await homePage();
-      break;
-
+      homePage();
   }
-
 }
 
 
-window.render =
-  render;
-
-
 /* =========================
-   GLOBAL CLICK
+   NAVIGATION
 ========================= */
 
 document.addEventListener(
@@ -1933,87 +1613,35 @@ document.addEventListener(
   event => {
 
     const button =
-      event.target.closest(
-        "[data-page]"
-      );
+      event.target.closest("[data-page]");
 
+    if (!button) return;
 
-    if (!button) {
-      return;
-    }
-
-
-    const target =
-      button.dataset.page;
-
-
-    if (!target) {
-      return;
-    }
-
-
-    render(target);
-
+    render(button.dataset.page);
   }
 );
 
 
 /* =========================
-   HELPERS
+   START
 ========================= */
 
-function formatTrx(value) {
+applyTheme();
 
-  const number =
-    Number(value || 0);
-
-
-  if (!Number.isFinite(number)) {
-    return "0";
-  }
-
-
-  return number.toLocaleString(
-    undefined,
-    {
-      maximumFractionDigits: 6
-    }
-  );
-}
-
-
-function escapeHtml(value) {
-
-  return String(
-    value ?? ""
-  )
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+setTimeout(() => {
+  render("home");
+}, 500);
 
 
 /* =========================
-   INITIALIZE
+   GLOBAL
 ========================= */
 
-setTimeout(() => {
-
-  const registered =
-    localStorage.getItem(
-      "dailytrx_registered"
-    ) === "true";
-
-
-  if (!registered) {
-
-    return;
-
-  }
-
-
-  render("home");
-
-}, 1000);
+window.render = render;
+window.changeLanguage = changeLanguage;
+window.toggleTheme = toggleTheme;
+window.copyDepositAddress = copyDepositAddress;
+window.submitDeposit = submitDeposit;
+window.createInvestment = createInvestment;
+window.copyReferralLink = copyReferralLink;
+window.shareReferralLink = shareReferralLink;
