@@ -60,14 +60,49 @@ export default async function handler(req, res) {
       });
     }
 
+    const telegramId = String(telegram_chat_id);
+
+    // Check existing Telegram user
+    const existingResponse = await fetch(
+      `${supabaseUrl}/rest/v1/bot_users?telegram_chat_id=eq.${encodeURIComponent(telegramId)}&select=id,referral_code,referred_by_code`,
+      {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`
+        }
+      }
+    );
+
+    if (!existingResponse.ok) {
+      const errorText = await existingResponse.text();
+
+      return res.status(500).json({
+        ok: false,
+        message: "Could not check existing user",
+        error: errorText
+      });
+    }
+
+    const existingUsers = await existingResponse.json();
+    const existingUser = existingUsers[0] || null;
+
+    // Keep existing referral code if user already has one
+    const ownReferralCode =
+      existingUser?.referral_code ||
+      ("TRX" + crypto.randomBytes(5).toString("hex")).toUpperCase();
+
+    // Referral code can come from:
+    // 1. Registration form
+    // 2. Telegram /start referral link saved by telegram.js
+    const suppliedReferralCode =
+      referral_code ||
+      existingUser?.referred_by_code ||
+      null;
+
     const pinHash = crypto
       .createHash("sha256")
       .update(String(pin))
       .digest("hex");
-
-    // Create a unique referral code for this user
-    const ownReferralCode =
-      "TRX" + crypto.randomBytes(5).toString("hex").toUpperCase();
 
     // Register / update user
     const response = await fetch(
@@ -81,12 +116,13 @@ export default async function handler(req, res) {
           Prefer: "resolution=merge-duplicates,return=representation"
         },
         body: JSON.stringify({
-          telegram_chat_id: String(telegram_chat_id),
+          telegram_chat_id: telegramId,
           username,
           email,
           pin_hash: pinHash,
           referral_code: ownReferralCode,
-          is_verified: false
+          is_verified: false,
+          referred_by_code: suppliedReferralCode
         })
       }
     );
@@ -101,120 +137,65 @@ export default async function handler(req, res) {
       });
     }
 
-    // If no referral code was supplied, registration is complete
-    if (!referral_code) {
-      return res.status(200).json({
-        ok: true,
-        message: "Registration successful",
-        user: data?.[0] || data,
-        referral_created: false
-      });
-    }
+    let referralCreated = false;
+    let referralMessage = null;
 
-    const cleanReferralCode = String(referral_code).trim();
+    /*
+     * If a referral code exists, connect this user
+     * to the referral system.
+     */
+    if (suppliedReferralCode) {
+      try {
+        const host = req.headers.host;
 
-    // Find the user whose referral code was used
-    const referrerResponse = await fetch(
-      `${supabaseUrl}/rest/v1/bot_users?referral_code=eq.${encodeURIComponent(cleanReferralCode)}&select=telegram_chat_id,referral_code`,
-      {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`
-        }
-      }
-    );
+        const protocol =
+          req.headers["x-forwarded-proto"] || "https";
 
-    if (!referrerResponse.ok) {
-      return res.status(200).json({
-        ok: true,
-        message: "Registration successful, but referral could not be checked",
-        user: data?.[0] || data,
-        referral_created: false
-      });
-    }
+        const referralApiUrl =
+          `${protocol}://${host}/api/referral`;
 
-    const referrers = await referrerResponse.json();
+        const referralResponse = await fetch(
+          referralApiUrl,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              telegram_chat_id: telegramId,
+              referral_code: suppliedReferralCode
+            })
+          }
+        );
 
-    if (!referrers || referrers.length === 0) {
-      return res.status(200).json({
-        ok: true,
-        message: "Registration successful, but referral code was not found",
-        user: data?.[0] || data,
-        referral_created: false
-      });
-    }
+        const referralData = await referralResponse.json();
 
-    const referrerTelegramId = String(
-      referrers[0].telegram_chat_id
-    );
+        referralCreated =
+          referralResponse.ok &&
+          referralData?.ok === true;
 
-    const referredTelegramId = String(telegram_chat_id);
+        referralMessage =
+          referralData?.message || null;
 
-    // Prevent self-referral
-    if (referrerTelegramId === referredTelegramId) {
-      return res.status(200).json({
-        ok: true,
-        message: "Registration successful",
-        user: data?.[0] || data,
-        referral_created: false,
-        referral_message: "Self referral is not allowed"
-      });
-    }
+      } catch (referralError) {
+        console.error(
+          "Referral connection error:",
+          referralError.message
+        );
 
-    // Check if this user already has a direct referrer
-    const existingResponse = await fetch(
-      `${supabaseUrl}/rest/v1/referrals?referred_telegram_chat_id=eq.${encodeURIComponent(referredTelegramId)}&level=eq.1&select=id`,
-      {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`
-        }
-      }
-    );
-
-    if (existingResponse.ok) {
-      const existing = await existingResponse.json();
-
-      if (existing.length > 0) {
-        return res.status(200).json({
-          ok: true,
-          message: "Registration successful",
-          user: data?.[0] || data,
-          referral_created: false,
-          referral_message: "Referral already exists"
-        });
+        referralMessage =
+          "Registration succeeded, but referral could not be connected yet.";
       }
     }
-
-    // Create Level 1 referral
-    const referralResponse = await fetch(
-      `${supabaseUrl}/rest/v1/referrals`,
-      {
-        method: "POST",
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-          "Content-Type": "application/json",
-          Prefer: "return=representation"
-        },
-        body: JSON.stringify({
-          referrer_telegram_chat_id: referrerTelegramId,
-          referred_telegram_chat_id: referredTelegramId,
-          level: 1,
-          commission_rate: 0.06,
-          total_commission_trx: 0
-        })
-      }
-    );
-
-    const referralData = await referralResponse.json();
 
     return res.status(200).json({
       ok: true,
       message: "Registration successful",
       user: data?.[0] || data,
-      referral_created: referralResponse.ok,
-      referral: referralData
+      referral_code: ownReferralCode,
+      referred_by_code: suppliedReferralCode,
+      referral_created: referralCreated,
+      referral_message: referralMessage
     });
 
   } catch (error) {
