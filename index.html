@@ -1,273 +1,156 @@
 <!doctype html>
+
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,viewport-fit=cover"
-  >
+  <meta charset="UTF-8"><meta
+name="viewport"
+content="width=device-width, initial-scale=1, viewport-fit=cover"
 
-  <title>Daily TRX</title>
+«»
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta
+name="theme-color"
+content="#07111f"
 
-  <link rel="stylesheet" href="style.css">
-</head>
+«»
 
-<body>
+  <title>Daily TRX</title>  <script src="https://telegram.org/js/telegram-web-app.js"></script>  <link rel="stylesheet" href="style.css">
+</head><body>  <!-- APP -->  <main id="app" class="app"><!-- All pages are rendered here by app.js -->
+<section id="page"></section>
 
-  <!-- ================= SPLASH ================= -->
-
-  <div id="splash" class="splash">
-    <div class="logo">₮</div>
-    <h1>Daily TRX</h1>
-    <div class="loader">
-      <span></span>
-    </div>
-  </div>
-
-
-  <!-- ================= REGISTRATION ================= -->
-
-  <section
+  </main>  <!-- REGISTRATION -->  <section
     id="registration"
     class="registration hidden"
+  ><div class="register-box">
+
+  <div class="register-logo">
+    ₮
+  </div>
+
+  <h1>
+    Create Account
+  </h1>
+
+  <p class="register-sub">
+    Register your Daily TRX account to continue.
+  </p>
+
+
+  <label for="regUsername">
+    Username
+  </label>
+
+  <input
+    id="regUsername"
+    type="text"
+    placeholder="Enter username"
+    maxlength="30"
+    autocomplete="username"
   >
 
-    <div class="register-box">
 
-      <div class="register-logo">₮</div>
+  <label for="regEmail">
+    Email
+  </label>
 
-      <h1>Create Account</h1>
-
-      <p class="register-sub">
-        Register your Daily TRX account to continue.
-      </p>
-
-
-      <label for="regUsername">
-        Username
-      </label>
-
-      <input
-        id="regUsername"
-        type="text"
-        placeholder="Enter username"
-        maxlength="30"
-        autocomplete="username"
-      >
-
-
-      <label for="regEmail">
-        Email
-      </label>
-
-      <input
-        id="regEmail"
-        type="email"
-        placeholder="Enter your email"
-        autocomplete="email"
-      >
-
-
-      <label for="regPin">
-        PIN
-      </label>
-
-      <input
-        id="regPin"
-        type="password"
-        placeholder="4-6 digit PIN"
-        inputmode="numeric"
-        maxlength="6"
-        autocomplete="new-password"
-      >
-
-
-      <label for="regPinConfirm">
-        Confirm PIN
-      </label>
-
-      <input
-        id="regPinConfirm"
-        type="password"
-        placeholder="Confirm your PIN"
-        inputmode="numeric"
-        maxlength="6"
-        autocomplete="new-password"
-      >
-
-
-      <div
-        id="registerMessage"
-        class="register-message"
-      ></div>
-
-
-      <button
-        id="registerBtn"
-        class="register-btn"
-        type="button"
-      >
-        Create Account
-      </button>
-
-
-      <small class="secure-text">
-        🔒 Your account is securely connected to Telegram.
-      </small>
-
-    </div>
-
-  </section>
-
-
-  <!-- ================= MAIN APP ================= -->
-
-  <main
-    id="app"
-    class="app hidden"
+  <input
+    id="regEmail"
+    type="email"
+    placeholder="Enter your email"
+    autocomplete="email"
   >
 
-    <!-- TOP BAR -->
 
-    <header class="topbar">
+  <label for="regPin">
+    PIN
+  </label>
 
-      <div class="brand">
-
-        <div class="mini-logo">
-          ₮
-        </div>
-
-        <div class="brand-text">
-
-          <b>DAILY TRX</b>
-
-          <small>
-            Investment Wallet
-          </small>
-
-        </div>
-
-      </div>
+  <input
+    id="regPin"
+    type="password"
+    placeholder="4-6 digit PIN"
+    inputmode="numeric"
+    maxlength="6"
+    autocomplete="new-password"
+  >
 
 
-      <div class="actions">
+  <label for="regPinConfirm">
+    Confirm PIN
+  </label>
 
-        <!-- IMPORTANT:
-             app.js uses this exact ID
-        -->
-
-        <button
-          id="themeButton"
-          class="icon-btn"
-          type="button"
-          aria-label="Change theme"
-        >
-          ☾
-        </button>
-
-      </div>
-
-    </header>
+  <input
+    id="regPinConfirm"
+    type="password"
+    placeholder="Confirm your PIN"
+    inputmode="numeric"
+    maxlength="6"
+    autocomplete="new-password"
+  >
 
 
-    <!-- ================= PAGE CONTENT ================= -->
-
-    <!--
-      IMPORTANT:
-      app.js will completely control this area.
-      Do NOT put Dashboard/Deposit/Wallet content here.
-    -->
-
-    <section
-      id="page"
-      class="panel"
-    ></section>
+  <div
+    id="registerMessage"
+    class="register-message"
+  ></div>
 
 
-    <!-- ================= BOTTOM NAV ================= -->
-
-    <nav class="bottom">
-
-      <button
-        type="button"
-        data-page="home"
-      >
-        <span>⌂</span>
-        <small>Home</small>
-      </button>
+  <button
+    id="registerBtn"
+    class="register-btn"
+    type="button"
+  >
+    Create Account
+  </button>
 
 
-      <button
-        type="button"
-        data-page="wallet"
-      >
-        <span>▣</span>
-        <small>Wallet</small>
-      </button>
+  <small class="secure-text">
+    🔒 Your account is securely connected to Telegram.
+  </small>
 
+</div>
 
-      <button
-        type="button"
-        data-page="deposit"
-      >
-        <span>＋</span>
-        <small>Deposit</small>
-      </button>
+  </section>  <!-- REGISTRATION SCRIPT -->  <script>
 
+    const tg =
+      window.Telegram?.WebApp;
 
-      <button
-        type="button"
-        data-page="investment"
-      >
-        <span>◈</span>
-        <small>Invest</small>
-      </button>
-
-
-      <button
-        type="button"
-        data-page="profile"
-      >
-        <span>♙</span>
-        <small>Profile</small>
-      </button>
-
-    </nav>
-
-  </main>
-
-
-  <!-- ================= REGISTRATION SCRIPT ================= -->
-
-  <script>
-
-    const tg = window.Telegram?.WebApp;
 
     if (tg) {
+
       tg.ready();
+
       tg.expand();
+
     }
 
 
-    const splash =
-      document.getElementById("splash");
-
     const registration =
-      document.getElementById("registration");
+      document.getElementById(
+        "registration"
+      );
+
 
     const app =
-      document.getElementById("app");
+      document.getElementById(
+        "app"
+      );
+
+
+    const registerButton =
+      document.getElementById(
+        "registerBtn"
+      );
 
 
     /*
-     * Splash
-     */
+      Wait for app.js initialization.
+
+      The registration screen is controlled
+      here only when the user has not registered.
+    */
 
     setTimeout(() => {
-
-      splash?.classList.add("hidden");
 
       const registered =
         localStorage.getItem(
@@ -277,9 +160,19 @@
 
       if (registered) {
 
-        app?.classList.remove("hidden");
+        registration?.classList.add(
+          "hidden"
+        );
+
+        app?.classList.remove(
+          "hidden"
+        );
 
       } else {
+
+        app?.classList.add(
+          "hidden"
+        );
 
         registration?.classList.remove(
           "hidden"
@@ -287,17 +180,7 @@
 
       }
 
-    }, 900);
-
-
-    /*
-     * Registration
-     */
-
-    const registerButton =
-      document.getElementById(
-        "registerBtn"
-      );
+    }, 950);
 
 
     registerButton?.addEventListener(
@@ -339,6 +222,7 @@
 
 
         message.textContent = "";
+
         message.className =
           "register-message";
 
@@ -374,10 +258,29 @@
         }
 
 
-        if (!/^\d{4,6}$/.test(pin)) {
+        if (
+          !/^\d{4,6}$/.test(pin)
+        ) {
 
           message.textContent =
             "PIN must contain 4-6 digits.";
+
+          message.classList.add(
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (
+          !/^[a-zA-Z0-9_]{3,30}$/.test(
+            username
+          )
+        ) {
+
+          message.textContent =
+            "Username must be 3-30 characters and use only letters, numbers, and underscore.";
 
           message.classList.add(
             "error"
@@ -404,7 +307,8 @@
         }
 
 
-        registerButton.disabled = true;
+        registerButton.disabled =
+          true;
 
         registerButton.textContent =
           "Creating account...";
@@ -423,24 +327,24 @@
                     "application/json"
                 },
 
-                body:
-                  JSON.stringify({
+                body: JSON.stringify({
 
-                    telegram_chat_id:
-                      String(
-                        telegramUser.id
-                      ),
+                  telegram_chat_id:
+                    String(
+                      telegramUser.id
+                    ),
 
-                    username:
-                      username,
+                  username:
+                    username,
 
-                    email:
-                      email,
+                  email:
+                    email,
 
-                    pin:
-                      pin
+                  pin:
+                    pin
 
-                  })
+                })
+
               }
             );
 
@@ -456,7 +360,7 @@
 
             throw new Error(
               data.message ||
-              "Registration failed"
+              "Registration failed."
             );
 
           }
@@ -484,16 +388,14 @@
           );
 
 
-          /*
-           * app.js will now render Home.
-           */
-
           if (
             typeof window.render ===
             "function"
           ) {
 
-            window.render("home");
+            window.render(
+              "home"
+            );
 
           }
 
@@ -512,6 +414,7 @@
           registerButton.disabled =
             false;
 
+
           registerButton.textContent =
             "Create Account";
 
@@ -520,12 +423,5 @@
       }
     );
 
-  </script>
-
-
-  <!-- ================= MAIN APP JS ================= -->
-
-  <script src="app.js"></script>
-
-</body>
+  </script>  <!-- MAIN APP LOGIC -->  <script src="app.js"></script></body>
 </html>
