@@ -1,3 +1,9 @@
+/* =========================================================
+   DAILY TRX — PREMIUM FRONTEND
+   Version: 2026.09.26.2
+   Backend/API unchanged
+========================================================= */
+
 const tg = window.Telegram?.WebApp;
 
 if (tg) {
@@ -11,7 +17,6 @@ const DEPOSIT_ADDRESS =
   "TU9R3KZmkasLZbC3jZPyboEfNPFKfuY4kA";
 
 const ADMIN_TELEGRAM_ID = "6504138324";
-
 const BOT_USERNAME = "MyDailyTRXBot";
 
 let currentPage = "home";
@@ -21,6 +26,14 @@ let currentLanguage =
 
 let currentTheme =
   localStorage.getItem("dailytrx_theme") || "dark";
+
+if (!["en", "ps", "fa"].includes(currentLanguage)) {
+  currentLanguage = "en";
+}
+
+if (!["dark", "light"].includes(currentTheme)) {
+  currentTheme = "dark";
+}
 
 let walletData = {
   available_trx: 0,
@@ -48,12 +61,12 @@ const translations = {
     profile: "Profile",
 
     welcome: "Welcome back",
-    balance: "Available Balance",
+    balance: "Total Balance",
     available: "Available",
     locked: "Locked",
     quickActions: "Quick Actions",
 
-    addFunds: "Add Funds",
+    addFunds: "Deposit",
     invest: "Invest",
     invite: "Invite Friends",
     myWallet: "My Wallet",
@@ -66,7 +79,7 @@ const translations = {
     submitDeposit: "Submit Deposit",
 
     depositInfo:
-      "Send TRX to the address above, then submit your transaction hash.",
+      "Send TRX to the address below, then submit your transaction hash.",
 
     investmentPlans: "Investment Plans",
     dailyProfit: "Daily Profit",
@@ -76,9 +89,10 @@ const translations = {
 
     referralProgram: "Referral Program",
     referralCode: "Referral Code",
-    referralLink: "Referral Link",
+    referralLink: "Complete Referral Link",
     copyLink: "Copy Link",
     share: "Share",
+
     level1: "Level 1",
     level2: "Level 2",
     level3: "Level 3",
@@ -100,7 +114,7 @@ const translations = {
 
     withdrawTitle: "Withdraw",
     withdrawText:
-      "Withdrawal service will be available through the system after the required balance and approval conditions are met.",
+      "Withdrawal service will be available after the required balance and approval conditions are met.",
 
     loading: "Loading...",
     copied: "Copied successfully",
@@ -110,7 +124,8 @@ const translations = {
     invalidHash:
       "Enter a valid 64-character TRON transaction hash.",
 
-    depositSuccess: "Deposit submitted successfully.",
+    depositSuccess:
+      "Deposit submitted successfully.",
 
     investing: "Processing...",
     investmentSuccess:
@@ -127,11 +142,11 @@ const translations = {
     noAnnouncement: "No announcement available.",
 
     language: "Language",
-    light: "Light",
-    dark: "Dark",
+    light: "Light Mode",
+    dark: "Dark Mode",
 
     referralDescription:
-      "Invite friends and earn from your referral levels.",
+      "Invite friends and earn from your 3 referral levels.",
 
     copyReferralLink:
       "Copy your complete referral link",
@@ -156,7 +171,7 @@ const translations = {
     profile: "پروفایل",
 
     welcome: "بیا ښه راغلاست",
-    balance: "موجود بیلانس",
+    balance: "ټول بیلانس",
     available: "موجود",
     locked: "لاک شوی",
     quickActions: "چټک انتخابونه",
@@ -174,7 +189,7 @@ const translations = {
     submitDeposit: "ډیپازټ ثبت کړه",
 
     depositInfo:
-      "TRX پورته ادرس ته واستوئ، بیا خپل Transaction Hash ثبت کړئ.",
+      "TRX لاندې ادرس ته واستوئ، بیا خپل Transaction Hash ثبت کړئ.",
 
     investmentPlans: "د انویسټمنټ پلانونه",
     dailyProfit: "ورځنۍ ګټه",
@@ -184,7 +199,7 @@ const translations = {
 
     referralProgram: "ریفریل پروګرام",
     referralCode: "ریفریل کوډ",
-    referralLink: "ریفریل لینک",
+    referralLink: "مکمل ریفرل لینک",
     copyLink: "لینک کاپي",
     share: "شریکول",
 
@@ -240,11 +255,11 @@ const translations = {
     noAnnouncement: "اوس مهال اعلان نشته.",
 
     language: "ژبه",
-    light: "روښانه",
-    dark: "تیاره",
+    light: "روښانه حالت",
+    dark: "تیاره حالت",
 
     referralDescription:
-      "ملګري راوبلئ او د خپلو Referral Levelونو څخه ګټه ترلاسه کړئ.",
+      "ملګري راوبلئ او د خپلو 3 Referral Levelونو څخه ګټه ترلاسه کړئ.",
 
     copyReferralLink:
       "خپل مکمل Referral Link کاپي کړئ",
@@ -269,7 +284,7 @@ const translations = {
     profile: "پروفایل",
 
     welcome: "خوش آمدید",
-    balance: "موجودی قابل استفاده",
+    balance: "موجودی کل",
     available: "قابل استفاده",
     locked: "قفل شده",
     quickActions: "گزینه‌های سریع",
@@ -287,7 +302,7 @@ const translations = {
     submitDeposit: "ثبت واریز",
 
     depositInfo:
-      "TRX را به آدرس بالا ارسال کنید و سپس هش تراکنش را ثبت کنید.",
+      "TRX را به آدرس زیر ارسال کنید و سپس هش تراکنش را ثبت کنید.",
 
     investmentPlans: "پلان‌های سرمایه‌گذاری",
     dailyProfit: "سود روزانه",
@@ -297,7 +312,7 @@ const translations = {
 
     referralProgram: "برنامه معرفی",
     referralCode: "کد معرفی",
-    referralLink: "لینک معرفی",
+    referralLink: "لینک کامل معرفی",
     copyLink: "کپی لینک",
     share: "اشتراک‌گذاری",
 
@@ -353,11 +368,11 @@ const translations = {
     noAnnouncement: "اعلانی وجود ندارد.",
 
     language: "زبان",
-    light: "روشن",
-    dark: "تیره",
+    light: "حالت روشن",
+    dark: "حالت تاریک",
 
     referralDescription:
-      "دوستان خود را دعوت کنید و از سطوح معرفی خود درآمد دریافت کنید.",
+      "دوستان خود را دعوت کنید و از 3 سطح معرفی خود درآمد دریافت کنید.",
 
     copyReferralLink:
       "لینک کامل معرفی خود را کپی کنید",
@@ -377,7 +392,6 @@ const translations = {
 ========================================================= */
 
 function t(key) {
-
   return (
     translations[currentLanguage]?.[key] ||
     translations.en[key] ||
@@ -433,8 +447,1311 @@ function money(value) {
 }
 
 
+function delay(ms) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+}
+
+
 /* =========================================================
-   THEME — FIXED
+   PREMIUM RUNTIME CSS
+   This fixes theme/UI even if old CSS selectors differ.
+========================================================= */
+
+function installRuntimeStyles() {
+
+  if (
+    document.getElementById(
+      "dailytrxRuntimeStyles"
+    )
+  ) {
+    return;
+  }
+
+  const style =
+    document.createElement("style");
+
+  style.id =
+    "dailytrxRuntimeStyles";
+
+  style.textContent = `
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      transition:
+        background .25s ease,
+        color .25s ease;
+    }
+
+
+    /* -------------------------
+       DARK MODE
+    ------------------------- */
+
+    html[data-theme="dark"] body,
+    body.dark-mode {
+      background:
+        radial-gradient(
+          circle at top,
+          #142642 0%,
+          #08111f 42%,
+          #050a12 100%
+        ) !important;
+
+      color: #f5f7fb !important;
+    }
+
+
+    html[data-theme="dark"] .top-header,
+    body.dark-mode .top-header {
+      background:
+        rgba(9,18,32,.92) !important;
+
+      border-bottom:
+        1px solid rgba(255,255,255,.08) !important;
+
+      backdrop-filter:
+        blur(18px);
+    }
+
+
+    html[data-theme="dark"] .card,
+    body.dark-mode .card {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(23,39,62,.96),
+          rgba(11,22,38,.96)
+        ) !important;
+
+      color: #f7f9fc !important;
+
+      border:
+        1px solid rgba(255,255,255,.07) !important;
+
+      box-shadow:
+        0 12px 35px rgba(0,0,0,.18) !important;
+    }
+
+
+    html[data-theme="dark"] input,
+    html[data-theme="dark"] select,
+    body.dark-mode input,
+    body.dark-mode select {
+      background:
+        rgba(255,255,255,.06) !important;
+
+      color: #fff !important;
+
+      border:
+        1px solid rgba(255,255,255,.12) !important;
+    }
+
+
+    /* -------------------------
+       LIGHT MODE
+    ------------------------- */
+
+    html[data-theme="light"] body,
+    body.light-mode {
+      background:
+        linear-gradient(
+          180deg,
+          #f7f9fc 0%,
+          #eef2f7 100%
+        ) !important;
+
+      color: #182334 !important;
+    }
+
+
+    html[data-theme="light"] .top-header,
+    body.light-mode .top-header {
+      background:
+        rgba(255,255,255,.96) !important;
+
+      color: #172033 !important;
+
+      border-bottom:
+        1px solid #e2e8f0 !important;
+
+      box-shadow:
+        0 4px 20px rgba(15,23,42,.06) !important;
+
+      backdrop-filter:
+        blur(18px);
+    }
+
+
+    html[data-theme="light"] .card,
+    body.light-mode .card {
+      background:
+        #ffffff !important;
+
+      color: #172033 !important;
+
+      border:
+        1px solid #e4e9f0 !important;
+
+      box-shadow:
+        0 10px 28px rgba(15,23,42,.07) !important;
+    }
+
+
+    html[data-theme="light"] .card-title,
+    html[data-theme="light"] .quick-title,
+    html[data-theme="light"] .plan-name,
+    html[data-theme="light"] .brand-title,
+    html[data-theme="light"] h1,
+    html[data-theme="light"] h2,
+    html[data-theme="light"] h3,
+    html[data-theme="light"] p,
+
+    body.light-mode .card-title,
+    body.light-mode .quick-title,
+    body.light-mode .plan-name,
+    body.light-mode .brand-title,
+    body.light-mode h1,
+    body.light-mode h2,
+    body.light-mode h3,
+    body.light-mode p {
+      color: #172033 !important;
+    }
+
+
+    html[data-theme="light"] .brand-subtitle,
+    html[data-theme="light"] .welcome p,
+    html[data-theme="light"] .small-stat-label,
+    html[data-theme="light"] .quick-text,
+    html[data-theme="light"] .info-label,
+    html[data-theme="light"] .plan-row span,
+
+    body.light-mode .brand-subtitle,
+    body.light-mode .welcome p,
+    body.light-mode .small-stat-label,
+    body.light-mode .quick-text,
+    body.light-mode .info-label,
+    body.light-mode .plan-row span {
+      color: #687588 !important;
+    }
+
+
+    html[data-theme="light"] input,
+    html[data-theme="light"] select,
+    body.light-mode input,
+    body.light-mode select {
+      background:
+        #ffffff !important;
+
+      color:
+        #172033 !important;
+
+      border:
+        1px solid #d7dee8 !important;
+    }
+
+
+    html[data-theme="light"] input::placeholder,
+    body.light-mode input::placeholder {
+      color: #8a96a6 !important;
+    }
+
+
+    html[data-theme="light"] .bottom-nav,
+    body.light-mode .bottom-nav {
+      background:
+        rgba(255,255,255,.97) !important;
+
+      color: #526174 !important;
+
+      border-top:
+        1px solid #e1e7ee !important;
+
+      box-shadow:
+        0 -6px 25px rgba(15,23,42,.07) !important;
+    }
+
+
+    html[data-theme="light"] .nav-item,
+    body.light-mode .nav-item {
+      color: #687588 !important;
+    }
+
+
+    html[data-theme="light"] .nav-item.active,
+    body.light-mode .nav-item.active {
+      color: #dc2635 !important;
+    }
+
+
+    /* -------------------------
+       HEADER
+    ------------------------- */
+
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      padding:
+        12px 15px;
+
+      width: 100%;
+    }
+
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      max-width: 720px;
+      margin: auto;
+    }
+
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 13px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #ef233c,
+          #b8172a
+        );
+
+      color: white;
+
+      font-size: 25px;
+      font-weight: 900;
+
+      box-shadow:
+        0 8px 22px rgba(220,38,53,.28);
+    }
+
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+
+    .brand-subtitle {
+      margin-top: 2px;
+      font-size: 11px;
+      opacity: .7;
+    }
+
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+
+    .language-wrap {
+      position: relative;
+    }
+
+
+    .language-select {
+      height: 38px;
+      min-width: 76px;
+      padding: 0 9px;
+
+      border-radius: 11px;
+
+      outline: none;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+
+    .theme-btn {
+      width: 38px;
+      height: 38px;
+
+      border: 0;
+      border-radius: 11px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 17px;
+
+      cursor: pointer;
+
+      background:
+        rgba(128,128,128,.12);
+    }
+
+
+    /* -------------------------
+       PAGE
+    ------------------------- */
+
+    .page-content {
+      width: 100%;
+      max-width: 720px;
+
+      margin: 0 auto;
+
+      padding:
+        18px 15px 110px;
+    }
+
+
+    .welcome {
+      padding:
+        8px 3px 16px;
+    }
+
+
+    .welcome h2 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.35;
+      font-weight: 850;
+    }
+
+
+    .welcome p {
+      margin: 5px 0 0;
+      font-size: 13px;
+      opacity: .7;
+    }
+
+
+    .card {
+      border-radius: 20px;
+      padding: 17px;
+      margin-bottom: 14px;
+    }
+
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 13px;
+    }
+
+
+    /* -------------------------
+       BALANCE
+    ------------------------- */
+
+    .balance-card {
+      position: relative;
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          #172a46,
+          #0c1829
+        ) !important;
+
+      color: #fff !important;
+
+      border: 0 !important;
+    }
+
+
+    html[data-theme="light"] .balance-card,
+    body.light-mode .balance-card {
+      background:
+        linear-gradient(
+          135deg,
+          #172a46,
+          #253e63
+        ) !important;
+
+      color: #fff !important;
+    }
+
+
+    .balance-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 160px;
+      height: 160px;
+
+      right: -70px;
+      top: -70px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.07);
+    }
+
+
+    .balance-label {
+      font-size: 12px;
+      opacity: .72;
+    }
+
+
+    .balance-value {
+      margin-top: 7px;
+
+      font-size: 34px;
+      line-height: 1.15;
+
+      font-weight: 900;
+
+      letter-spacing: -.8px;
+    }
+
+
+    .balance-unit {
+      font-size: 14px;
+      opacity: .7;
+      font-weight: 700;
+    }
+
+
+    .balance-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+
+      margin-top: 18px;
+    }
+
+
+    .small-stat {
+      padding: 11px;
+      border-radius: 13px;
+
+      background:
+        rgba(255,255,255,.08);
+    }
+
+
+    .small-stat-label {
+      font-size: 10px;
+      opacity: .65;
+    }
+
+
+    .small-stat-value {
+      margin-top: 4px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+
+    /* -------------------------
+       QUICK CARDS
+    ------------------------- */
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+
+    .quick-card {
+      min-height: 112px;
+
+      border: 0;
+      border-radius: 17px;
+
+      padding: 15px;
+
+      text-align: left;
+
+      cursor: pointer;
+
+      background:
+        rgba(128,128,128,.07);
+
+      color: inherit;
+
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+    }
+
+
+    .quick-card:active {
+      transform: scale(.97);
+    }
+
+
+    html[data-theme="light"] .quick-card,
+    body.light-mode .quick-card {
+      background:
+        #f6f8fb !important;
+
+      border:
+        1px solid #e8edf3;
+    }
+
+
+    .quick-icon {
+      width: 39px;
+      height: 39px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background:
+        rgba(220,38,53,.10);
+
+      font-size: 19px;
+    }
+
+
+    .quick-title {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+
+    .quick-text {
+      margin-top: 3px;
+      font-size: 11px;
+      opacity: .65;
+    }
+
+
+    /* -------------------------
+       BUTTONS
+    ------------------------- */
+
+    .primary-button,
+    .primary-btn {
+      width: 100%;
+
+      min-height: 46px;
+
+      border: 0;
+      border-radius: 13px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #e62b3c,
+          #b8172a
+        ) !important;
+
+      color: #fff !important;
+
+      font-size: 14px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 8px 20px rgba(220,38,53,.18);
+    }
+
+
+    .secondary-button {
+      width: 100%;
+
+      min-height: 44px;
+
+      margin-top: 9px;
+
+      border-radius: 12px;
+
+      font-size: 13px;
+      font-weight: 750;
+
+      cursor: pointer;
+    }
+
+
+    html[data-theme="light"] .secondary-button,
+    body.light-mode .secondary-button {
+      background: #f5f7fa !important;
+      color: #182334 !important;
+      border: 1px solid #dfe5ed !important;
+    }
+
+
+    /* -------------------------
+       INPUTS
+    ------------------------- */
+
+    .input-group {
+      margin-bottom: 13px;
+    }
+
+
+    .input-group label {
+      display: block;
+
+      margin-bottom: 6px;
+
+      font-size: 12px;
+      font-weight: 700;
+      opacity: .75;
+    }
+
+
+    input,
+    select {
+      width: 100%;
+      min-height: 45px;
+
+      border-radius: 12px;
+
+      padding:
+        0 12px;
+
+      outline: none;
+
+      font-size: 13px;
+    }
+
+
+    /* -------------------------
+       REFERRAL
+    ------------------------- */
+
+    .referral-code {
+      padding: 15px;
+
+      border-radius: 13px;
+
+      background:
+        rgba(220,38,53,.09);
+
+      border:
+        1px dashed rgba(220,38,53,.35);
+
+      text-align: center;
+
+      font-size: 19px;
+      font-weight: 900;
+
+      letter-spacing: 1px;
+
+      word-break: break-all;
+    }
+
+
+    .referral-link-box {
+      display: flex;
+      gap: 7px;
+      align-items: stretch;
+    }
+
+
+    .referral-link-input {
+      flex: 1;
+      min-width: 0;
+
+      font-size: 11px !important;
+      font-weight: 600;
+
+      direction: ltr;
+      text-align: left;
+    }
+
+
+    .copy-btn {
+      flex: 0 0 46px;
+
+      border: 0;
+      border-radius: 12px;
+
+      background:
+        #e62b3c;
+
+      color: white;
+
+      cursor: pointer;
+
+      font-size: 18px;
+    }
+
+
+    .referral-levels {
+      display: grid;
+      gap: 9px;
+    }
+
+
+    .referral-level {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 12px 13px;
+
+      border-radius: 13px;
+
+      background:
+        rgba(128,128,128,.07);
+    }
+
+
+    .level-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+
+    .level-number {
+      width: 32px;
+      height: 32px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background:
+        rgba(220,38,53,.12);
+
+      color:
+        #dc2637;
+
+      font-weight: 900;
+    }
+
+
+    .level-name {
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+
+    .level-rate {
+      font-size: 17px;
+      font-weight: 900;
+      color: #dc2637;
+    }
+
+
+    /* -------------------------
+       DEPOSIT QR
+    ------------------------- */
+
+    .qr-box {
+      display: flex;
+      justify-content: center;
+
+      padding: 14px;
+      margin-bottom: 13px;
+
+      border-radius: 17px;
+
+      background: white;
+    }
+
+
+    .qr-box img {
+      width: 190px;
+      height: 190px;
+
+      display: block;
+
+      border-radius: 8px;
+    }
+
+
+    .address-box {
+      padding: 12px;
+
+      border-radius: 12px;
+
+      background:
+        rgba(128,128,128,.08);
+
+      direction: ltr;
+      text-align: center;
+
+      font-size: 11px;
+      line-height: 1.5;
+
+      word-break: break-all;
+    }
+
+
+    /* -------------------------
+       PLANS
+    ------------------------- */
+
+    .plan-card {
+      overflow: hidden;
+    }
+
+
+    .plan-name {
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+
+    .plan-amount {
+      margin:
+        12px 0;
+
+      font-size: 27px;
+      font-weight: 900;
+    }
+
+
+    .plan-row,
+    .info-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 9px 0;
+
+      border-bottom:
+        1px solid rgba(128,128,128,.12);
+
+      font-size: 12px;
+    }
+
+
+    .plan-row:last-of-type,
+    .info-line:last-child {
+      border-bottom: 0;
+    }
+
+
+    .plan-row strong,
+    .info-value {
+      font-weight: 800;
+    }
+
+
+    .plan-card .primary-button {
+      margin-top: 12px;
+    }
+
+
+    /* -------------------------
+       NOTICE / MESSAGES
+    ------------------------- */
+
+    .notice {
+      padding: 12px;
+
+      border-radius: 12px;
+
+      background:
+        rgba(128,128,128,.07);
+
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+
+    .form-message {
+      min-height: 18px;
+      margin: 9px 0 0;
+
+      font-size: 12px;
+    }
+
+
+    .error-text {
+      color: #ef3346 !important;
+    }
+
+
+    .success-text {
+      color: #16a36a !important;
+    }
+
+
+    .loading-box {
+      min-height: 130px;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 10px;
+    }
+
+
+    .spinner {
+      width: 30px;
+      height: 30px;
+
+      border:
+        3px solid rgba(128,128,128,.18);
+
+      border-top-color:
+        #dc2637;
+
+      border-radius: 50%;
+
+      animation:
+        dailySpin .75s linear infinite;
+    }
+
+
+    @keyframes dailySpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+
+    /* -------------------------
+       BOTTOM NAV
+    ------------------------- */
+
+    .bottom-nav {
+      position: fixed;
+
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      z-index: 200;
+
+      display: grid;
+      grid-template-columns:
+        repeat(5, 1fr);
+
+      max-width: 720px;
+      margin: auto;
+
+      padding:
+        8px 6px
+        calc(8px + env(safe-area-inset-bottom));
+
+      backdrop-filter:
+        blur(18px);
+    }
+
+
+    .nav-item {
+      min-height: 52px;
+
+      border: 0;
+      background: transparent;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 3px;
+
+      font-size: 9px;
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+
+    .nav-icon {
+      font-size: 19px;
+      line-height: 1;
+    }
+
+
+    /* -------------------------
+       SPLASH
+    ------------------------- */
+
+    #dailytrxSplash {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 999999;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        radial-gradient(
+          circle at center,
+          #172d4d 0%,
+          #08111f 48%,
+          #040810 100%
+        );
+
+      color: white;
+
+      opacity: 1;
+
+      transition:
+        opacity .45s ease,
+        visibility .45s ease;
+    }
+
+
+    #dailytrxSplash.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+
+    .splash-box {
+      width: min(82vw, 320px);
+
+      text-align: center;
+    }
+
+
+    .splash-logo {
+      width: 82px;
+      height: 82px;
+
+      margin: 0 auto 17px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #ef233c,
+          #a91427
+        );
+
+      box-shadow:
+        0 18px 45px rgba(220,38,53,.30);
+
+      animation:
+        splashPulse 1.4s ease-in-out infinite;
+    }
+
+
+    .splash-logo span {
+      font-size: 50px;
+      font-weight: 900;
+      color: white;
+    }
+
+
+    .splash-title {
+      font-size: 25px;
+      font-weight: 950;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+
+    .splash-subtitle {
+      margin-top: 7px;
+
+      font-size: 12px;
+
+      color:
+        rgba(255,255,255,.65);
+    }
+
+
+    .loading-line {
+      position: relative;
+
+      width: 100%;
+      height: 4px;
+
+      margin-top: 27px;
+
+      overflow: hidden;
+
+      border-radius: 99px;
+
+      background:
+        rgba(255,255,255,.12);
+    }
+
+
+    .loading-line::after {
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      bottom: 0;
+
+      left: -40%;
+
+      width: 40%;
+
+      border-radius: 99px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          #ef3348,
+          #ff7380,
+          transparent
+        );
+
+      animation:
+        loadingMove 1.05s ease-in-out infinite;
+    }
+
+
+    @keyframes loadingMove {
+      from {
+        left: -40%;
+      }
+
+      to {
+        left: 100%;
+      }
+    }
+
+
+    @keyframes splashPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.055);
+      }
+    }
+
+
+    /* -------------------------
+       REGISTRATION
+    ------------------------- */
+
+    #registration {
+      position: relative;
+      z-index: 2;
+    }
+
+
+    #registration.hidden {
+      display: none !important;
+    }
+
+
+    #app.app-hidden {
+      display: none !important;
+    }
+
+
+    /* -------------------------
+       RTL
+    ------------------------- */
+
+    html[dir="rtl"] .quick-card {
+      text-align: right;
+    }
+
+
+    html[dir="rtl"] .referral-link-input,
+    html[dir="rtl"] .address-box {
+      direction: ltr;
+      text-align: left;
+    }
+
+
+    /* -------------------------
+       MOBILE
+    ------------------------- */
+
+    @media (max-width: 420px) {
+
+      .page-content {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .brand-logo {
+        width: 39px;
+        height: 39px;
+        border-radius: 12px;
+      }
+
+      .brand-title {
+        font-size: 14px;
+      }
+
+      .brand-subtitle {
+        font-size: 10px;
+      }
+
+      .language-select {
+        min-width: 66px;
+      }
+
+      .balance-value {
+        font-size: 30px;
+      }
+
+      .quick-card {
+        min-height: 105px;
+      }
+
+    }
+
+  `;
+
+  document.head.appendChild(style);
+}
+
+
+/* =========================================================
+   THEME
 ========================================================= */
 
 function applyTheme() {
@@ -444,15 +1761,39 @@ function applyTheme() {
       ? "light"
       : "dark";
 
-  document.body.classList.toggle(
+  const root =
+    document.documentElement;
+
+  const body =
+    document.body;
+
+  root.dataset.theme =
+    currentTheme;
+
+  body.dataset.theme =
+    currentTheme;
+
+  body.classList.toggle(
     "light",
     currentTheme === "light"
   );
 
-  document.documentElement.dataset.theme =
-    currentTheme;
+  body.classList.toggle(
+    "dark",
+    currentTheme === "dark"
+  );
 
-  document.documentElement.style.colorScheme =
+  body.classList.toggle(
+    "light-mode",
+    currentTheme === "light"
+  );
+
+  body.classList.toggle(
+    "dark-mode",
+    currentTheme === "dark"
+  );
+
+  root.style.colorScheme =
     currentTheme;
 
   localStorage.setItem(
@@ -484,40 +1825,33 @@ function applyLanguageDirection() {
   document.documentElement.lang =
     currentLanguage;
 
-  if (
+  document.documentElement.dir =
     currentLanguage === "ps" ||
     currentLanguage === "fa"
-  ) {
-
-    document.documentElement.dir =
-      "rtl";
-
-  } else {
-
-    document.documentElement.dir =
-      "ltr";
-  }
+      ? "rtl"
+      : "ltr";
 }
 
 
-applyTheme();
-applyLanguageDirection();
-
-
 /* =========================================================
-   SPLASH SCREEN
+   SPLASH
 ========================================================= */
 
 function createSplash() {
 
-  if (document.getElementById("splashScreen")) {
+  if (
+    document.getElementById(
+      "dailytrxSplash"
+    )
+  ) {
     return;
   }
 
   const splash =
     document.createElement("div");
 
-  splash.id = "splashScreen";
+  splash.id =
+    "dailytrxSplash";
 
   splash.innerHTML = `
 
@@ -528,11 +1862,13 @@ function createSplash() {
       </div>
 
       <div class="splash-title">
-        Daily TRX
+        DAILY TRX
       </div>
 
       <div class="splash-subtitle">
-        ${escapeHtml(t("loadingApp"))}
+        ${escapeHtml(
+          t("loadingApp")
+        )}
       </div>
 
       <div class="loading-line"></div>
@@ -549,26 +1885,23 @@ function hideSplash() {
 
   const splash =
     document.getElementById(
-      "splashScreen"
+      "dailytrxSplash"
     );
 
   if (!splash) {
     return;
   }
 
+  splash.classList.add("hide");
+
   setTimeout(() => {
 
-    splash.classList.add("hide");
-
-    setTimeout(() => {
+    if (splash.parentNode) {
       splash.remove();
-    }, 450);
+    }
 
-  }, 900);
+  }, 500);
 }
-
-
-createSplash();
 
 
 /* =========================================================
@@ -578,10 +1911,15 @@ createSplash();
 async function apiGet(url) {
 
   const response =
-    await fetch(url);
+    await fetch(url, {
+      cache: "no-store"
+    });
 
-  const data =
-    await response.json();
+  let data = {};
+
+  try {
+    data = await response.json();
+  } catch (_) {}
 
   if (!response.ok) {
 
@@ -611,8 +1949,11 @@ async function apiPost(url, body) {
       body: JSON.stringify(body)
     });
 
-  const data =
-    await response.json();
+  let data = {};
+
+  try {
+    data = await response.json();
+  } catch (_) {}
 
   if (!response.ok) {
 
@@ -635,7 +1976,7 @@ function header(title = "Daily TRX") {
 
   return `
 
-    <div class="top-header">
+    <header class="top-header">
 
       <div class="header-row">
 
@@ -648,7 +1989,7 @@ function header(title = "Daily TRX") {
           <div class="brand-text">
 
             <div class="brand-title">
-              Daily TRX
+              DAILY TRX
             </div>
 
             <div class="brand-subtitle">
@@ -665,37 +2006,45 @@ function header(title = "Daily TRX") {
           <select
             id="languageSelect"
             class="language-select"
-            aria-label="${escapeHtml(t("language"))}"
+            aria-label="${escapeHtml(
+              t("language")
+            )}"
           >
 
             <option
               value="en"
-              ${currentLanguage === "en" ? "selected" : ""}
+              ${currentLanguage === "en"
+                ? "selected"
+                : ""}
             >
-              EN
+              English
             </option>
 
             <option
               value="ps"
-              ${currentLanguage === "ps" ? "selected" : ""}
+              ${currentLanguage === "ps"
+                ? "selected"
+                : ""}
             >
               پښتو
             </option>
 
             <option
               value="fa"
-              ${currentLanguage === "fa" ? "selected" : ""}
+              ${currentLanguage === "fa"
+                ? "selected"
+                : ""}
             >
-              فارسی
+              دری
             </option>
 
           </select>
 
 
           <button
-            class="theme-btn"
-            id="themeButton"
             type="button"
+            id="themeButton"
+            class="theme-btn"
             aria-label="${escapeHtml(
               currentTheme === "dark"
                 ? t("light")
@@ -715,7 +2064,7 @@ function header(title = "Daily TRX") {
 
       </div>
 
-    </div>
+    </header>
 
   `;
 }
@@ -786,7 +2135,7 @@ async function renderHome() {
 
     ${header(t("dashboard"))}
 
-    <div class="page-content">
+    <main class="page-content">
 
       <div class="welcome">
 
@@ -796,7 +2145,9 @@ async function renderHome() {
         </h2>
 
         <p>
-          ${escapeHtml(t("dashboard"))}
+          ${escapeHtml(
+            t("dashboard")
+          )}
         </p>
 
       </div>
@@ -816,7 +2167,7 @@ async function renderHome() {
 
       </div>
 
-    </div>
+    </main>
 
     ${navigation()}
 
@@ -844,6 +2195,15 @@ async function renderHome() {
     } catch (_) {}
 
 
+    const total =
+      Number(
+        walletData.available_trx || 0
+      ) +
+      Number(
+        walletData.locked_trx || 0
+      );
+
+
     document.getElementById(
       "homeContent"
     ).innerHTML = `
@@ -851,19 +2211,16 @@ async function renderHome() {
       <div class="card balance-card">
 
         <div class="balance-label">
-          ${escapeHtml(t("balance"))}
+          ${escapeHtml(
+            t("balance")
+          )}
         </div>
 
         <div class="balance-value">
-
-          ${money(
-            walletData.available_trx
-          )}
-
+          ${money(total)}
           <span class="balance-unit">
             TRX
           </span>
-
         </div>
 
 
@@ -872,13 +2229,16 @@ async function renderHome() {
           <div class="small-stat">
 
             <div class="small-stat-label">
-              ${escapeHtml(t("available"))}
+              ${escapeHtml(
+                t("available")
+              )}
             </div>
 
             <div class="small-stat-value">
               ${money(
                 walletData.available_trx
               )}
+              TRX
             </div>
 
           </div>
@@ -887,13 +2247,16 @@ async function renderHome() {
           <div class="small-stat">
 
             <div class="small-stat-label">
-              ${escapeHtml(t("locked"))}
+              ${escapeHtml(
+                t("locked")
+              )}
             </div>
 
             <div class="small-stat-value">
               ${money(
                 walletData.locked_trx
               )}
+              TRX
             </div>
 
           </div>
@@ -949,6 +2312,7 @@ async function renderHome() {
           <button
             class="quick-card"
             data-page="deposit"
+            type="button"
           >
 
             <div class="quick-icon">
@@ -973,6 +2337,7 @@ async function renderHome() {
           <button
             class="quick-card"
             data-page="investment"
+            type="button"
           >
 
             <div class="quick-icon">
@@ -997,6 +2362,7 @@ async function renderHome() {
           <button
             class="quick-card"
             data-page="referral"
+            type="button"
           >
 
             <div class="quick-icon">
@@ -1021,6 +2387,7 @@ async function renderHome() {
           <button
             class="quick-card"
             data-page="wallet"
+            type="button"
           >
 
             <div class="quick-icon">
@@ -1106,6 +2473,11 @@ async function renderWallet() {
 
     await loadWallet();
 
+    const total =
+      Number(walletData.available_trx || 0) +
+      Number(walletData.locked_trx || 0);
+
+
     page.innerHTML = `
 
       ${header(t("wallet"))}
@@ -1115,19 +2487,16 @@ async function renderWallet() {
         <div class="card balance-card">
 
           <div class="balance-label">
-            ${escapeHtml(t("balance"))}
+            ${escapeHtml(
+              t("balance")
+            )}
           </div>
 
           <div class="balance-value">
-
-            ${money(
-              walletData.available_trx
-            )}
-
+            ${money(total)}
             <span class="balance-unit">
               TRX
             </span>
-
           </div>
 
         </div>
@@ -1176,20 +2545,7 @@ async function renderWallet() {
             </span>
 
             <span class="info-value">
-
-              ${money(
-                Number(
-                  walletData.available_trx ||
-                  0
-                ) +
-                Number(
-                  walletData.locked_trx ||
-                  0
-                )
-              )}
-
-              TRX
-
+              ${money(total)} TRX
             </span>
 
           </div>
@@ -1202,6 +2558,7 @@ async function renderWallet() {
           <button
             class="quick-card"
             data-page="deposit"
+            type="button"
           >
 
             <div class="quick-icon">
@@ -1220,6 +2577,7 @@ async function renderWallet() {
           <button
             class="quick-card"
             data-page="withdraw"
+            type="button"
           >
 
             <div class="quick-icon">
@@ -1323,6 +2681,7 @@ function renderDeposit() {
         <button
           id="copyAddressButton"
           class="secondary-button"
+          type="button"
         >
           📋 ${escapeHtml(
             t("copyAddress")
@@ -1341,8 +2700,7 @@ function renderDeposit() {
         </div>
 
 
-        <div
-          class="input-group"
+        <div class="input-group"
           style="margin-top:15px"
         >
 
@@ -1384,6 +2742,7 @@ function renderDeposit() {
         <button
           id="submitDepositButton"
           class="primary-button"
+          type="button"
         >
           ${escapeHtml(
             t("submitDeposit")
@@ -1434,6 +2793,7 @@ function renderDeposit() {
             t("copyAddress");
 
         }, 1500);
+
       }
     );
 
@@ -1643,7 +3003,7 @@ async function renderInvestment() {
     const plans =
       Array.isArray(data)
         ? data
-        : data.plans || [];
+        : data?.plans || [];
 
 
     if (!plans.length) {
@@ -1686,124 +3046,115 @@ async function renderInvestment() {
 
       <div class="page-content">
 
-        <div id="plansContainer">
+        ${plans.map(plan => {
 
-          ${plans.map(
-            plan => {
+          const amount =
+            Number(
+              plan.amount_trx || 0
+            );
 
-              const amount =
-                Number(
-                  plan.amount_trx ||
-                  0
-                );
+          const daily =
+            Number(
+              plan.daily_profit_trx || 0
+            );
 
-              const daily =
-                Number(
-                  plan.daily_profit_trx ||
-                  0
-                );
+          const days =
+            Number(
+              plan.duration_days || 0
+            );
 
-              const days =
-                Number(
-                  plan.duration_days ||
-                  0
-                );
-
-              const total =
-                daily * days;
+          const total =
+            daily * days;
 
 
-              return `
+          return `
 
-                <div class="card plan-card">
+            <div class="card plan-card">
 
-                  <div class="plan-name">
-                    📦 ${escapeHtml(
-                      plan.name ||
-                      "Investment Plan"
-                    )}
-                  </div>
-
-
-                  <div class="plan-amount">
-                    ${money(amount)}
-                    TRX
-                  </div>
+              <div class="plan-name">
+                📦 ${escapeHtml(
+                  plan.name ||
+                  "Investment Plan"
+                )}
+              </div>
 
 
-                  <div class="plan-row">
-
-                    <span>
-                      ${escapeHtml(
-                        t("dailyProfit")
-                      )}
-                    </span>
-
-                    <strong>
-                      ${money(daily)}
-                      TRX
-                    </strong>
-
-                  </div>
+              <div class="plan-amount">
+                ${money(amount)}
+                TRX
+              </div>
 
 
-                  <div class="plan-row">
+              <div class="plan-row">
 
-                    <span>
-                      ${escapeHtml(
-                        t("duration")
-                      )}
-                    </span>
+                <span>
+                  ${escapeHtml(
+                    t("dailyProfit")
+                  )}
+                </span>
 
-                    <strong>
-                      ${days} days
-                    </strong>
+                <strong>
+                  ${money(daily)} TRX
+                </strong>
 
-                  </div>
-
-
-                  <div class="plan-row">
-
-                    <span>
-                      ${escapeHtml(
-                        t("totalProfit")
-                      )}
-                    </span>
-
-                    <strong>
-                      ${money(total)}
-                      TRX
-                    </strong>
-
-                  </div>
+              </div>
 
 
-                  <button
-                    class="primary-button invest-button"
-                    data-plan-id="${escapeHtml(
-                      plan.id
-                    )}"
-                  >
-                    ${escapeHtml(
-                      t("startInvestment")
-                    )}
-                  </button>
+              <div class="plan-row">
+
+                <span>
+                  ${escapeHtml(
+                    t("duration")
+                  )}
+                </span>
+
+                <strong>
+                  ${days} days
+                </strong>
+
+              </div>
 
 
-                  <p
-                    class="form-message"
-                    id="investmentMessage-${escapeHtml(
-                      plan.id
-                    )}"
-                  ></p>
+              <div class="plan-row">
 
-                </div>
+                <span>
+                  ${escapeHtml(
+                    t("totalProfit")
+                  )}
+                </span>
 
-              `;
-            }
-          ).join("")}
+                <strong>
+                  ${money(total)} TRX
+                </strong>
 
-        </div>
+              </div>
+
+
+              <button
+                class="primary-button invest-button"
+                data-plan-id="${escapeHtml(
+                  plan.id
+                )}"
+                type="button"
+              >
+                ${escapeHtml(
+                  t("startInvestment")
+                )}
+              </button>
+
+
+              <p
+                class="form-message"
+                id="investmentMessage-${escapeHtml(
+                  plan.id
+                )}"
+              ></p>
+
+            </div>
+
+          `;
+
+        }).join("")}
 
       </div>
 
@@ -1928,7 +3279,7 @@ async function createInvestment(
 
     await loadWallet();
 
-    renderInvestment();
+    await renderInvestment();
 
 
   } catch (error) {
@@ -1951,7 +3302,7 @@ async function createInvestment(
 
 
 /* =========================================================
-   REFERRAL — COMPLETE LINK
+   REFERRAL
 ========================================================= */
 
 async function getReferralProfile() {
@@ -1978,6 +3329,7 @@ async function getReferralProfile() {
 
     profileData =
       data?.profile ||
+      data?.user ||
       data ||
       profileData;
 
@@ -1993,11 +3345,13 @@ async function getReferralProfile() {
 
 function getReferralCode() {
 
-  return (
-    profileData.referral_code ||
-    profileData.profile?.referral_code ||
-    ""
-  );
+  const code =
+    profileData?.referral_code ||
+    profileData?.profile?.referral_code ||
+    profileData?.user?.referral_code ||
+    "";
+
+  return String(code || "").trim();
 }
 
 
@@ -2008,7 +3362,6 @@ function buildReferralLink(
   if (!referralCode) {
     return "";
   }
-
 
   return (
     "https://t.me/" +
@@ -2064,19 +3417,20 @@ async function renderReferral() {
       <div class="card">
 
         <div class="card-title">
-          ${escapeHtml(
+          🔑 ${escapeHtml(
             t("referralCode")
           )}
         </div>
 
 
         <div class="referral-code">
+
           ${
-            escapeHtml(
-              code ||
-              "NOT-AVAILABLE"
-            )
+            code
+              ? escapeHtml(code)
+              : "NOT-AVAILABLE"
           }
+
         </div>
 
       </div>
@@ -2093,24 +3447,32 @@ async function renderReferral() {
 
         ${
           link
+
             ? `
 
               <div class="referral-link-box">
 
                 <input
-                  class="referral-link-input"
                   id="referralLinkInput"
+                  class="referral-link-input"
                   type="text"
                   readonly
                   value="${escapeHtml(
                     link
                   )}"
+                  aria-label="${escapeHtml(
+                    t("referralLink")
+                  )}"
                 />
+
 
                 <button
                   id="copyReferral"
                   class="copy-btn"
                   type="button"
+                  aria-label="${escapeHtml(
+                    t("copyLink")
+                  )}"
                 >
                   📋
                 </button>
@@ -2118,11 +3480,21 @@ async function renderReferral() {
               </div>
 
 
+              <div
+                class="notice"
+                style="margin-top:10px"
+              >
+                ${escapeHtml(
+                  t("copyReferralLink")
+                )}
+              </div>
+
+
               <button
                 id="shareReferral"
-                class="primary-btn"
+                class="primary-button"
                 type="button"
-                style="width:100%;margin-top:10px"
+                style="margin-top:10px"
               >
                 ↗ ${escapeHtml(
                   t("share")
@@ -2130,6 +3502,7 @@ async function renderReferral() {
               </button>
 
             `
+
             : `
 
               <div class="notice">
@@ -2145,9 +3518,7 @@ async function renderReferral() {
       <div class="card">
 
         <div class="card-title">
-          💰 ${escapeHtml(
-            t("referralProgram")
-          )}
+          💰 Referral Commission
         </div>
 
 
@@ -2227,7 +3598,6 @@ async function renderReferral() {
 
       </div>
 
-
     </div>
 
     ${navigation()}
@@ -2245,6 +3615,10 @@ async function renderReferral() {
     ?.addEventListener(
       "click",
       async () => {
+
+        if (!link) {
+          return;
+        }
 
         await copyText(link);
 
@@ -2277,6 +3651,11 @@ async function renderReferral() {
     ?.addEventListener(
       "click",
       () => {
+
+        if (!link) {
+          return;
+        }
+
 
         const shareUrl =
           "https://t.me/share/url?url=" +
@@ -2424,6 +3803,8 @@ function renderSupport() {
         <button
           class="primary-button"
           id="adminContact"
+          type="button"
+          style="margin-top:12px"
         >
           ${escapeHtml(
             t("support")
@@ -2542,6 +3923,7 @@ async function renderProfile() {
 
     profileData =
       data?.profile ||
+      data?.user ||
       data ||
       profileData;
 
@@ -2589,9 +3971,7 @@ async function renderProfile() {
           </span>
 
           <span class="info-value">
-            ${escapeHtml(
-              username
-            )}
+            ${escapeHtml(username)}
           </span>
 
         </div>
@@ -2606,9 +3986,7 @@ async function renderProfile() {
           </span>
 
           <span class="info-value">
-            ${escapeHtml(
-              email
-            )}
+            ${escapeHtml(email)}
           </span>
 
         </div>
@@ -2624,8 +4002,7 @@ async function renderProfile() {
 
           <span class="info-value">
             ${escapeHtml(
-              telegramId ||
-              "—"
+              telegramId || "—"
             )}
           </span>
 
@@ -2641,13 +4018,11 @@ async function renderProfile() {
           </span>
 
           <span class="info-value">
-
             ${
               verified
                 ? "✓ " + t("yes")
                 : t("no")
             }
-
           </span>
 
         </div>
@@ -2660,6 +4035,7 @@ async function renderProfile() {
         <button
           class="secondary-button"
           data-page="referral"
+          type="button"
         >
           👥 ${escapeHtml(
             t("referral")
@@ -2670,6 +4046,7 @@ async function renderProfile() {
         <button
           class="secondary-button"
           data-page="notifications"
+          type="button"
         >
           🔔 ${escapeHtml(
             t("notifications")
@@ -2680,6 +4057,7 @@ async function renderProfile() {
         <button
           class="secondary-button"
           data-page="support"
+          type="button"
         >
           🎧 ${escapeHtml(
             t("support")
@@ -2756,15 +4134,29 @@ async function loadWallet() {
 
 async function copyText(text) {
 
+  if (!text) {
+    return false;
+  }
+
+
   try {
 
-    await navigator.clipboard.writeText(
-      text
-    );
+    if (
+      navigator.clipboard &&
+      window.isSecureContext
+    ) {
 
-    return true;
+      await navigator.clipboard.writeText(
+        text
+      );
 
-  } catch (_) {
+      return true;
+    }
+
+  } catch (_) {}
+
+
+  try {
 
     const textarea =
       document.createElement(
@@ -2772,12 +4164,16 @@ async function copyText(text) {
       );
 
 
-    textarea.value = text;
+    textarea.value =
+      text;
 
     textarea.style.position =
       "fixed";
 
-    textarea.style.opacity =
+    textarea.style.left =
+      "-9999px";
+
+    textarea.style.top =
       "0";
 
 
@@ -2786,6 +4182,7 @@ async function copyText(text) {
     );
 
 
+    textarea.focus();
     textarea.select();
 
     document.execCommand(
@@ -2796,6 +4193,10 @@ async function copyText(text) {
     textarea.remove();
 
     return true;
+
+  } catch (_) {
+
+    return false;
   }
 }
 
@@ -2820,6 +4221,15 @@ function bindHeader() {
 
         currentLanguage =
           language.value;
+
+
+        if (
+          !translations[
+            currentLanguage
+          ]
+        ) {
+          currentLanguage = "en";
+        }
 
 
         localStorage.setItem(
@@ -2958,6 +4368,14 @@ window.render =
    START APP
 ========================================================= */
 
+installRuntimeStyles();
+
+applyLanguageDirection();
+applyTheme();
+
+createSplash();
+
+
 const telegramUser =
   tg?.initDataUnsafe?.user;
 
@@ -2986,15 +4404,15 @@ const registration =
   );
 
 
-const oldRegistered =
-  localStorage.getItem(
-    "dailytrx_registered"
-  );
-
-
 const userId =
   getTelegramId();
 
+
+/*
+  IMPORTANT:
+  Do not let the old global registration key
+  bypass registration for a different Telegram user.
+*/
 
 const userRegistered =
   userId
@@ -3002,37 +4420,74 @@ const userRegistered =
         "dailytrx_registered_" +
         userId
       )
-    : oldRegistered;
+    : localStorage.getItem(
+        "dailytrx_registered"
+      );
 
 
-/* Existing user */
+async function startApplication() {
 
-if (
-  userRegistered === "true" ||
-  oldRegistered === "true"
-) {
-
-  registration?.classList.add(
-    "hidden"
-  );
-
-  app?.classList.remove(
-    "app-hidden"
-  );
+  const startedAt =
+    Date.now();
 
 
-  render("home")
-    .finally(() => {
-      hideSplash();
-    });
+  /* -------------------------
+     EXISTING USER
+  ------------------------- */
+
+  if (
+    userRegistered === "true"
+  ) {
+
+    registration?.classList.add(
+      "hidden"
+    );
+
+    app?.classList.remove(
+      "app-hidden"
+    );
 
 
-}
+    try {
+
+      await render("home");
+
+    } catch (error) {
+
+      console.error(
+        "Daily TRX startup error:",
+        error
+      );
+
+    }
 
 
-/* New user */
+    const elapsed =
+      Date.now() -
+      startedAt;
 
-else {
+
+    const remaining =
+      Math.max(
+        1100 - elapsed,
+        0
+      );
+
+
+    await delay(
+      remaining
+    );
+
+
+    hideSplash();
+
+    return;
+  }
+
+
+  /* -------------------------
+     NEW USER
+  ------------------------- */
 
   app?.classList.add(
     "app-hidden"
@@ -3062,13 +4517,45 @@ else {
   }
 
 
+  const elapsed =
+    Date.now() -
+    startedAt;
+
+
+  const remaining =
+    Math.max(
+      1100 - elapsed,
+      0
+    );
+
+
+  await delay(
+    remaining
+  );
+
+
+  hideSplash();
+
+
   const registerButton =
     document.getElementById(
       "registerButton"
     );
 
 
-  registerButton?.addEventListener(
+  if (
+    !registerButton ||
+    registerButton.dataset.bound === "true"
+  ) {
+    return;
+  }
+
+
+  registerButton.dataset.bound =
+    "true";
+
+
+  registerButton.addEventListener(
     "click",
     async () => {
 
@@ -3116,6 +4603,11 @@ else {
         document.getElementById(
           "registerMessage"
         );
+
+
+      if (!message) {
+        return;
+      }
 
 
       if (
@@ -3220,12 +4712,6 @@ else {
 
 
         localStorage.setItem(
-          "dailytrx_registered",
-          "true"
-        );
-
-
-        localStorage.setItem(
           "dailytrx_registered_" +
           telegramId,
           "true"
@@ -3235,6 +4721,18 @@ else {
         localStorage.setItem(
           "dailytrx_username",
           username
+        );
+
+
+        /*
+          Keep old key only for compatibility.
+          It is no longer used to bypass a new
+          Telegram user's registration.
+        */
+
+        localStorage.setItem(
+          "dailytrx_registered",
+          "true"
         );
 
 
@@ -3260,11 +4758,7 @@ else {
         );
 
 
-        render("home")
-          .finally(() => {
-            hideSplash();
-          });
-
+        await render("home");
 
       } catch (error) {
 
@@ -3286,17 +4780,16 @@ else {
 
     }
   );
-
-
-  /* Registration page should not stay forever under splash */
-
-  setTimeout(() => {
-    hideSplash();
-  }, 1200);
-
 }
 
 
+/* =========================================================
+   RUN
+========================================================= */
+
+startApplication();
+
+
 console.log(
-  "DAILY TRX NEW APP JS LOADED 2026 - FINAL UI"
+  "DAILY TRX PREMIUM UI LOADED — 2026.09.26.2"
 );
