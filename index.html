@@ -1,8 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -10,174 +8,22 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   >
 
-  <meta
-    name="theme-color"
-    content="#070b12"
-  >
+  <meta name="theme-color" content="#0b1220">
 
   <title>Daily TRX</title>
 
-  <!-- Telegram Mini App -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <!-- Main CSS -->
-  <link
-    rel="stylesheet"
-    href="style.css?v=20260926-03"
-  >
-
+  <link rel="stylesheet" href="style.css?v=20260926-04">
 </head>
-
 
 <body>
 
-  <!-- =========================================
-       REGISTRATION
-  ========================================== -->
-
-  <section
-    id="registration"
-    class="registration hidden"
-  >
-
-    <div class="register-card">
-
-      <div class="brand-large">
-
-        <div class="brand-icon">
-          ₮
-        </div>
-
-        <h1>
-          Daily TRX
-        </h1>
-
-        <p>
-          Create your account
-        </p>
-
-      </div>
-
-
-      <div class="input-group">
-
-        <label for="regUsername">
-          Username
-        </label>
-
-        <input
-          id="regUsername"
-          type="text"
-          placeholder="Enter username"
-          maxlength="30"
-          autocomplete="off"
-        >
-
-      </div>
-
-
-      <div class="input-group">
-
-        <label for="regEmail">
-          Email
-        </label>
-
-        <input
-          id="regEmail"
-          type="email"
-          placeholder="Enter email"
-          autocomplete="email"
-        >
-
-      </div>
-
-
-      <div class="input-group">
-
-        <label for="regPin">
-          PIN
-        </label>
-
-        <input
-          id="regPin"
-          type="password"
-          placeholder="4–6 digit PIN"
-          inputmode="numeric"
-          maxlength="6"
-        >
-
-      </div>
-
-
-      <div class="input-group">
-
-        <label for="regConfirmPin">
-          Confirm PIN
-        </label>
-
-        <input
-          id="regConfirmPin"
-          type="password"
-          placeholder="Confirm PIN"
-          inputmode="numeric"
-          maxlength="6"
-        >
-
-      </div>
-
-
-      <!-- Referral is filled automatically
-           from Telegram start parameter -->
-
-      <input
-        id="regReferral"
-        type="hidden"
-      >
-
-
-      <button
-        id="registerButton"
-        class="primary-button"
-        type="button"
-      >
-        Create Account
-      </button>
-
-
-      <p
-        id="registerMessage"
-        class="form-message"
-      ></p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       MAIN APPLICATION
-  ========================================== -->
-
-  <main
-    id="app"
-    class="app app-hidden"
-  >
-
+  <div id="app">
     <div id="page"></div>
+  </div>
 
-  </main>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-
-  <!-- =========================================
-       APP JS
-       
-       IMPORTANT:
-       New version number forces Telegram
-       WebView to load the new JavaScript.
-  ========================================== -->
-
-  <script src="app.js?v=20260926-03"></script>
+  <script src="app.js?v=20260926-04"></script>
 
 </body>
-
 </html>
