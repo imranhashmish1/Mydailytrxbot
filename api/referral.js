@@ -3,10 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({
       ok: false,
       message: "Method not allowed"
-    });
-  }
-
-  try {
+    })allowed  try {
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
 
